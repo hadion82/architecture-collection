@@ -21,8 +21,11 @@ class DemoViewModel @Inject constructor(
 
     fun init() {
         viewModelScope.launch(Dispatchers.IO) {
-            for(i in 1 .. 10)
-                userDataSource.insert(User(i.toLong(), "demo$i"))
+            val users = mutableListOf<User>()
+            for(i in 1 .. 10) {
+                users.add(User(i.toLong(), "demo$i"))
+            }
+            userDataSource.insert(users)
         }
     }
 

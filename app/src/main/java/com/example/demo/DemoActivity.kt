@@ -1,16 +1,15 @@
 package com.example.demo
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.core.text.isDigitsOnly
 import androidx.lifecycle.switchMap
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import com.example.database.entity.User
 import com.example.demo.databinding.ActivityDemoBinding
 import com.example.demo.databinding.ListItemUserBinding
+import com.example.toSafeLong
 
 class DemoActivity : BaseActivity<ActivityDemoBinding>() {
 
@@ -22,24 +21,16 @@ class DemoActivity : BaseActivity<ActivityDemoBinding>() {
     override fun onBind(savedInstanceState: Bundle?, binding: ActivityDemoBinding) {
         binding.run {
             model?.let { viewModel ->
-                viewModel.getUsers().sync(
-                        userList, adapter
-                    ).before { it }
-                    .after {
-                        //TODO something
-                    }
-
-                viewModel.userIdLiveData.switchMap {
-                    viewModel.getUser(it)
-                }.collect {
-                    viewModel.setUserName(it?.name)
+                viewModel.getUsers().sync(userList, adapter)
+                viewModel.userIdLiveData.switchMap {id ->
+                    viewModel.getUser(id)
+                }.collect {user ->
+                    viewModel.setUserName(user?.name)
                 }
-
                 find.setOnClickListener {
-                    val id = number.text.toString()
-                    if(id.isDigitsOnly()) {
-                        viewModel.findUser(id.toLong())
-                    }
+                    viewModel.findUser(
+                        number.text.toSafeLong()
+                    )
                 }
                 viewModel.init()
             }
