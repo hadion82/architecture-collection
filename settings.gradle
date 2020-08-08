@@ -1,2 +1,6 @@
+include ':domain'
+include ':data'
+include ':logger'
+include ':core'
 rootProject.name='DemoApplication'
 include ':app'

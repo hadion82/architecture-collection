@@ -1,17 +1,15 @@
 package com.example.demo
 
+import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.database.entity.User
-import com.example.database.persistence.UserDataSource
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import javax.inject.Inject
 
-class DemoViewModel @Inject constructor(
-    private val userDataSource: UserDataSource
+class DemoViewModel @ViewModelInject constructor(
+    private val userRepository: UserRepository
 ): ViewModel() {
     private val _userIdLiveData: MutableLiveData<Long> = MutableLiveData()
     val userIdLiveData: LiveData<Long> get() = _userIdLiveData
@@ -27,6 +25,10 @@ class DemoViewModel @Inject constructor(
             }
             userDataSource.insert(users)
         }
+    }
+
+    fun setId(id: Long) {
+        _userIdLiveData.value = id
     }
 
     fun getUsers() =
