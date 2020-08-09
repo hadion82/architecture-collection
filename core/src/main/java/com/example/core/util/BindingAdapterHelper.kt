@@ -17,7 +17,7 @@ object BindingAdapterHelper {
         onClick: () -> Unit,
         skipDuration: Long = 500
     ) {
-        model.throttleClick(view, onClick, skipDuration)
+        model.throttleClick(view, skipDuration, onClick)
     }
 
     @JvmStatic

@@ -1,10 +1,10 @@
 package com.example.core.ui.fragment
 
-import dagger.android.support.DaggerFragment
+import androidx.fragment.app.Fragment
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
 
-abstract class DisposableFragment : DaggerFragment() {
+abstract class DisposableFragment : Fragment() {
 
     private val compositeDisposable = CompositeDisposable()
 

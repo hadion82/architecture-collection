@@ -6,7 +6,7 @@
 
         <variable
             name="model"
-            type="com.example.demo.DemoViewModel" />
+            type="com.example.architecture.DemoViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"

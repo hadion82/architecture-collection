@@ -5,14 +5,14 @@ import android.util.AttributeSet
 import androidx.appcompat.widget.AppCompatSpinner
 
 class CustomSpinner(
-    context: Context?,
+    context: Context,
     attrs: AttributeSet?
 ) :
     AppCompatSpinner(context, attrs) {
     var listener: OnItemSelectedListener? = null
     override fun setSelection(position: Int) {
         super.setSelection(position)
-        if (position == getSelectedItemPosition()) {
+        if (position == selectedItemPosition) {
             listener?.onItemSelected(null, null, position, 0)
         }
     }

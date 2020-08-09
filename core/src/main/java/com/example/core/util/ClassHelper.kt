@@ -1,7 +1,5 @@
 package com.example.core.util
 
-import com.example.android.retrofit.annotation.ReqBody
-import com.example.android.retrofit.annotation.ReqQuery
 import java.lang.reflect.Field
 import java.util.*
 import kotlin.collections.HashMap
@@ -29,47 +27,47 @@ object ClassHelper {
     }
 
 
-    fun <T : Any> toRequestBody(t: T): HashMap<String, Any>? {
-        val result = HashMap<String, Any>()
-        val fieldList = getFields(t)
-
-        for (field in fieldList) {
-            try {
-                field.isAccessible = true
-                field.getAnnotation(ReqBody::class.java).let {
-                    result[it.value] = field.get(t)
-                }
-            } catch (e: IllegalArgumentException) {
-                e.printStackTrace()
-                return null
-            } catch (e: IllegalAccessException) {
-                e.printStackTrace()
-                return null
-            }
-
-        }
-        return result
-    }
-
-
-    fun <T : Any> toRequestQuery(t: T): HashMap<String, String> {
-        val result = HashMap<String, String>()
-        val fieldList = getFields(t)
-        for (field in fieldList) {
-            try {
-                field.isAccessible = true
-                field.getAnnotation(ReqQuery::class.java).let {
-                    result.put(it.value, field.get(t).toString())
-                }
-            } catch (e: IllegalArgumentException) {
-                e.printStackTrace()
-            } catch (e: IllegalAccessException) {
-                e.printStackTrace()
-            }
-
-        }
-        return result
-    }
+//    fun <T : Any> toRequestBody(t: T): HashMap<String, Any>? {
+//        val result = HashMap<String, Any>()
+//        val fieldList = getFields(t)
+//
+//        for (field in fieldList) {
+//            try {
+//                field.isAccessible = true
+//                field.getAnnotation(ReqBody::class.java).let {
+//                    result[it.value] = field.get(t)
+//                }
+//            } catch (e: IllegalArgumentException) {
+//                e.printStackTrace()
+//                return null
+//            } catch (e: IllegalAccessException) {
+//                e.printStackTrace()
+//                return null
+//            }
+//
+//        }
+//        return result
+//    }
+//
+//
+//    fun <T : Any> toRequestQuery(t: T): HashMap<String, String> {
+//        val result = HashMap<String, String>()
+//        val fieldList = getFields(t)
+//        for (field in fieldList) {
+//            try {
+//                field.isAccessible = true
+//                field.getAnnotation(ReqQuery::class.java).let {
+//                    result.put(it.value, field.get(t).toString())
+//                }
+//            } catch (e: IllegalArgumentException) {
+//                e.printStackTrace()
+//            } catch (e: IllegalAccessException) {
+//                e.printStackTrace()
+//            }
+//
+//        }
+//        return result
+//    }
 
 //    fun <T> getReqBodyMap(t: T): ReqBodyMap<String, RequestBody>? {
 //        val result = ReqBodyMap.PermissionBuilder()

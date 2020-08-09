@@ -2,7 +2,7 @@ package com.example.core.alias
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import io.kiwiplus.app.core.functional.Event
+import com.example.core.functional.Event
 
 /**
  * LiveData Aliases

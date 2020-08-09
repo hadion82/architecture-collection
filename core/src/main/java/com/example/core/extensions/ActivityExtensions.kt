@@ -84,9 +84,12 @@ fun Activity.startAndFinishAffinity(
 /**
  * navigation graph
  */
-fun Activity.navigate(@IdRes navHostId: Int, @IdRes actionId: Int, bundle: Bundle? = null) {
-    Navigation.findNavController(this, navHostId).navigate(actionId, bundle)
-}
+fun Activity.navigate(@IdRes navHostId: Int, @IdRes actionId: Int, bundle: Bundle? = null) =
+    Navigation.findNavController(this, navHostId).run {
+        currentDestination?.getAction(actionId)?.let {
+            navigate(actionId, bundle)
+        }
+    }
 
 /**
  * status bar

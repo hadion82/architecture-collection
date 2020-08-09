@@ -25,14 +25,6 @@ abstract class TransparentDialog<DB: ViewDataBinding>: DialogFragment() {
         return binding.root
     }
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-//        dialog?.window?.let {
-//            it.requestFeature(Window.FEATURE_NO_TITLE)
-//            it.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-//        }
-        super.onActivityCreated(savedInstanceState)
-    }
-
     abstract fun createViewDataBinding(
         inflater: LayoutInflater,
         container: ViewGroup?,

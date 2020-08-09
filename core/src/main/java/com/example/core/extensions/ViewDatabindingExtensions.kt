@@ -13,6 +13,7 @@ fun ViewDataBinding.viewModel(owner: ViewModelStoreOwner) {
             it.getAnnotation(Bindable::class.java) != null &&
                     ViewModel::class.java.isAssignableFrom(it.type)
         }.forEach {
+            it.isAccessible = true
             it.set(this, ViewModelProvider(owner)
                 .get(it.type as Class<out ViewModel>))
         }
@@ -27,6 +28,7 @@ fun ViewDataBinding.viewModel(owner: ViewModelStoreOwner, factory: ViewModelProv
             it.getAnnotation(Bindable::class.java) != null &&
                     ViewModel::class.java.isAssignableFrom(it.type)
         }.forEach {
+            it.isAccessible = true
             it.set(this, ViewModelProvider(owner)
                     .get(it.type as Class<out ViewModel>))
         }

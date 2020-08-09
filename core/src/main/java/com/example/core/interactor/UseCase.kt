@@ -18,15 +18,14 @@ package com.example.core.interactor
 import com.example.core.functional.Result
 import kotlinx.coroutines.*
 
+abstract class UseCase<out Type, out Failure, in Params> where Type : Any {
 
-abstract class UseCase<out Type, in Params> where Type : Any {
-
-    abstract suspend fun run(params: Params): Result<Type>
+    abstract suspend fun run(params: Params): Result<Type, Failure>
 
     operator fun invoke(
         scope: CoroutineScope = GlobalScope,
         params: Params,
-        onResult: (Result<Type>) -> Unit = {}) {
+        onResult: (Result<Type, Failure>) -> Unit = {}) {
         val job = scope.async(Dispatchers.IO) { run(params) }
         scope.launch(Dispatchers.Main) {
             onResult(job.await())

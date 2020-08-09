@@ -2,13 +2,14 @@ apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'
+apply plugin: 'dagger.hilt.android.plugin'
 
 android {
     compileSdkVersion build_versions.compile
     buildToolsVersion build_versions.tools
 
     defaultConfig {
-        applicationId "com.example.demo"
+        applicationId "com.example.architecture"
         minSdkVersion build_versions.min
         targetSdkVersion build_versions.target
         versionCode 1
@@ -60,11 +61,28 @@ dependencies {
     implementation libs.reflect
 
     //dagger hilt
-    def hilt_version = "1.0.0-alpha02"
-    implementation "androidx.hilt:hilt-lifecycle-viewmodel:$hilt_version"
-    kapt "androidx.hilt:hilt-compiler:$hilt_version"
-    annotationProcessor "androidx.hilt:hilt-compiler:$hilt_version"
+    def hilt_version = "2.28-alpha"
+    implementation "com.google.dagger:hilt-android:$hilt_version"
+    kapt "com.google.dagger:hilt-android-compiler:$hilt_version"
+
+    def hilt_android_version = "1.0.0-alpha02"
+    implementation "androidx.hilt:hilt-lifecycle-viewmodel:$hilt_android_version"
+    kapt "androidx.hilt:hilt-compiler:$hilt_android_version"
+    annotationProcessor "androidx.hilt:hilt-compiler:$hilt_android_version"
+
+    //paging
+    implementation "androidx.paging:paging-runtime:2.1.2"
+
+    //okhttp
+    implementation "com.squareup.okhttp3:okhttp:4.7.2"
+    implementation "com.squareup.okhttp3:logging-interceptor:4.7.2"
+
+    //retrofit
+    implementation "com.squareup.retrofit2:converter-gson:2.9.0"
+    implementation "com.squareup.retrofit2:adapter-rxjava2:2.8.1"
+    implementation "com.squareup.retrofit2:retrofit:2.9.0"
 
     implementation project(':domain')
+    implementation project(':data')
     implementation project(':core')
 }

@@ -7,17 +7,14 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.lifecycle.ViewModelProvider
+import com.example.core.extensions.viewModel
+import com.example.core.ui.listener.Throttle
 import com.jakewharton.rxbinding2.view.RxView
-import io.kiwiplus.app.core.extensions.viewModel
-import io.kiwiplus.app.core.ui.listener.Throttle
 import timber.log.Timber
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
 abstract class BindingFragment<DB : ViewDataBinding>: DisposableFragment(), Throttle.ClickListener {
-
-    @Inject
-    lateinit var factory: ViewModelProvider.Factory
 
     lateinit var binding : DB
 
@@ -32,18 +29,18 @@ abstract class BindingFragment<DB : ViewDataBinding>: DisposableFragment(), Thro
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         binding.lifecycleOwner = this
-        binding.viewModel(this, factory)
-        onBinding(binding, created)
+        binding.viewModel(this)
+        onBind(binding, created)
         created = false
     }
 
-    override fun throttleClick(view: View, onClick: () -> Unit, skipDuration: Long) =
+    override fun throttleClick(view: View, skipDuration: Long, onClick: () -> Unit) =
         RxView.clicks(view).throttleFirst(skipDuration, TimeUnit.MILLISECONDS)
             .subscribe({ onClick() }
                 , { error -> Timber.d(error) })
             .disposeOnDestroy()
 
-    open fun onBinding(binding : DB, created: Boolean) {
+    open fun onBind(binding : DB, created: Boolean) {
 
     }
 
