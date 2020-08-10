@@ -1,4 +1,4 @@
-package com.example.architecture
+package com.example.architecture.collection.ui
 
 import android.view.View
 import androidx.recyclerview.widget.RecyclerView

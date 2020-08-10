@@ -1,4 +1,4 @@
-package com.example.architecture.di
+package com.example.architecture.collection.di
 
 import dagger.Module
 import dagger.Provides

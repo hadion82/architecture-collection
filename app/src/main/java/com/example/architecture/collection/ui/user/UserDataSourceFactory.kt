@@ -1,4 +1,4 @@
-package com.example.architecture
+package com.example.architecture.collection.ui.user
 
 import androidx.paging.DataSource
 import com.example.data.entity.UserEntity
@@ -9,5 +9,7 @@ class UserDataSourceFactory(
 ): DataSource.Factory<Long, UserEntity>() {
 
     override fun create(): DataSource<Long, UserEntity> =
-        UserItemKeyDataSource(userDataRepository)
+        UserItemKeyDataSource(
+            userDataRepository
+        )
 }

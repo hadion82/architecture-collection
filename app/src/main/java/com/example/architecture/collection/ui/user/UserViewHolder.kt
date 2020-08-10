@@ -1,4 +1,4 @@
-package com.example.architecture
+package com.example.architecture.collection.ui.user
 
 import androidx.recyclerview.widget.RecyclerView
 import com.example.data.entity.UserEntity

@@ -1,4 +1,4 @@
-package com.example
+package com.example.architecture.collection
 
 import android.app.Application
 import com.example.data.datasource.local.UserLocalDataSource

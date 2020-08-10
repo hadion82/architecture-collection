@@ -10,8 +10,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
-        android:name="com.example.AndroidApplication">
-        <activity android:name=".DemoActivity"
+        android:name=".collection.AndroidApplication">
+        <activity android:name=".collection.ui.user.UserActivity"
             tools:ignore="Instantiatable">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

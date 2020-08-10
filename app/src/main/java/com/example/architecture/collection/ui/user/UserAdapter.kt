@@ -1,4 +1,4 @@
-package com.example.architecture
+package com.example.architecture.collection.ui.user
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -12,7 +12,9 @@ class UserAdapter(
     private val throttle: Throttle.ClickListener,
     private val onClick: () -> Unit
 ) :
-    PagedListAdapter<UserEntity, UserViewHolder>(UserDiffCallback()) {
+    PagedListAdapter<UserEntity, UserViewHolder>(
+        UserDiffCallback()
+    ) {
 
     class UserDiffCallback : DiffUtil.ItemCallback<UserEntity>() {
         override fun areItemsTheSame(oldItem: UserEntity, newItem: UserEntity) =

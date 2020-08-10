@@ -1,4 +1,4 @@
-package com.example.architecture
+package com.example.architecture.collection.ui.user
 
 import androidx.paging.PositionalDataSource
 import com.example.data.entity.UserEntity

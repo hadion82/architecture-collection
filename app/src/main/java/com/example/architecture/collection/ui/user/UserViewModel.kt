@@ -1,4 +1,4 @@
-package com.example.architecture
+package com.example.architecture.collection.ui.user
 
 import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.LiveData
@@ -6,7 +6,7 @@ import androidx.lifecycle.MutableLiveData
 import com.example.data.repository.UserRepository
 import com.example.domain.core.viewmodel.ComponentViewModel
 
-class DemoViewModel @ViewModelInject constructor(
+class UserViewModel @ViewModelInject constructor(
     private val repository: UserRepository
 ):ComponentViewModel() {
     private val _userIdLiveData: MutableLiveData<Long> = MutableLiveData()

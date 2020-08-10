@@ -1,4 +1,4 @@
-package com.example.architecture.di
+package com.example.architecture.collection.di
 
 import com.example.data.api.GithubApi
 import dagger.Module
