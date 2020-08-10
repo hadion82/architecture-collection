@@ -1,1 +1,1 @@
-# Android Architecture and Latest Technology Trends
+# Android Architecture
