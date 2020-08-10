@@ -1,6 +1,5 @@
 include ':domain'
 include ':data'
-include ':logger'
 include ':core'
-rootProject.name='DemoApplication'
+rootProject.name='android-architecture-collection'
 include ':app'

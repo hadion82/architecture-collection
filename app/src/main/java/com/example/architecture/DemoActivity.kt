@@ -3,10 +3,13 @@ package com.example.architecture
 import android.os.Bundle
 import com.example.architecture.databinding.ActivityDemoBinding
 import com.example.core.ui.activity.ComponentActivity
+import com.example.data.repository.UserRepository
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class DemoActivity: ComponentActivity<ActivityDemoBinding>() {
+class DemoActivity(
+    val repository: UserRepository
+): ComponentActivity<ActivityDemoBinding>() {
 
     override fun layout(): Int =
         R.layout.activity_demo

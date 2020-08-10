@@ -9,7 +9,7 @@ android {
     buildToolsVersion build_versions.tools
 
     defaultConfig {
-        applicationId "com.example.architecture"
+        applicationId "com.example.architecture.collection"
         minSdkVersion build_versions.min
         targetSdkVersion build_versions.target
         versionCode 1
