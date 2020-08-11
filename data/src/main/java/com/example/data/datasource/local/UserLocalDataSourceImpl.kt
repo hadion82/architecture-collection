@@ -6,8 +6,9 @@ import com.example.data.dao.UserDao
 import com.example.data.datasource.DataSourceImpl
 import com.example.data.entity.UserEntity
 import com.example.core.functional.Result
+import javax.inject.Inject
 
-class UserLocalDataSourceImpl(
+class UserLocalDataSourceImpl @Inject internal constructor(
     private val dao: UserDao
 ) : DataSourceImpl(),
     UserLocalDataSource {

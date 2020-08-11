@@ -41,7 +41,7 @@ object NetworkModule {
     @Singleton
     @GitHubApiService
     @Provides
-    fun provideRetrofit(okHttpClient: OkHttpClient) =
+    fun provideRetrofit(okHttpClient: OkHttpClient): Retrofit =
         Retrofit.Builder()
             .baseUrl("https://api.github.com")
             .addConverterFactory(GsonConverterFactory.create())
@@ -51,6 +51,6 @@ object NetworkModule {
 
     @Singleton
     @Provides
-    fun provideGitHubService(@GitHubApiService retrofit: Retrofit) =
+    fun provideGitHubService(@GitHubApiService retrofit: Retrofit): GithubApi =
         retrofit.create(GithubApi::class.java)
 }

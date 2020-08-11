@@ -9,11 +9,12 @@ import com.example.core.ui.activity.ComponentActivity
 import com.example.data.repository.UserRepository
 import dagger.hilt.android.AndroidEntryPoint
 import timber.log.Timber
+import javax.inject.Inject
 
 @AndroidEntryPoint
-class UserActivity(
-    val repository: UserRepository
-): ComponentActivity<ActivityUserBinding>() {
+class UserActivity: ComponentActivity<ActivityUserBinding>() {
+
+    @Inject lateinit var repository: UserRepository
 
     override fun layout(): Int =
         R.layout.activity_user

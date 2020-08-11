@@ -20,7 +20,7 @@ object DatabaseModule {
             Room.databaseBuilder(
                     context,
                     LocalDataBase::class.java,
-                    "local_database.db"
+                    "database.db"
             ).build()
 
     @Singleton

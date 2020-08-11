@@ -1,11 +1,14 @@
 package com.example.data.repository
 
 import com.example.data.datasource.local.UserLocalDataSource
+import com.example.data.datasource.local.UserLocalDataSourceImpl
 import com.example.data.datasource.remote.UserRemoteDataSource
+import com.example.data.datasource.remote.UserRemoteDataSourceImpl
+import javax.inject.Inject
 
-class UserRepositoryImpl(
-        private val localDataSource: UserLocalDataSource,
-        private val remoteDataSource: UserRemoteDataSource
+class UserRepositoryImpl @Inject internal constructor(
+        private val localDataSource: UserLocalDataSourceImpl,
+        private val remoteDataSource: UserRemoteDataSourceImpl
 ) : UserRepository {
 
     override fun observeUser() = localDataSource.observeUser()

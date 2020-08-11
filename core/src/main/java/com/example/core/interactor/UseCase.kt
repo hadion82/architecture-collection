@@ -18,7 +18,7 @@ package com.example.core.interactor
 import com.example.core.functional.Result
 import kotlinx.coroutines.*
 
-abstract class UseCase<out Type, out Failure, in Params> where Type : Any {
+abstract class UseCase<out Type, out Failure: Exception, in Params> where Type : Any {
 
     abstract suspend fun run(params: Params): Result<Type, Failure>
 
