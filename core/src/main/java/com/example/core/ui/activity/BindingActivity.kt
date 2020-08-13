@@ -5,6 +5,7 @@ import android.view.View
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.lifecycle.LifecycleOwner
+import com.example.core.extensions.viewModel
 import com.example.core.ui.listener.Throttle
 import com.jakewharton.rxbinding2.view.RxView
 import timber.log.Timber
@@ -18,7 +19,7 @@ abstract class BindingActivity<DB : ViewDataBinding> :
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, layout())
-//        binding.viewModel(this)
+        binding.viewModel(this)
         onBind(savedInstanceState, binding)
     }
 

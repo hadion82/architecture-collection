@@ -1,13 +1,15 @@
 package com.example.architecture.collection
 
 import android.app.Application
-import com.example.data.datasource.local.UserLocalDataSource
-import com.example.data.datasource.remote.UserRemoteDataSource
-import com.example.data.repository.UserRepository
-import com.example.data.repository.UserRepositoryImpl
-import dagger.Provides
+import com.facebook.stetho.Stetho
 import dagger.hilt.android.HiltAndroidApp
-import javax.inject.Singleton
+import timber.log.Timber
 
 @HiltAndroidApp
-class AndroidApplication: Application()
+class AndroidApplication: Application() {
+    override fun onCreate() {
+        super.onCreate()
+        Timber.plant(Timber.DebugTree())
+        Stetho.initializeWithDefaults(this)
+    }
+}

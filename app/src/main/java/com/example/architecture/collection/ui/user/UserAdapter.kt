@@ -2,17 +2,17 @@ package com.example.architecture.collection.ui.user
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.paging.PagedListAdapter
+import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
-import com.example.data.entity.UserEntity
-import com.example.core.ui.listener.Throttle
 import com.example.architecture.databinding.ListItemUserBinding
+import com.example.core.ui.listener.Throttle
+import com.example.data.entity.UserEntity
 
 class UserAdapter(
     private val throttle: Throttle.ClickListener,
-    private val onClick: () -> Unit
+    private val onClick: (item: UserEntity?) -> Unit
 ) :
-    PagedListAdapter<UserEntity, UserViewHolder>(
+    PagingDataAdapter<UserEntity, UserViewHolder>(
         UserDiffCallback()
     ) {
 
@@ -25,7 +25,7 @@ class UserAdapter(
                     && oldItem.avatarUrl == newItem.avatarUrl
 
         override fun getChangePayload(oldItem: UserEntity, newItem: UserEntity): Any? =
-            Payload(
+            UserViewHolder.Payload(
                 extractItem(oldItem.name, newItem.name),
                 extractItem(oldItem.avatarUrl, newItem.avatarUrl)
             )
@@ -44,7 +44,16 @@ class UserAdapter(
     )
 
     override fun onBindViewHolder(holder: UserViewHolder, position: Int) =
-        holder.onBindViewHolder(currentList?.get(position))
+        holder.onBindViewHolder(getItem(position))
 
-    data class Payload(val name: String?, val avatarUrl: String?)
+    override fun onBindViewHolder(
+        holder: UserViewHolder,
+        position: Int,
+        payloads: MutableList<Any>
+    ) {
+        if(payloads.isNullOrEmpty())
+            super.onBindViewHolder(holder, position, payloads)
+        else
+            holder.onBindViewHolder(payloads[0] as UserViewHolder.Payload)
+    }
 }

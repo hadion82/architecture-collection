@@ -7,7 +7,7 @@ import com.example.core.ui.listener.Throttle
 import java.text.SimpleDateFormat
 import java.util.*
 
-object BindingAdapterHelper {
+object CoreBindingAdapter {
 
     @JvmStatic
     @BindingAdapter("owner", "click", "duration")

@@ -1,3 +1,4 @@
 <resources>
-    <string name="app_name">DemoApplication</string>
+    <string name="app_name">ArchitectureCollection</string>
+    <string name="btn_search">Search</string>
 </resources>

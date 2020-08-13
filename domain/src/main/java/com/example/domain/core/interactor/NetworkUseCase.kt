@@ -18,5 +18,5 @@ package com.example.domain.core.interactor
 import com.example.data.core.NetworkFailure
 import com.example.core.interactor.UseCase
 
-abstract class NetworkUseCase<out Type: Any, in Params> :
-    UseCase<Type, NetworkFailure, Params>()
+abstract class NetworkUseCase<out T: Any, in P> :
+    UseCase<T, NetworkFailure, P>()

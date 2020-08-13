@@ -1,17 +1,27 @@
 package com.example.architecture.collection.ui.user
 
 import androidx.hilt.lifecycle.ViewModelInject
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import com.example.data.repository.UserRepository
+import androidx.lifecycle.viewModelScope
+import androidx.paging.cachedIn
+import com.example.core.functional.complete
 import com.example.domain.core.viewmodel.ComponentViewModel
+import com.example.domain.feature.InsertUserUseCase
+import com.example.domain.feature.LoadUserUseCase
 
 class UserViewModel @ViewModelInject constructor(
-    private val repository: UserRepository
-):ComponentViewModel() {
-    private val _userIdLiveData: MutableLiveData<Long> = MutableLiveData()
-    val userIdLiveData: LiveData<Long> get() = _userIdLiveData
+    private val insertUser: InsertUserUseCase,
+    private val loadUser: LoadUserUseCase
+) : ComponentViewModel() {
 
-    private val _userName: MutableLiveData<String> = MutableLiveData()
-    val userName: LiveData<String> get() = _userName
+    init {
+        insertUser(
+            InsertUserUseCase.Params(70),
+            viewModelScope
+        ) {
+            it.complete({},{})
+        }
+    }
+
+    fun loadUsers() = loadUser().cachedIn(viewModelScope)
+
 }

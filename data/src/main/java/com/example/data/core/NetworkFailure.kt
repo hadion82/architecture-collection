@@ -1,10 +1,6 @@
 package com.example.data.core
 
-sealed class NetworkFailure: Exception {
-
-    constructor(): super()
-
-    constructor(e: Exception): super(e)
+sealed class NetworkFailure {
 
     object ConnectionError : NetworkFailure()
 
@@ -16,5 +12,5 @@ sealed class NetworkFailure: Exception {
 
     data class NetworkException(
         val exception: Exception
-    ): NetworkFailure(exception)
+    ): NetworkFailure()
 }

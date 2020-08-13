@@ -88,13 +88,6 @@ dependencies {
 
     api "com.jakewharton.timber:timber:4.7.1"
 
-    //dagger
-//    api "com.google.dagger:dagger-android:2.26"
-//    api "com.google.dagger:dagger-android-support:2.26"
-//
-//    kapt "com.google.dagger:dagger-compiler:2.26"
-//    kapt "com.google.dagger:dagger-android-processor:2.26"
-
     implementation "com.github.bumptech.glide:glide:4.11.0"
 
 

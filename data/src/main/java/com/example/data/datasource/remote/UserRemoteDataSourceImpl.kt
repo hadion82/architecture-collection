@@ -4,7 +4,7 @@ import com.example.data.api.GithubApi
 import com.example.data.datasource.DataSourceImpl
 import javax.inject.Inject
 
-class UserRemoteDataSourceImpl @Inject internal constructor(
+internal class UserRemoteDataSourceImpl (
     private val service: GithubApi
 ): DataSourceImpl(), UserRemoteDataSource {
 

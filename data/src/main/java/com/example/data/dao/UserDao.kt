@@ -1,13 +1,14 @@
 package com.example.data.dao
 
 import androidx.lifecycle.LiveData
-import androidx.paging.DataSource
+import androidx.paging.PagingSource
 import androidx.room.Dao
 import androidx.room.Query
+import com.example.core.database.BaseDao
 import com.example.data.entity.UserEntity
 
 @Dao
-interface UserDao {
+interface UserDao: BaseDao<UserEntity> {
 
     @Query("SELECT * FROM users")
     fun observeUser(): LiveData<List<UserEntity>>
@@ -21,6 +22,6 @@ interface UserDao {
     @Query("SELECT COUNT(id) FROM users")
     suspend fun getCount(): Int
 
-    @Query("SELECT * FROM users")
-    fun loadUsers(): DataSource.Factory <Int, UserEntity>
+    @Query("SELECT * FROM users ORDER BY id ASC")
+    fun loadUsers(): PagingSource<Int, UserEntity>
 }
