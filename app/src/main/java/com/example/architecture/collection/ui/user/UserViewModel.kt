@@ -1,27 +1,30 @@
 package com.example.architecture.collection.ui.user
 
+import androidx.hilt.Assisted
 import androidx.hilt.lifecycle.ViewModelInject
-import androidx.lifecycle.viewModelScope
-import androidx.paging.cachedIn
-import com.example.core.functional.complete
+import androidx.lifecycle.*
+import com.example.core.alias.BooleanLiveData
+import com.example.core.alias.BooleanMutableLiveData
 import com.example.domain.core.viewmodel.ComponentViewModel
-import com.example.domain.feature.InsertUserUseCase
-import com.example.domain.feature.LoadUserUseCase
+import com.example.domain.feature.LoadUserByName
 
 class UserViewModel @ViewModelInject constructor(
-    private val insertUser: InsertUserUseCase,
-    private val loadUser: LoadUserUseCase
+    private val loadUserByName: LoadUserByName,
+    @Assisted private val savedStateHandle: SavedStateHandle
 ) : ComponentViewModel() {
 
-    init {
-        insertUser(
-            InsertUserUseCase.Params(70),
-            viewModelScope
-        ) {
-            it.complete({},{})
-        }
+    private val _progress: BooleanMutableLiveData by lazy {
+        BooleanMutableLiveData(
+            false
+        )
     }
+    val progress: BooleanLiveData by lazy { _progress }
 
-    fun loadUsers() = loadUser().cachedIn(viewModelScope)
+    private val _query = MutableLiveData<String>()
 
+    fun loadUserByName() = loadUserByName(LoadUserByName.Params(_query))
+
+    fun searchByUserName(query: String) {
+        _query.value = query
+    }
 }

@@ -15,22 +15,11 @@
  */
 package com.example.core.interactor
 
-import com.example.core.functional.Result
-import kotlinx.coroutines.*
+import com.example.core.functional.FlowResult
 
 abstract class UseCase<out T, out F, in P> where T : Any {
 
-    abstract suspend fun run(params: P): Result<T, F>
+    abstract fun run(params: P): FlowResult<T, F>
 
-    operator fun invoke(
-        params: P,
-        scope: CoroutineScope = GlobalScope,
-        onResult: (Result<T, F>) -> Unit = {}) {
-        val job = scope.async(Dispatchers.IO) { run(params) }
-        scope.launch(Dispatchers.Main) {
-            onResult(job.await())
-        }
-    }
-
-    class None
+    operator fun invoke(params: P): FlowResult<T, F> = run(params)
 }

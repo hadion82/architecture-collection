@@ -11,20 +11,27 @@ import com.example.data.entity.UserEntity
     entities = [UserEntity::class],
     version = 1
 )
-abstract class LocalDataBase: RoomDatabase() {
+abstract class LocalDataBase : RoomDatabase() {
 
     abstract fun getUserDao(): UserDao
 
     companion object {
-        private var INSTANCE: LocalDataBase? = null
+
+        @Volatile private var INSTANCE: LocalDataBase? = null
 
         internal fun getInstance(context: Context) =
             INSTANCE ?: synchronized(this) {
-                INSTANCE ?: Room.databaseBuilder(
-                    context,
-                    LocalDataBase::class.java,
-                    "database.db"
-                ).build()
+                INSTANCE ?: databaseBuilder(context)
+                    .build().also {
+                        INSTANCE = it
+                    }
             }
+
+        private fun databaseBuilder(context: Context) =
+            Room.databaseBuilder(
+                context,
+                LocalDataBase::class.java,
+                "database.db"
+            )
     }
 }

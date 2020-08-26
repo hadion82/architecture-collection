@@ -10,7 +10,7 @@ sealed class NetworkFailure {
         val errorMessage: String?
     ) : NetworkFailure()
 
-    data class NetworkException(
-        val exception: Exception
+    data class Exception(
+        val exception: java.lang.Exception
     ): NetworkFailure()
 }

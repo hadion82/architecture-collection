@@ -8,15 +8,21 @@ import android.view.View
 import android.widget.Toast
 import androidx.annotation.IdRes
 import androidx.annotation.StringRes
+import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.Navigation
 import com.karumi.dexter.Dexter
 import com.karumi.dexter.MultiplePermissionsReport
 import com.karumi.dexter.PermissionToken
 import com.karumi.dexter.listener.PermissionRequest
 import com.karumi.dexter.listener.multi.MultiplePermissionsListener
+import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.launch
 
 /**
  * permission
@@ -123,4 +129,10 @@ fun Activity.toast(
     duration: Int = Toast.LENGTH_SHORT
 ) =
     Toast.makeText(this, resId, duration).show()
+
+inline fun AppCompatActivity.launch(
+    dispatcher: CoroutineDispatcher = Dispatchers.Main,
+    crossinline block: suspend () -> Unit
+): Job =
+    lifecycleScope.launch(dispatcher) { block() }
 

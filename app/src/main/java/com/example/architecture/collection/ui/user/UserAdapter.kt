@@ -1,14 +1,22 @@
 package com.example.architecture.collection.ui.user
 
+import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
+import com.bumptech.glide.Glide
+import com.bumptech.glide.ListPreloader
+import com.bumptech.glide.RequestBuilder
+import com.bumptech.glide.load.engine.DiskCacheStrategy
+import com.example.architecture.R
 import com.example.architecture.databinding.ListItemUserBinding
 import com.example.core.ui.listener.Throttle
 import com.example.data.entity.UserEntity
+import java.util.*
 
 class UserAdapter(
+    private val context: Context,
     private val throttle: Throttle.ClickListener,
     private val onClick: (item: UserEntity?) -> Unit
 ) :
@@ -56,4 +64,19 @@ class UserAdapter(
         else
             holder.onBindViewHolder(payloads[0] as UserViewHolder.Payload)
     }
+
+    inner class AvatarPreloadModelProvider: ListPreloader.PreloadModelProvider<UserEntity> {
+        override fun getPreloadItems(position: Int): MutableList<UserEntity> =
+            Collections.singletonList(getItem(position))
+
+        override fun getPreloadRequestBuilder(item: UserEntity): RequestBuilder<*>? =
+            Glide.with(context)
+                .load(item.avatarUrl)
+                .placeholder(R.drawable.ic_profile_default)
+                .error(R.drawable.ic_profile_default)
+                .diskCacheStrategy(DiskCacheStrategy.ALL)
+    }
+
+    fun createPreLoader() : AvatarPreloadModelProvider =
+        AvatarPreloadModelProvider()
 }

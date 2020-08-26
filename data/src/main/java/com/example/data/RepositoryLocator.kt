@@ -1,7 +1,7 @@
 package com.example.data
 
 import android.content.Context
-import com.example.data.api.RemoteServiceLocator
+import com.example.data.api.GithubApi
 import com.example.data.database.LocalDataBase
 import com.example.data.datasource.local.UserLocalDataSource
 import com.example.data.datasource.local.UserLocalDataSourceImpl
@@ -25,6 +25,6 @@ object RepositoryLocator {
 
     private fun createUserRemoteDataSource(): UserRemoteDataSource =
         UserRemoteDataSourceImpl(
-            RemoteServiceLocator.createGitHubService()
+            GithubApi.create()
         )
 }

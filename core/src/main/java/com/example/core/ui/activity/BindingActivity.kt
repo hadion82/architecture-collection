@@ -5,6 +5,8 @@ import android.view.View
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
 import com.example.core.extensions.viewModel
 import com.example.core.ui.listener.Throttle
 import com.jakewharton.rxbinding2.view.RxView
