@@ -9,8 +9,8 @@ android {
 
 
     defaultConfig {
-        minSdkVersion 16
-        targetSdkVersion 28
+        minSdkVersion 21
+        targetSdkVersion 29
         versionCode 1
         versionName '1.0.0'
 
@@ -99,7 +99,6 @@ dependencies {
     androidTestImplementation "androidx.test.espresso:espresso-core:3.2.0"
     androidTestImplementation "com.squareup.okhttp3:mockwebserver:3.14.4"
 
-    //추가 완료 후 정리
     implementation "com.jakewharton.rxbinding2:rxbinding:2.2.0"
     debugImplementation 'com.readystatesoftware.chuck:library:1.1.0'
     releaseImplementation 'com.readystatesoftware.chuck:library-no-op:1.1.0'
@@ -119,9 +118,6 @@ dependencies {
     kapt "androidx.room:room-compiler:$room_version"
 
     implementation 'ru.superjob:kotlin-permissions:1.0.3'
-
-//    implementation project(':retrofit')
-//    implementation project(':model')
 
     //dagger hilt
     implementation 'androidx.hilt:hilt-lifecycle-viewmodel:1.0.0-alpha02'

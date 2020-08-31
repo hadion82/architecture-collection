@@ -3,7 +3,7 @@ package com.example.data.datasource.remote
 import com.example.data.GithubResponse
 import com.example.data.entity.UserEntity
 
-interface UserRemoteDataSource {
+internal interface UserRemoteDataSource {
 
-    suspend fun searchUser(keyword: String): GithubResponse<UserEntity>
+    suspend fun searchUser(query: String): GithubResponse<UserEntity>
 }

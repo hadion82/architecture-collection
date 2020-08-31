@@ -8,7 +8,7 @@ import com.example.core.database.BaseDao
 import com.example.data.entity.UserEntity
 
 @Dao
-interface UserDao: BaseDao<UserEntity> {
+internal interface UserDao: BaseDao<UserEntity> {
 
     @Query("SELECT COUNT(id) FROM users")
     suspend fun getCount(): Int

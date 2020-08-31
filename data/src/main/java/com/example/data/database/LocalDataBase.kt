@@ -13,13 +13,13 @@ import com.example.data.entity.UserEntity
 )
 abstract class LocalDataBase : RoomDatabase() {
 
-    abstract fun getUserDao(): UserDao
+    internal abstract fun getUserDao(): UserDao
 
     companion object {
 
         @Volatile private var INSTANCE: LocalDataBase? = null
 
-        internal fun getInstance(context: Context) =
+        fun getInstance(context: Context): LocalDataBase =
             INSTANCE ?: synchronized(this) {
                 INSTANCE ?: databaseBuilder(context)
                     .build().also {

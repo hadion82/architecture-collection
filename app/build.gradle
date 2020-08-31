@@ -51,7 +51,6 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
 
     implementation libs.recyclerview
-    implementation libs.lifecycle
 //    implementation libs.room
     kapt libs.room_kapt
     implementation libs.dagger
@@ -59,6 +58,13 @@ dependencies {
 
     implementation libs.fragment
     implementation libs.reflect
+
+    def lifecycle_version = "2.2.0"
+    implementation "androidx.lifecycle:lifecycle-extensions:$lifecycle_version"
+    implementation "androidx.lifecycle:lifecycle-livedata:$lifecycle_version"
+    implementation "androidx.lifecycle:lifecycle-viewmodel:$lifecycle_version"
+    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycle_version"
+    implementation "androidx.lifecycle:lifecycle-livedata-ktx:$lifecycle_version"
 
     //dagger hilt
     def hilt_version = "2.28-alpha"

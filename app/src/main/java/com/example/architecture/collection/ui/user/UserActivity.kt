@@ -4,7 +4,8 @@ import android.annotation.SuppressLint
 import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.widget.SearchView
-import androidx.paging.*
+import androidx.paging.PagingData
+import androidx.recyclerview.widget.DefaultItemAnimator
 import com.bumptech.glide.integration.recyclerview.RecyclerViewPreloader
 import com.bumptech.glide.util.FixedPreloadSizeProvider
 import com.example.architecture.R
@@ -41,6 +42,10 @@ class UserActivity : ComponentActivity<ActivityUserBinding>(), SearchView.OnQuer
             10
         )
         binding.run {
+            userList.itemAnimator = DefaultItemAnimator().apply {
+                addDuration = 300
+                removeDuration = 300
+            }
             userList.adapter = adapter
             search.let { view ->
                 view.isSubmitButtonEnabled = true
@@ -52,7 +57,9 @@ class UserActivity : ComponentActivity<ActivityUserBinding>(), SearchView.OnQuer
     }
 
     override fun onQueryTextSubmit(query: String?): Boolean {
-        query?.let { binding.model?.searchByUserName(query) }
+        query?.let {
+            binding.model?.searchByUserName(query)
+        }
         return false
     }
 
@@ -68,16 +75,17 @@ class UserActivity : ComponentActivity<ActivityUserBinding>(), SearchView.OnQuer
         pagingDataFlow.collectLatest { data ->
             (binding.userList.adapter as UserAdapter).submitData(data)
         }
+
     }
 
     @SuppressLint("ShowToast")
-    private fun onFailure(failure: NetworkFailure) {
+    private fun onFailure(failure: NetworkFailure) = launch {
         Toast.makeText(
             this, when (failure) {
                 is NetworkFailure.ConnectionError -> "Network not connected"
                 is NetworkFailure.ServerError -> failure.errorMessage
                 is NetworkFailure.Exception -> failure.exception.message
             }, Toast.LENGTH_LONG
-        )
+        ).show()
     }
 }

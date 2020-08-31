@@ -4,7 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.paging.PagingSource
 import com.example.data.entity.UserEntity
 
-interface UserLocalDataSource {
+internal interface UserLocalDataSource {
 
     suspend fun insert(values: List<UserEntity>)
 

@@ -8,7 +8,7 @@ android {
     buildToolsVersion "29.0.3"
 
     defaultConfig {
-        minSdkVersion 16
+        minSdkVersion 21
         targetSdkVersion 29
         versionCode 1
         versionName "1.0"
@@ -87,7 +87,6 @@ dependencies {
     implementation "androidx.paging:paging-runtime:2.1.2"
 
     implementation project(':core')
-//    implementation project(':retrofit')
     implementation project(':data')
 
     //dagger hilt
@@ -105,9 +104,5 @@ dependencies {
     implementation "androidx.room:room-rxjava2:$room_version"
     implementation "androidx.room:room-guava:$room_version"
     testImplementation "androidx.room:room-testing:$room_version"
-
-//    implementation "androidx.hilt:hilt-*:1.0.0"
-//    implementation "androidx.hilt:hilt-lifecycle-viewmodel :1.0.0-alpha02"
-//    kapt 'androidx.hilt:hilt-compiler:1.0.0-alpha02'
 
 }

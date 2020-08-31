@@ -2,9 +2,9 @@ package com.example.architecture.collection.ui.user
 
 import androidx.hilt.Assisted
 import androidx.hilt.lifecycle.ViewModelInject
-import androidx.lifecycle.*
-import com.example.core.alias.BooleanLiveData
-import com.example.core.alias.BooleanMutableLiveData
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.SavedStateHandle
 import com.example.domain.core.viewmodel.ComponentViewModel
 import com.example.domain.feature.LoadUserByName
 
@@ -13,18 +13,22 @@ class UserViewModel @ViewModelInject constructor(
     @Assisted private val savedStateHandle: SavedStateHandle
 ) : ComponentViewModel() {
 
-    private val _progress: BooleanMutableLiveData by lazy {
-        BooleanMutableLiveData(
-            false
+    private val _loading = MutableLiveData<Boolean>(
+        false
+    )
+    val loading: LiveData<Boolean> get() = _loading
+
+    fun loadUserByName() = loadUserByName(
+        LoadUserByName.Params(
+            savedStateHandle.getLiveData(QUERY)
         )
-    }
-    val progress: BooleanLiveData by lazy { _progress }
-
-    private val _query = MutableLiveData<String>()
-
-    fun loadUserByName() = loadUserByName(LoadUserByName.Params(_query))
+    )
 
     fun searchByUserName(query: String) {
-        _query.value = query
+        savedStateHandle.set(QUERY, query)
+    }
+
+    companion object {
+        const val QUERY = "query"
     }
 }

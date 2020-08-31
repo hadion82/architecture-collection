@@ -1,11 +1,15 @@
 package com.example.data.datasource.remote
 
+import com.example.data.api.EncapsulationGithubApi
 import com.example.data.api.GithubApi
+import javax.inject.Inject
 
-internal class UserRemoteDataSourceImpl (
-    private val service: GithubApi
+internal class UserRemoteDataSourceImpl @Inject constructor(
+    encapsulation: EncapsulationGithubApi
 ): UserRemoteDataSource {
 
-    override suspend fun searchUser(keyword: String)
-            = service.searchUser(keyword)
+    private val service: GithubApi = encapsulation()
+
+    override suspend fun searchUser(query: String)
+            = service.searchUser(query)
 }

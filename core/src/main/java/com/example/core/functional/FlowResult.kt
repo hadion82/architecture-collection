@@ -28,6 +28,16 @@ fun <T, F> FlowResult<T, F>.subscribe(onResult: (T) -> Any, onFailure: (F) -> An
         }
     }
 
+fun <T, F> FlowResult<T, F>.subscribe(
+    onResult: (T) -> Any,
+    onFailure: (F) -> Any,
+    onLoading: () -> Any): Any =
+    when (this) {
+        is FlowResult.Success -> onResult(value)
+        is FlowResult.Failure -> onFailure(failure)
+        is FlowResult.Loading -> onLoading()
+    }
+
 fun <T, F> FlowResult<T, F>.subscribe(onResult: (T?, F?) -> Any): Any =
     when (this) {
         is FlowResult.Success -> onResult(value, null)

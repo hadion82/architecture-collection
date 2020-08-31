@@ -12,15 +12,22 @@ import com.example.core.functional.onFailure
 import com.example.core.functional.onSuccess
 import com.example.data.core.NetworkFailure
 import com.example.data.datasource.local.UserLocalDataSource
+import com.example.data.datasource.local.UserLocalDataSourceImpl
 import com.example.data.datasource.remote.UserRemoteDataSource
+import com.example.data.datasource.remote.UserRemoteDataSourceImpl
 import com.example.data.entity.UserEntity
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
+import javax.inject.Inject
 
-internal class UserRepositoryImpl(
-    private val localDataSource: UserLocalDataSource,
-    private val remoteDataSource: UserRemoteDataSource
+class UserRepositoryImpl @Inject internal constructor(
+    localDataSourceImpl: UserLocalDataSourceImpl,
+    remoteDataSourceImpl: UserRemoteDataSourceImpl
 ) : UserRepository {
+
+    private val localDataSource: UserLocalDataSource = localDataSourceImpl
+
+    private val remoteDataSource: UserRemoteDataSource = remoteDataSourceImpl
 
     override fun observeUsers(keyword: String): LiveData<FlowResult<List<UserEntity>, NetworkFailure>> = liveData {
         emitSource(
@@ -41,7 +48,7 @@ internal class UserRepositoryImpl(
                     FlowResult.Success(
                         Pager(
                             config = PagingConfig(
-                                pageSize = 20,
+                                pageSize = 10,
                                 enablePlaceholders = false,
                                 prefetchDistance = 10
                             ),

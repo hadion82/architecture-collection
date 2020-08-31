@@ -11,37 +11,8 @@ import retrofit2.http.GET
 import retrofit2.http.Query
 import java.util.concurrent.TimeUnit
 
-interface GithubApi {
+internal interface GithubApi {
 
     @GET("/search/users")
-    suspend fun searchUser(@Query(value = "q") keyword: String): GithubResponse<UserEntity>
-
-    companion object {
-
-        private fun createOkHttpClient() =
-            OkHttpClient.Builder().apply {
-                readTimeout(10, TimeUnit.SECONDS)
-                writeTimeout(10, TimeUnit.SECONDS)
-                connectTimeout(10, TimeUnit.SECONDS)
-                retryOnConnectionFailure(true)
-                addInterceptor(
-                    HttpLoggingInterceptor()
-                        .setLevel(HttpLoggingInterceptor.Level.BODY)
-                )
-            }.build()
-
-        private fun createGitHubRetrofit(okHttpClient: OkHttpClient): Retrofit =
-            Retrofit.Builder()
-                .baseUrl("https://api.github.com")
-                .addConverterFactory(GsonConverterFactory.create())
-                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
-                .client(okHttpClient)
-                .build()
-
-        fun create(): GithubApi =
-            createGitHubRetrofit(
-                createOkHttpClient()
-            ).create(GithubApi::class.java)
-    }
-
+    suspend fun searchUser(@Query(value = "q") query: String): GithubResponse<UserEntity>
 }
