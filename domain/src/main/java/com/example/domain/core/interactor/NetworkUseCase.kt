@@ -15,8 +15,8 @@
  */
 package com.example.domain.core.interactor
 
-import com.example.data.core.NetworkFailure
+import com.example.data.core.Failure
 import com.example.core.interactor.UseCase
 
 abstract class NetworkUseCase<out T: Any, in P> :
-    UseCase<T, NetworkFailure, P>()
+    UseCase<T, Failure, P>()

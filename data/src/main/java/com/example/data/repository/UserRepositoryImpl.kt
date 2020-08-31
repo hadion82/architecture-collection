@@ -1,18 +1,14 @@
 package com.example.data.repository
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.liveData
-import androidx.lifecycle.map
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import com.example.core.functional.FlowResult
-import com.example.core.functional.flowResult
-import com.example.core.functional.onFailure
-import com.example.core.functional.onSuccess
-import com.example.data.core.NetworkFailure
+import com.example.data.core.Failure
 import com.example.data.datasource.local.UserLocalDataSource
 import com.example.data.datasource.local.UserLocalDataSourceImpl
+import com.example.data.datasource.local.query.QueryLocalDataSource
+import com.example.data.datasource.local.query.QueryLocalDataSourceImpl
 import com.example.data.datasource.remote.UserRemoteDataSource
 import com.example.data.datasource.remote.UserRemoteDataSourceImpl
 import com.example.data.entity.UserEntity
@@ -21,26 +17,18 @@ import kotlinx.coroutines.flow.flow
 import javax.inject.Inject
 
 class UserRepositoryImpl @Inject internal constructor(
-    localDataSourceImpl: UserLocalDataSourceImpl,
+    queryDataSourceImpl: QueryLocalDataSourceImpl,
+    userDataSourceImpl: UserLocalDataSourceImpl,
     remoteDataSourceImpl: UserRemoteDataSourceImpl
 ) : UserRepository {
 
-    private val localDataSource: UserLocalDataSource = localDataSourceImpl
+    private val queryDataSource: QueryLocalDataSource = queryDataSourceImpl
+
+    private val userDataSource: UserLocalDataSource = userDataSourceImpl
 
     private val remoteDataSource: UserRemoteDataSource = remoteDataSourceImpl
 
-    override fun observeUsers(keyword: String): LiveData<FlowResult<List<UserEntity>, NetworkFailure>> = liveData {
-        emitSource(
-            localDataSource.observeUsers(keyword)
-                .map { FlowResult.Success(it) }
-        )
-        val result = flowResult { remoteDataSource.searchUser(keyword) }
-        result.onSuccess { localDataSource.insert(it.items) }
-    }
-
-    override suspend fun searchUser(keyword: String) = remoteDataSource.searchUser(keyword)
-
-    override fun loadUsers(keyword: String): Flow<FlowResult<Flow<PagingData<UserEntity>>, NetworkFailure.Exception>> =
+    override fun loadUsers(query: String): Flow<FlowResult<Flow<PagingData<UserEntity>>, Failure>> =
         flow {
             try {
                 emit(FlowResult.Loading)
@@ -52,17 +40,24 @@ class UserRepositoryImpl @Inject internal constructor(
                                 enablePlaceholders = false,
                                 prefetchDistance = 10
                             ),
-                            pagingSourceFactory = { localDataSource.loadUsers(keyword) }
+
+                            remoteMediator = UserRemoteMediator(
+                                queryDataSource = queryDataSource,
+                                userDataSource = userDataSource,
+                                remoteDataSource = remoteDataSource,
+                                query = query
+                            ),
+
+                            pagingSourceFactory = {
+                                userDataSource.loadUsers(query)
+                            }
                         ).flow
                     )
                 )
-                val result = flowResult { remoteDataSource.searchUser(keyword) }
-                result.onSuccess { localDataSource.insert(it.items) }
-                    .onFailure { emit(FlowResult.Failure(NetworkFailure.Exception(it))) }
 
             } catch (e: Exception) {
                 emit(
-                    FlowResult.Failure(NetworkFailure.Exception(e))
+                    FlowResult.Failure(Failure.Exception(e))
                 )
             }
         }

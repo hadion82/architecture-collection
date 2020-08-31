@@ -25,10 +25,9 @@ class UserViewHolder internal constructor(
     private val _avatarUrl: MutableLiveData<String?>  = MutableLiveData()
     val avatarUrl: LiveData<String?> get() = _avatarUrl
 
-    var item: UserEntity? = null
+    private var item: UserEntity? = null
 
     init {
-        Timber.d("create view holder")
         throttle.throttleClick(
             binding.root, 500
         ) {
@@ -37,7 +36,6 @@ class UserViewHolder internal constructor(
     }
 
     fun onBindViewHolder(item: UserEntity?) {
-        Timber.d("onBindViewHolder item: $item")
         binding.itemModel = this
         this.item = item
         _userName.value = item?.name
@@ -45,7 +43,6 @@ class UserViewHolder internal constructor(
     }
 
     fun onBindViewHolder(payload: Payload) {
-        Timber.d("onBindViewHolder payload: $payload")
         payload.name?.let { _userName.value = it }
         payload.url?.let { _avatarUrl.value = it }
     }

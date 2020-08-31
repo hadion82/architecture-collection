@@ -5,15 +5,19 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import com.example.data.dao.UserDao
+import com.example.data.dao.QueryDao
+import com.example.data.entity.QueryEntity
 import com.example.data.entity.UserEntity
 
 @Database(
-    entities = [UserEntity::class],
+    entities = [UserEntity::class, QueryEntity::class],
     version = 1
 )
 abstract class LocalDataBase : RoomDatabase() {
 
     internal abstract fun getUserDao(): UserDao
+
+    internal abstract fun getQueryDao(): QueryDao
 
     companion object {
 

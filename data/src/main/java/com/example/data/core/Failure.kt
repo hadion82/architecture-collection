@@ -1,16 +1,16 @@
 package com.example.data.core
 
-sealed class NetworkFailure {
+sealed class Failure {
 
-    object ConnectionError : NetworkFailure()
+    object ConnectionError : Failure()
 
     data class ServerError(
         val status: Int,
         val errorCode: Int,
         val errorMessage: String?
-    ) : NetworkFailure()
+    ) : Failure()
 
     data class Exception(
         val exception: java.lang.Exception
-    ): NetworkFailure()
+    ): Failure()
 }

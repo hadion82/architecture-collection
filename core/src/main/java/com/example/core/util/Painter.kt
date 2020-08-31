@@ -47,7 +47,6 @@ object Painter {
 
     private fun circle(context: Context, url: String?, size: Float) =
         url?.run {
-            Timber.d("circle url -> $url")
             try {
                 Glide.with(context)
                     .asBitmap()
@@ -78,7 +77,6 @@ object Painter {
 
     private fun circle(context: Context, url: String?, @DrawableRes resId: Int, size: Float) =
         url?.run {
-            Timber.d("circle url -> $url")
             try {
                 Glide.with(context)
                     .asBitmap()

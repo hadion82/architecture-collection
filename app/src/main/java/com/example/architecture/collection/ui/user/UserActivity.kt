@@ -14,7 +14,7 @@ import com.example.core.extensions.launch
 import com.example.core.extensions.pixel
 import com.example.core.functional.subscribe
 import com.example.core.ui.activity.ComponentActivity
-import com.example.data.core.NetworkFailure
+import com.example.data.core.Failure
 import com.example.data.entity.UserEntity
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Dispatchers
@@ -79,12 +79,12 @@ class UserActivity : ComponentActivity<ActivityUserBinding>(), SearchView.OnQuer
     }
 
     @SuppressLint("ShowToast")
-    private fun onFailure(failure: NetworkFailure) = launch {
+    private fun onFailure(failure: Failure) = launch {
         Toast.makeText(
             this, when (failure) {
-                is NetworkFailure.ConnectionError -> "Network not connected"
-                is NetworkFailure.ServerError -> failure.errorMessage
-                is NetworkFailure.Exception -> failure.exception.message
+                is Failure.ConnectionError -> "Network not connected"
+                is Failure.ServerError -> failure.errorMessage
+                is Failure.Exception -> failure.exception.message
             }, Toast.LENGTH_LONG
         ).show()
     }

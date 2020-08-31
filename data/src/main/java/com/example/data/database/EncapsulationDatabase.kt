@@ -1,5 +1,6 @@
 package com.example.data.database
 
+import com.example.data.dao.QueryDao
 import com.example.data.dao.UserDao
 import javax.inject.Inject
 
@@ -14,4 +15,6 @@ internal class EncapsulationDatabase @Inject constructor(
     private val database: LocalDataBase
 ){
     fun getUserDao(): UserDao = database.getUserDao()
+
+    fun getQueryDao(): QueryDao = database.getQueryDao()
 }

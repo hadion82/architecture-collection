@@ -16,7 +16,7 @@ internal interface UserDao: BaseDao<UserEntity> {
     @Query("SELECT * FROM users WHERE user_name LIKE :query")
     fun observeUser(query: String): LiveData<List<UserEntity>>
 
-//    @Query("SELECT * FROM users WHERE user_name LIKE :query ORDER BY id ASC")
+//    @Query("SELECT * FROM users WHERE user_name LIKE :query ORDER BY id DESC")
     @Query("SELECT * FROM users WHERE user_name LIKE :query")
     fun loadUsers(query: String): PagingSource<Int, UserEntity>
 }
