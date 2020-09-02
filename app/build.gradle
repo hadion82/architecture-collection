@@ -108,6 +108,9 @@ dependencies {
     implementation "androidx.room:room-guava:$room_version"
     testImplementation "androidx.room:room-testing:$room_version"
 
+    def startup_version = "1.0.0-alpha03"
+    implementation "androidx.startup:startup-runtime:$startup_version"
+
     implementation project(':domain')
     implementation project(':data')
     implementation project(':core')

@@ -155,24 +155,6 @@ class InnerDividerItemDecoration: RecyclerView.ItemDecoration {
         }
     }
 
-
-
-   /* override fun getItemOffsets(outRect: Rect, view: View, parent: RecyclerView, state: RecyclerView.State) {
-        parent.adapter?.let {
-
-            Logger.d("getChildAdapterPosition -> ${parent.getChildAdapterPosition(view)}")
-            Logger.d("itemCount -> ${it.itemCount - 1}")
-            if(parent.getChildAdapterPosition(view) != it.itemCount - 1) {
-//                outRect.set(1, 0, parent.width - 1, 1)
-                Logger.d("getItemOffsets")
-                super.getItemOffsets(outRect, view, parent, state)
-            } else {
-                Logger.d("empty getItemOffsets")
-                outRect.setEmpty()
-            }
-        }
-    }*/
-
     companion object {
         val HORIZONTAL = LinearLayout.HORIZONTAL
         val VERTICAL = LinearLayout.VERTICAL

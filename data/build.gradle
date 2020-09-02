@@ -83,5 +83,8 @@ dependencies {
     implementation "androidx.paging:paging-rxjava2:$paging_version"
     implementation "androidx.paging:paging-guava:$paging_version"
 
+    def startup_version = "1.0.0-alpha03"
+    implementation "androidx.startup:startup-runtime:$startup_version"
+
     implementation project(':core')
 }

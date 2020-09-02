@@ -1,14 +1,12 @@
 package com.example.data.datasource.local.query
 
 import com.example.data.dao.QueryDao
-import com.example.data.dao.UserDao
-import com.example.data.database.EncapsulationDatabase
+import com.example.data.database.InternalDatabase
 import com.example.data.entity.QueryEntity
-import com.example.data.entity.UserEntity
 import javax.inject.Inject
 
 internal class QueryLocalDataSourceImpl @Inject constructor(
-    database: EncapsulationDatabase
+    database: InternalDatabase
 ) : QueryLocalDataSource {
 
     private val dao: QueryDao = database.getQueryDao()

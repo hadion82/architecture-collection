@@ -6,7 +6,7 @@ import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
 import javax.inject.Inject
 
-internal class EncapsulationGithubRetrofit @Inject constructor(
+internal class InternalGithubRetrofit @Inject constructor(
     @GitApiOkHttpClient private val okHttpClient: OkHttpClient
 ) {
     operator fun invoke(): Retrofit = Retrofit.Builder()

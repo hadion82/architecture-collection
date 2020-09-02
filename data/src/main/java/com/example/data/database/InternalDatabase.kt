@@ -11,7 +11,7 @@ import javax.inject.Inject
  * A passageway for receiving and internally using open-dependent objects.
  */
 
-internal class EncapsulationDatabase @Inject constructor(
+internal class InternalDatabase @Inject constructor(
     private val database: LocalDataBase
 ){
     fun getUserDao(): UserDao = database.getUserDao()
