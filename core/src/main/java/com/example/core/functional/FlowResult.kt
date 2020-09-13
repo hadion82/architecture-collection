@@ -8,6 +8,7 @@ sealed class FlowResult<out T, out F> {
 
     val isSuccess get() = this is Success<T>
     val isFailure get() = this is Failure<F>
+    val isLoading get() = this is Loading
 
     override fun toString(): String {
         return when (this) {

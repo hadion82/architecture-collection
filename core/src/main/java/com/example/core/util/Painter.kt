@@ -8,7 +8,6 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.load.model.GlideUrl
 import com.example.core.extensions.pixel
-import timber.log.Timber
 import java.lang.Exception
 
 object Painter {
@@ -23,9 +22,7 @@ object Painter {
 
     private fun create(context: Context, @DrawableRes resId: Int) =
         try {
-            Glide.with(context)
-                .asBitmap()
-                .diskCacheStrategy(DiskCacheStrategy.ALL)
+            defaultGlide(context)
                 .load(resId)
                 .submit().get()
         } catch (e: Exception) {
@@ -35,10 +32,8 @@ object Painter {
 
     private fun create(context: Context, @DrawableRes resId: Int, width: Float, height: Float) =
         try {
-            Glide.with(context)
-                .asBitmap()
+            defaultGlide(context)
                 .load(resId)
-                .diskCacheStrategy(DiskCacheStrategy.ALL)
                 .submit().get()
         } catch (e: Exception) {
             Glide.get(context).clearDiskCache()
@@ -48,12 +43,8 @@ object Painter {
     private fun circle(context: Context, url: String?, size: Float) =
         url?.run {
             try {
-                Glide.with(context)
-                    .asBitmap()
+                circleGlide(context, size.pixel)
                     .load(this)
-                    .diskCacheStrategy(DiskCacheStrategy.ALL)
-                    .override(size.pixel)
-                    .circleCrop()
                     .submit().get()
             } catch (e: Exception) {
                 Glide.get(context).clearDiskCache()
@@ -63,12 +54,8 @@ object Painter {
 
     private fun circle(context: Context, url: GlideUrl, size: Float) =
         try {
-            Glide.with(context)
-                .asBitmap()
+            circleGlide(context, size.pixel)
                 .load(url)
-                .diskCacheStrategy(DiskCacheStrategy.ALL)
-                .override(size.pixel)
-                .circleCrop()
                 .submit().get()
         } catch (e: Exception) {
             Glide.get(context).clearDiskCache()
@@ -78,13 +65,9 @@ object Painter {
     private fun circle(context: Context, url: String?, @DrawableRes resId: Int, size: Float) =
         url?.run {
             try {
-                Glide.with(context)
-                    .asBitmap()
+                circleGlide(context, size.pixel)
                     .error(resId)
                     .load(this)
-                    .diskCacheStrategy(DiskCacheStrategy.ALL)
-                    .override(size.pixel)
-                    .circleCrop()
                     .submit().get()
             } catch (e: Exception) {
                 Glide.get(context).clearDiskCache()
@@ -94,23 +77,22 @@ object Painter {
 
     private fun circle(context: Context, url: GlideUrl, @DrawableRes resId: Int, size: Float) =
         try {
-            Glide.with(context)
-                .asBitmap()
+            circleGlide(context, size.pixel)
                 .error(resId)
                 .load(url)
-                .diskCacheStrategy(DiskCacheStrategy.ALL)
-                .override(size.pixel)
-                .circleCrop()
                 .submit().get()
         } catch (e: Exception) {
             Glide.get(context).clearDiskCache()
             null
         }
 
-    private fun scaled(context: Context, @DrawableRes resId: Int, width: Float, height: Float): Bitmap? {
-        return Glide.with(context)
-            .asBitmap()
-            .diskCacheStrategy(DiskCacheStrategy.ALL)
+    private fun scaled(
+        context: Context,
+        @DrawableRes resId: Int,
+        width: Float,
+        height: Float
+    ): Bitmap? {
+        return defaultGlide(context)
             .load(resId)
             .override(width.pixel, height.pixel)
             .submit().get()
@@ -122,9 +104,7 @@ object Painter {
     private fun scaled(context: Context, url: String?, width: Float, height: Float) =
         url?.run {
             try {
-                Glide.with(context)
-                    .asBitmap()
-                    .diskCacheStrategy(DiskCacheStrategy.ALL)
+                defaultGlide(context)
                     .load(this)
                     .override(width.pixel, height.pixel)
                     .submit().get()
@@ -135,9 +115,7 @@ object Painter {
 
     private fun scaled(context: Context, url: GlideUrl, width: Float, height: Float) =
         try {
-            Glide.with(context)
-                .asBitmap()
-                .diskCacheStrategy(DiskCacheStrategy.ALL)
+            defaultGlide(context)
                 .load(url)
                 .override(width.pixel, height.pixel)
                 .submit().get()
@@ -148,10 +126,8 @@ object Painter {
     private fun crop(context: Context, url: String?, width: Float, height: Float) =
         url?.run {
             try {
-                Glide.with(context)
-                    .asBitmap()
+                defaultGlide(context)
                     .centerCrop()
-                    .diskCacheStrategy(DiskCacheStrategy.ALL)
                     .load(this)
                     .override(width.pixel, height.pixel)
                     .submit().get()
@@ -163,10 +139,8 @@ object Painter {
     private fun crop(context: Context, url: GlideUrl?, width: Float, height: Float) =
         try {
             url?.run {
-                Glide.with(context)
-                    .asBitmap()
+                defaultGlide(context)
                     .centerCrop()
-                    .diskCacheStrategy(DiskCacheStrategy.ALL)
                     .load(this)
                     .override(width.pixel, height.pixel)
                     .submit().get()
@@ -187,6 +161,12 @@ object Painter {
 
     fun overlay(context: Context) =
         Source(context)
+
+    private fun defaultGlide(context: Context) = Glide.with(context)
+        .asBitmap().diskCacheStrategy(DiskCacheStrategy.ALL)
+
+    private fun circleGlide(context: Context, size: Int) =
+        defaultGlide(context).override(size).circleCrop()
 
     class Source(
         private val context: Context

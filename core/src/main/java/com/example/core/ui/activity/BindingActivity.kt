@@ -33,7 +33,5 @@ abstract class BindingActivity<DB : ViewDataBinding> :
 
     abstract fun layout(): Int
 
-    open fun onBind(savedInstanceState: Bundle?, binding: DB) {
-
-    }
+    open fun onBind(savedInstanceState: Bundle?, binding: DB) {}
 }

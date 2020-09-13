@@ -12,13 +12,20 @@
         android:theme="@style/AppTheme"
         android:name=".collection.AndroidApplication">
         <activity android:name=".collection.ui.user.UserActivity"
-            tools:ignore="Instantiatable">
+            tools:ignore="Instantiatable"
+            android:configChanges="orientation|screenSize|screenLayout|keyboardHidden">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <meta-data
+            android:name="android.supports_size_changes" android:value="true" />
+
+        <meta-data
+            android:name="android.allow_multiple_resumed_activities" android:value="true" />
 
         <provider
             android:name="androidx.startup.InitializationProvider"

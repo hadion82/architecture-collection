@@ -1,5 +1,6 @@
 package com.example.core.ui.adapter
 
+import android.annotation.SuppressLint
 import android.view.MotionEvent
 import androidx.databinding.ViewDataBinding
 import androidx.recyclerview.widget.ItemTouchHelper
@@ -7,6 +8,7 @@ import java.util.*
 
 abstract class DragBindingAdapter<E, B : ViewDataBinding>(private val helper : ItemTouchHelper, br : Int) : BindingAdapter<E, B>(br) {
 
+    @SuppressLint("ClickableViewAccessibility")
     override fun onBindViewHolder(holder: ViewHolder<E, B>, position: Int) {
         super.onBindViewHolder(holder, position)
         holder.itemView.setOnTouchListener{

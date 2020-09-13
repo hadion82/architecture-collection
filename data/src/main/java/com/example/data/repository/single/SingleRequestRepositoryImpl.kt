@@ -38,7 +38,7 @@ class SingleRequestRepositoryImpl @Inject internal constructor(
                         FlowResult.Success(
                             Pager(
                                 config = PagingConfig(
-                                    pageSize = 10,
+                                    pageSize = 30,
                                     enablePlaceholders = false,
                                     prefetchDistance = 10
                                 ),

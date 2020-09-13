@@ -105,4 +105,8 @@ dependencies {
     implementation "androidx.room:room-guava:$room_version"
     testImplementation "androidx.room:room-testing:$room_version"
 
+    def window_version = "1.0.0-alpha01"
+    implementation "androidx.window:window:$window_version"
+    implementation "androidx.window:window-extensions:$window_version"
+
 }

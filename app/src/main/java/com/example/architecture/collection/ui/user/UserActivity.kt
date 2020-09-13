@@ -4,14 +4,22 @@ import android.annotation.SuppressLint
 import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.widget.SearchView
+import androidx.core.view.animation.PathInterpolatorCompat
 import androidx.paging.PagingData
 import androidx.recyclerview.widget.DefaultItemAnimator
+import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.transition.*
+import androidx.window.DeviceState
+import androidx.window.DeviceState.*
+import androidx.window.WindowManager
 import com.bumptech.glide.integration.recyclerview.RecyclerViewPreloader
 import com.bumptech.glide.util.FixedPreloadSizeProvider
 import com.example.architecture.R
 import com.example.architecture.databinding.ActivityUserBinding
 import com.example.core.extensions.launch
 import com.example.core.extensions.pixel
+import com.example.core.extensions.viewModel
 import com.example.core.functional.subscribe
 import com.example.core.ui.activity.ComponentActivity
 import com.example.data.core.Failure
@@ -75,7 +83,6 @@ class UserActivity : ComponentActivity<ActivityUserBinding>(), SearchView.OnQuer
         pagingDataFlow.collectLatest { data ->
             (binding.userList.adapter as UserAdapter).submitData(data)
         }
-
     }
 
     @SuppressLint("ShowToast")
