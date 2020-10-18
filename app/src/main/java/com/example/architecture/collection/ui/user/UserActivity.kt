@@ -3,23 +3,18 @@ package com.example.architecture.collection.ui.user
 import android.annotation.SuppressLint
 import android.os.Bundle
 import android.widget.Toast
+import androidx.activity.viewModels
 import androidx.appcompat.widget.SearchView
-import androidx.core.view.animation.PathInterpolatorCompat
 import androidx.paging.PagingData
 import androidx.recyclerview.widget.DefaultItemAnimator
-import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.transition.*
-import androidx.window.DeviceState
 import androidx.window.DeviceState.*
-import androidx.window.WindowManager
 import com.bumptech.glide.integration.recyclerview.RecyclerViewPreloader
 import com.bumptech.glide.util.FixedPreloadSizeProvider
 import com.example.architecture.R
+import com.example.data.prefs.Common
 import com.example.architecture.databinding.ActivityUserBinding
 import com.example.core.extensions.launch
 import com.example.core.extensions.pixel
-import com.example.core.extensions.viewModel
 import com.example.core.functional.subscribe
 import com.example.core.ui.activity.ComponentActivity
 import com.example.data.core.Failure
@@ -29,14 +24,20 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.collectLatest
 import timber.log.Timber
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class UserActivity : ComponentActivity<ActivityUserBinding>(), SearchView.OnQueryTextListener {
+
+    @Inject lateinit var prefs: Common
+
+    private val viewModel by viewModels<UserViewModel>()
 
     override fun layout(): Int =
         R.layout.activity_user
 
     override fun onBind(savedInstanceState: Bundle?, binding: ActivityUserBinding) {
+        binding.model = viewModel
 
         val adapter = UserAdapter(this, this) {
             Timber.d("click")
@@ -66,7 +67,7 @@ class UserActivity : ComponentActivity<ActivityUserBinding>(), SearchView.OnQuer
 
     override fun onQueryTextSubmit(query: String?): Boolean {
         query?.let {
-            binding.model?.searchByUserName(query)
+            viewModel.searchByUserName(query)
         }
         return false
     }
@@ -74,7 +75,7 @@ class UserActivity : ComponentActivity<ActivityUserBinding>(), SearchView.OnQuer
     override fun onQueryTextChange(newText: String?): Boolean = true
 
     private fun collectUsers() = launch(Dispatchers.IO) {
-        binding.model?.loadUserByName()?.collectLatest {
+        viewModel.loadUserByName().collectLatest {
             it.subscribe(this::onSuccess, this::onFailure)
         }
     }

@@ -21,7 +21,6 @@ abstract class BindingActivity<DB : ViewDataBinding> :
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, layout())
-        binding.viewModel(this)
         onBind(savedInstanceState, binding)
     }
 

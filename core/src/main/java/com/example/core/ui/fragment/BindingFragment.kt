@@ -29,7 +29,6 @@ abstract class BindingFragment<DB : ViewDataBinding>: DisposableFragment(), Thro
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         binding.lifecycleOwner = this
-        binding.viewModel(this)
         onBind(binding, created)
         created = false
     }
