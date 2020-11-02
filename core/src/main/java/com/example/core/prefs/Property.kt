@@ -31,15 +31,13 @@ class StringProperty(
     private val defValue: String? = null,
     apply: Boolean = false
 ) : BaseProperty<String?>(prefs, apply) {
-    override fun getValue(thisRef: Any, property: KProperty<*>): String? {
-        return prefs.getString(getKey(property.name), defValue)
-    }
+    override fun getValue(thisRef: Any, property: KProperty<*>): String? =
+        prefs.getString(getKey(property.name), defValue)
 
-    override fun setValue(thisRef: Any, property: KProperty<*>, value: String?) {
+    override fun setValue(thisRef: Any, property: KProperty<*>, value: String?) =
         prefs.edit(apply) {
             putString(getKey(property.name), value)
         }
-    }
 }
 
 class IntProperty(
@@ -48,15 +46,13 @@ class IntProperty(
     apply: Boolean = false
 ) : BaseProperty<Int>(prefs, apply) {
 
-    override fun getValue(thisRef: Any, property: KProperty<*>): Int {
-        return prefs.getInt(getKey(property.name), defValue)
-    }
+    override fun getValue(thisRef: Any, property: KProperty<*>): Int =
+        prefs.getInt(getKey(property.name), defValue)
 
-    override fun setValue(thisRef: Any, property: KProperty<*>, value: Int) {
+    override fun setValue(thisRef: Any, property: KProperty<*>, value: Int) =
         prefs.edit(apply) {
             putInt(getKey(property.name), value)
         }
-    }
 }
 
 class LongProperty(
@@ -65,15 +61,13 @@ class LongProperty(
     apply: Boolean = false
 ) : BaseProperty<Long>(prefs, apply) {
 
-    override fun getValue(thisRef: Any, property: KProperty<*>): Long {
-        return prefs.getLong(getKey(property.name), defValue)
-    }
+    override fun getValue(thisRef: Any, property: KProperty<*>): Long =
+        prefs.getLong(getKey(property.name), defValue)
 
-    override fun setValue(thisRef: Any, property: KProperty<*>, value: Long) {
+    override fun setValue(thisRef: Any, property: KProperty<*>, value: Long) =
         prefs.edit(apply) {
             putLong(getKey(property.name), value)
         }
-    }
 }
 
 class FloatProperty(
@@ -82,15 +76,13 @@ class FloatProperty(
     apply: Boolean = false
 ) : BaseProperty<Float>(prefs, apply) {
 
-    override fun getValue(thisRef: Any, property: KProperty<*>): Float {
-        return prefs.getFloat(getKey(property.name), defValue)
-    }
+    override fun getValue(thisRef: Any, property: KProperty<*>): Float =
+        prefs.getFloat(getKey(property.name), defValue)
 
-    override fun setValue(thisRef: Any, property: KProperty<*>, value: Float) {
+    override fun setValue(thisRef: Any, property: KProperty<*>, value: Float) =
         prefs.edit(apply) {
             putFloat(getKey(property.name), value)
         }
-    }
 }
 
 class DoubleProperty(
@@ -99,17 +91,15 @@ class DoubleProperty(
     apply: Boolean = false
 ) : BaseProperty<Double>(prefs, apply) {
 
-    override fun getValue(thisRef: Any, property: KProperty<*>): Double {
-        return Double.fromBits(
+    override fun getValue(thisRef: Any, property: KProperty<*>): Double =
+        Double.fromBits(
             prefs.getLong(getKey(property.name), defValue.toBits())
         )
-    }
 
-    override fun setValue(thisRef: Any, property: KProperty<*>, value: Double) {
+    override fun setValue(thisRef: Any, property: KProperty<*>, value: Double) =
         prefs.edit(apply) {
             putLong(getKey(property.name), value.toBits())
         }
-    }
 }
 
 
@@ -119,13 +109,11 @@ class BooleanProperty(
     apply: Boolean = false
 ) : BaseProperty<Boolean>(prefs, apply) {
 
-    override fun getValue(thisRef: Any, property: KProperty<*>): Boolean {
-        return prefs.getBoolean(getKey(property.name), defValue)
-    }
+    override fun getValue(thisRef: Any, property: KProperty<*>): Boolean =
+        prefs.getBoolean(getKey(property.name), defValue)
 
-    override fun setValue(thisRef: Any, property: KProperty<*>, value: Boolean) {
+    override fun setValue(thisRef: Any, property: KProperty<*>, value: Boolean) =
         prefs.edit(apply) {
             putBoolean(getKey(property.name), value)
         }
-    }
 }

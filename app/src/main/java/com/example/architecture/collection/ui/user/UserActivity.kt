@@ -29,8 +29,6 @@ import javax.inject.Inject
 @AndroidEntryPoint
 class UserActivity : ComponentActivity<ActivityUserBinding>(), SearchView.OnQueryTextListener {
 
-    @Inject lateinit var prefs: Common
-
     private val viewModel by viewModels<UserViewModel>()
 
     override fun layout(): Int =
