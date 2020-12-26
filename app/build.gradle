@@ -45,26 +45,41 @@ dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
     implementation 'androidx.appcompat:appcompat:1.2.0'
     implementation 'androidx.core:core-ktx:1.3.2'
-    implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
     testImplementation 'junit:junit:4.13'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
 
-    implementation libs.recyclerview
-//    implementation libs.room
-    kapt libs.room_kapt
-    implementation libs.dagger
-    kapt libs.dagger_kapt
+    def fragment_ktx_version = "1.2.5"
+    implementation "androidx.fragment:fragment-ktx:$fragment_ktx_version"
 
-    implementation libs.fragment
-    implementation libs.reflect
+    def constraintlayout_version = "2.0.4"
+    implementation "androidx.constraintlayout:constraintlayout:$constraintlayout_version"
+
+    def recyclerview_version = "1.2.0-beta01"
+    implementation "androidx.recyclerview:recyclerview:$recyclerview_version"
 
     def lifecycle_version = "2.2.0"
     implementation "androidx.lifecycle:lifecycle-extensions:$lifecycle_version"
     implementation "androidx.lifecycle:lifecycle-livedata-ktx:$lifecycle_version"
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycle_version"
-    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycle_version"
-    implementation "androidx.lifecycle:lifecycle-livedata-ktx:$lifecycle_version"
+
+    //room
+    def room_version = "2.3.0-alpha04"
+    implementation "androidx.room:room-runtime:$room_version"
+    implementation "androidx.room:room-ktx:$room_version"
+    implementation "androidx.room:room-rxjava2:$room_version"
+    implementation "androidx.room:room-guava:$room_version"
+    testImplementation "androidx.room:room-testing:$room_version"
+    def room_compile_version = "2.2.6"
+    kapt "androidx.room:room-compiler:$room_compile_version"
+
+    //dagger
+    def dagger_version = "2.26"
+    implementation "com.google.dagger:dagger-android:$dagger_version"
+    implementation "com.google.dagger:dagger-android-support:$dagger_version"
+
+    kapt "com.google.dagger:dagger-compiler:$dagger_version"
+    kapt "com.google.dagger:dagger-android-processor:$dagger_version"
 
     //dagger hilt
     def hilt_version = "2.28-alpha"
@@ -77,7 +92,7 @@ dependencies {
     annotationProcessor "androidx.hilt:hilt-compiler:$hilt_android_version"
 
     //paging
-    def paging_version = "3.0.0-alpha08"
+    def paging_version = "3.0.0-alpha05"
     implementation "androidx.paging:paging-runtime-ktx:$paging_version"
     implementation "androidx.paging:paging-rxjava2-ktx:$paging_version"
     implementation "androidx.paging:paging-guava:$paging_version"
@@ -91,8 +106,11 @@ dependencies {
     def retrofit_versions = "2.9.0"
     implementation "com.squareup.retrofit2:converter-gson:$retrofit_versions"
     implementation "com.squareup.retrofit2:retrofit:$retrofit_versions"
-    implementation "com.squareup.retrofit2:adapter-rxjava2:2.8.1"
+    def retrofit_adapter_version = "2.8.1"
+    implementation "com.squareup.retrofit2:adapter-rxjava2:$retrofit_adapter_version"
 
+    def reflect_version = "1.4.21"
+    implementation "org.jetbrains.kotlin:kotlin-reflect:$reflect_version"
 
     def stetho_version = "1.5.1"
     implementation "com.facebook.stetho:stetho:$stetho_version"
@@ -101,14 +119,6 @@ dependencies {
     def glide_version = "4.11.0"
     implementation "com.github.bumptech.glide:glide:$glide_version"
     api "com.github.bumptech.glide:recyclerview-integration:$glide_version"
-
-    //room
-    def room_version = "2.3.0-alpha03"
-    implementation "androidx.room:room-runtime:$room_version"
-    implementation "androidx.room:room-ktx:$room_version"
-    implementation "androidx.room:room-rxjava2:$room_version"
-    implementation "androidx.room:room-guava:$room_version"
-    testImplementation "androidx.room:room-testing:$room_version"
 
     def startup_version = "1.0.0"
     implementation "androidx.startup:startup-runtime:$startup_version"
