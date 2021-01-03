@@ -7,7 +7,7 @@ import com.example.core.functional.FlowResult
 import com.example.core.functional.flowResult
 import com.example.core.functional.onFailure
 import com.example.core.functional.onSuccess
-import com.example.data.core.Failure
+import com.example.data.core.NetworkFailure
 import com.example.data.datasource.local.UserLocalDataSource
 import com.example.data.datasource.local.UserLocalDataSourceImpl
 import com.example.data.datasource.remote.UserRemoteDataSource
@@ -27,7 +27,7 @@ class SingleRequestRepositoryImpl @Inject internal constructor(
 
     private val remoteDataSource: UserRemoteDataSource = remoteDataSourceImpl
 
-    override fun loadUsers(query: String): Flow<FlowResult<Flow<PagingData<UserEntity>>, Failure>> =
+    override fun loadUsers(query: String): Flow<FlowResult<Flow<PagingData<UserEntity>>, NetworkFailure>> =
         flow {
             try {
                 emit(FlowResult.Loading)
@@ -49,12 +49,12 @@ class SingleRequestRepositoryImpl @Inject internal constructor(
                         )
                     )
                 }.onFailure {
-                    emit(FlowResult.Failure(Failure.Exception(it)))
+                    emit(FlowResult.Failure(NetworkFailure.Exception(it)))
                 }
 
             } catch (e: Exception) {
                 emit(
-                    FlowResult.Failure(Failure.Exception(e))
+                    FlowResult.Failure(NetworkFailure.Exception(e))
                 )
             }
         }

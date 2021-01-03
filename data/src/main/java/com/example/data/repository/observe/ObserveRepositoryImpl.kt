@@ -6,7 +6,7 @@ import androidx.lifecycle.map
 import com.example.core.functional.FlowResult
 import com.example.core.functional.flowResult
 import com.example.core.functional.onSuccess
-import com.example.data.core.Failure
+import com.example.data.core.NetworkFailure
 import com.example.data.datasource.local.UserLocalDataSource
 import com.example.data.datasource.local.UserLocalDataSourceImpl
 import com.example.data.datasource.remote.UserRemoteDataSource
@@ -23,7 +23,7 @@ class ObserveRepositoryImpl @Inject internal constructor(
 
     private val remoteDataSource: UserRemoteDataSource = remoteDataSourceImpl
 
-    override fun observeUsers(query: String): LiveData<FlowResult<List<UserEntity>, Failure>> =
+    override fun observeUsers(query: String): LiveData<FlowResult<List<UserEntity>, NetworkFailure>> =
         liveData {
             emitSource(
                 localDataSource.observeUsers(query)

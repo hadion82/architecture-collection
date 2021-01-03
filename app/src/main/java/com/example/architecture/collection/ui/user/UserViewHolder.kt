@@ -3,49 +3,48 @@ package com.example.architecture.collection.ui.user
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
-import com.bumptech.glide.ListPreloader
-import com.bumptech.glide.RequestBuilder
-import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.example.data.entity.UserEntity
-import com.example.core.ui.listener.Throttle
 import com.example.architecture.databinding.ListItemUserBinding
-import timber.log.Timber
-import java.util.*
 
 class UserViewHolder internal constructor(
-    private val binding: ListItemUserBinding,
-    private val throttle: Throttle.ClickListener,
-    private val onClick: (item: UserEntity?) -> Unit
+    private val binding: ListItemUserBinding
 ) : RecyclerView.ViewHolder(binding.root) {
 
-    private val _userName: MutableLiveData<String?> = MutableLiveData()
-    val userName: LiveData<String?> get() = _userName
-
-    private val _avatarUrl: MutableLiveData<String?>  = MutableLiveData()
-    val avatarUrl: LiveData<String?> get() = _avatarUrl
+    val viewModel: ItemViewModel = ItemViewModel()
 
     private var item: UserEntity? = null
 
     init {
-        throttle.throttleClick(
-            binding.root, 500
-        ) {
-            onClick(item)
-        }
+        binding.itemModel = viewModel
     }
 
     fun onBindViewHolder(item: UserEntity?) {
-        binding.itemModel = this
         this.item = item
-        _userName.value = item?.name
-        _avatarUrl.value = item?.avatarUrl
+        binding.root.tag = item
+        viewModel.setUserName(item?.name)
+        viewModel.setAvatarUrl(item?.avatarUrl)
     }
 
     fun onBindViewHolder(payload: Payload) {
-        payload.name?.let { _userName.value = it }
-        payload.url?.let { _avatarUrl.value = it }
+        payload.name?.let { viewModel.setUserName(item?.name) }
+        payload.url?.let { viewModel.setAvatarUrl(item?.avatarUrl) }
     }
 
     data class Payload(val name: String?, val url: String?)
+
+    class ItemViewModel {
+        private val _userName: MutableLiveData<String?> = MutableLiveData()
+        val userName: LiveData<String?> get() = _userName
+
+        private val _avatarUrl: MutableLiveData<String?> = MutableLiveData()
+        val avatarUrl: LiveData<String?> get() = _avatarUrl
+
+        fun setUserName(name: String?) {
+            _userName.value = name
+        }
+
+        fun setAvatarUrl(url: String?) {
+            _avatarUrl.value = url
+        }
+    }
 }

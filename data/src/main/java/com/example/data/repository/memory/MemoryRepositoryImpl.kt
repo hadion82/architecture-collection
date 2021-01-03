@@ -4,7 +4,7 @@ import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import com.example.core.functional.FlowResult
-import com.example.data.core.Failure
+import com.example.data.core.NetworkFailure
 import com.example.data.datasource.remote.UserRemoteDataSource
 import com.example.data.datasource.remote.UserRemoteDataSourceImpl
 import com.example.data.entity.UserEntity
@@ -19,7 +19,7 @@ class MemoryRepositoryImpl @Inject internal constructor(
 
     private val remote: UserRemoteDataSource = remoteDataSourceImpl
 
-    override fun loadUsers(query: String): Flow<FlowResult<Flow<PagingData<UserEntity>>, Failure>> = flow {
+    override fun loadUsers(query: String): Flow<FlowResult<Flow<PagingData<UserEntity>>, NetworkFailure>> = flow {
         try {
             emit(FlowResult.Loading)
             emit(
@@ -42,7 +42,7 @@ class MemoryRepositoryImpl @Inject internal constructor(
 
         } catch (e: Exception) {
             emit(
-                FlowResult.Failure(Failure.Exception(e))
+                FlowResult.Failure(NetworkFailure.Exception(e))
             )
         }
     }

@@ -2,6 +2,7 @@ package com.example.architecture.collection.ui.user
 
 import android.content.Context
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
@@ -11,14 +12,16 @@ import com.bumptech.glide.RequestBuilder
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.example.architecture.R
 import com.example.architecture.databinding.ListItemUserBinding
-import com.example.core.ui.listener.Throttle
+import com.example.core.extensions.clicks
 import com.example.data.entity.UserEntity
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.FlowPreview
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flatMapMerge
 import java.util.*
 
 class UserAdapter(
-    private val context: Context,
-    private val throttle: Throttle.ClickListener,
-    private val onClick: (item: UserEntity?) -> Unit
+    private val clickFlow: Flow<View>
 ) :
     PagingDataAdapter<UserEntity, UserViewHolder>(
         UserDiffCallback()
@@ -42,14 +45,16 @@ class UserAdapter(
             if (oldValue != newValue) newValue else null
     }
 
+    @FlowPreview
+    @ExperimentalCoroutinesApi
     override fun onCreateViewHolder(
         parent: ViewGroup, viewType: Int
     ) = UserViewHolder(
         ListItemUserBinding.inflate(
             LayoutInflater.from(parent.context),
             parent, false
-        ), throttle, onClick
-    )
+        )
+    ).also { holder -> clickFlow.flatMapMerge { holder.itemView.clicks() } }
 
     override fun onBindViewHolder(holder: UserViewHolder, position: Int) =
         holder.onBindViewHolder(getItem(position))
@@ -59,13 +64,14 @@ class UserAdapter(
         position: Int,
         payloads: MutableList<Any>
     ) {
-        if(payloads.isNullOrEmpty())
+        if (payloads.isNullOrEmpty())
             super.onBindViewHolder(holder, position, payloads)
         else
             holder.onBindViewHolder(payloads[0] as UserViewHolder.Payload)
     }
 
-    inner class AvatarPreloadModelProvider: ListPreloader.PreloadModelProvider<UserEntity> {
+    inner class AvatarPreloadModelProvider(private val context: Context) :
+        ListPreloader.PreloadModelProvider<UserEntity> {
         override fun getPreloadItems(position: Int): MutableList<UserEntity> =
             Collections.singletonList(getItem(position))
 
@@ -77,6 +83,6 @@ class UserAdapter(
                 .diskCacheStrategy(DiskCacheStrategy.ALL)
     }
 
-    fun createPreLoader() : AvatarPreloadModelProvider =
-        AvatarPreloadModelProvider()
+    fun createPreLoader(context: Context): AvatarPreloadModelProvider =
+        AvatarPreloadModelProvider(context)
 }

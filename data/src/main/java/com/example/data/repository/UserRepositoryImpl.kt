@@ -4,7 +4,7 @@ import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import com.example.core.functional.FlowResult
-import com.example.data.core.Failure
+import com.example.data.core.NetworkFailure
 import com.example.data.datasource.local.UserLocalDataSource
 import com.example.data.datasource.local.UserLocalDataSourceImpl
 import com.example.data.datasource.local.query.QueryLocalDataSource
@@ -28,37 +28,23 @@ class UserRepositoryImpl @Inject internal constructor(
 
     private val remoteDataSource: UserRemoteDataSource = remoteDataSourceImpl
 
-    override fun loadUsers(query: String): Flow<FlowResult<Flow<PagingData<UserEntity>>, Failure>> =
-        flow {
-            try {
-                emit(FlowResult.Loading)
-                emit(
-                    FlowResult.Success(
-                        Pager(
-                            config = PagingConfig(
-                                pageSize = 30,
-                                enablePlaceholders = false,
-                                prefetchDistance = 10
-                            ),
+    override fun loadUsers(query: String): Flow<PagingData<UserEntity>> =
+        Pager(
+            config = PagingConfig(
+                pageSize = 30,
+                enablePlaceholders = false,
+                prefetchDistance = 10
+            ),
 
-                            remoteMediator = UserRemoteMediator(
-                                queryDataSource = queryDataSource,
-                                userDataSource = userDataSource,
-                                remoteDataSource = remoteDataSource,
-                                query = query
-                            ),
+            remoteMediator = UserRemoteMediator(
+                queryDataSource = queryDataSource,
+                userDataSource = userDataSource,
+                remoteDataSource = remoteDataSource,
+                query = query
+            ),
 
-                            pagingSourceFactory = {
-                                userDataSource.loadUsers(query)
-                            }
-                        ).flow
-                    )
-                )
-
-            } catch (e: Exception) {
-                emit(
-                    FlowResult.Failure(Failure.Exception(e))
-                )
+            pagingSourceFactory = {
+                userDataSource.loadUsers(query)
             }
-        }
+        ).flow
 }

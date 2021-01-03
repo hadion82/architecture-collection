@@ -6,7 +6,7 @@
 
         <variable
             name="itemModel"
-            type="com.example.architecture.collection.ui.user.UserViewHolder" />
+            type="com.example.architecture.collection.ui.user.UserViewHolder.ItemViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"

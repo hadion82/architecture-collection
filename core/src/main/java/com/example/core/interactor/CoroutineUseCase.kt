@@ -1,18 +1,24 @@
 package com.example.core.interactor
+
 import com.example.core.functional.FlowResult
 import kotlinx.coroutines.*
+import kotlin.Exception
 
-abstract class CoroutineUseCase<out T, out F, in P> where T : Any {
+abstract class CoroutineUseCase<in P, T>(
+    private val coroutineDispatcher: CoroutineDispatcher
+) where T : Any {
 
-    abstract suspend fun run(params: P): FlowResult<T, F>
+    abstract suspend fun execute(params: P): T
 
-    operator fun invoke(
-        params: P,
-        scope: CoroutineScope = GlobalScope,
-        onResult: (FlowResult<T, F>) -> Unit = {}) {
-        val job = scope.async(Dispatchers.IO) { run(params) }
-        scope.launch(Dispatchers.Main) {
-            onResult(job.await())
+    suspend operator fun invoke(
+        params: P
+    ) = try {
+        withContext(coroutineDispatcher) {
+            execute(params).let {
+                FlowResult.Success(it)
+            }
         }
+    } catch (e: Exception) {
+        FlowResult.Failure(e)
     }
 }
