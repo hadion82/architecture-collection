@@ -27,35 +27,18 @@ class SingleRequestRepositoryImpl @Inject internal constructor(
 
     private val remoteDataSource: UserRemoteDataSource = remoteDataSourceImpl
 
-    override fun loadUsers(query: String): Flow<FlowResult<Flow<PagingData<UserEntity>>, NetworkFailure>> =
-        flow {
-            try {
-                emit(FlowResult.Loading)
-                val result = flowResult { remoteDataSource.searchUser(query) }
-                result.onSuccess {
-                    localDataSource.insert(it.items)
-                    emit(
-                        FlowResult.Success(
-                            Pager(
-                                config = PagingConfig(
-                                    pageSize = 30,
-                                    enablePlaceholders = false,
-                                    prefetchDistance = 10
-                                ),
-                                pagingSourceFactory = {
-                                    localDataSource.loadUsers(query)
-                                }
-                            ).flow
-                        )
-                    )
-                }.onFailure {
-                    emit(FlowResult.Failure(NetworkFailure.Exception(it)))
-                }
-
-            } catch (e: Exception) {
-                emit(
-                    FlowResult.Failure(NetworkFailure.Exception(e))
-                )
+    override suspend fun loadUsers(query: String): Flow<PagingData<UserEntity>> {
+        val response = remoteDataSource.searchUser(query)
+        localDataSource.insert(response.items)
+        return Pager(
+            config = PagingConfig(
+                pageSize = 30,
+                enablePlaceholders = false,
+                prefetchDistance = 10
+            ),
+            pagingSourceFactory = {
+                localDataSource.loadUsers(query)
             }
-        }
+        ).flow
+    }
 }

@@ -11,12 +11,10 @@ import javax.inject.Inject
 
 class ObserveUsersByName @Inject constructor(
     private val repository: ObserveRepository
-): LiveUseCase<List<UserEntity>, NetworkFailure, ObserveUsersByName.Params>() {
+): LiveUseCase<ObserveUsersByName.Params, List<UserEntity>>() {
 
     @ExperimentalCoroutinesApi
-    override fun run(params: Params) = params.query.switchMap {
-        repository.observeUsers(it)
-    }
+    override fun execute(params: Params) = repository.observeUsers(params.query)
 
-    class Params(val query: MutableLiveData<String>)
+    class Params(val query: String)
 }

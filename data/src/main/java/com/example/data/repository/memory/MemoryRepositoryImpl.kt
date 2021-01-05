@@ -19,31 +19,18 @@ class MemoryRepositoryImpl @Inject internal constructor(
 
     private val remote: UserRemoteDataSource = remoteDataSourceImpl
 
-    override fun loadUsers(query: String): Flow<FlowResult<Flow<PagingData<UserEntity>>, NetworkFailure>> = flow {
-        try {
-            emit(FlowResult.Loading)
-            emit(
-                FlowResult.Success(
-                    Pager(
-                        config = PagingConfig(
-                            pageSize = 30,
-                            enablePlaceholders = false,
-                            prefetchDistance = 10
-                        ),
-                        pagingSourceFactory = {
-                            MemoryPagingSource(
-                                remote,
-                                query
-                            )
-                        }
-                    ).flow
+    override suspend fun loadUsers(query: String): Flow<PagingData<UserEntity>> =
+        Pager(
+            config = PagingConfig(
+                pageSize = 30,
+                enablePlaceholders = false,
+                prefetchDistance = 10
+            ),
+            pagingSourceFactory = {
+                MemoryPagingSource(
+                    remote,
+                    query
                 )
-            )
-
-        } catch (e: Exception) {
-            emit(
-                FlowResult.Failure(NetworkFailure.Exception(e))
-            )
-        }
-    }
+            }
+        ).flow
 }

@@ -28,7 +28,7 @@ class UserRepositoryImpl @Inject internal constructor(
 
     private val remoteDataSource: UserRemoteDataSource = remoteDataSourceImpl
 
-    override fun loadUsers(query: String): Flow<PagingData<UserEntity>> =
+    override suspend fun loadUsers(query: String): Flow<PagingData<UserEntity>> =
         Pager(
             config = PagingConfig(
                 pageSize = 30,

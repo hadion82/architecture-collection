@@ -7,5 +7,5 @@ import com.example.data.entity.UserEntity
 
 interface ObserveRepository {
 
-    fun observeUsers(query: String): LiveData<FlowResult<List<UserEntity>, NetworkFailure>>
+    fun observeUsers(query: String): LiveData<FlowResult<List<UserEntity>>>
 }

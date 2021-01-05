@@ -7,5 +7,5 @@ import kotlinx.coroutines.flow.Flow
 
 interface UserRepository {
 
-    fun loadUsers(query: String): Flow<PagingData<UserEntity>>
+    suspend fun loadUsers(query: String): Flow<PagingData<UserEntity>>
 }

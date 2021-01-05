@@ -24,17 +24,15 @@ import kotlinx.coroutines.flow.*
 import java.lang.Exception
 
 @AndroidEntryPoint
-class UserActivity : AppCompatActivity {
+class UserActivity : AppCompatActivity() {
 
+    @FlowPreview
+    @ExperimentalCoroutinesApi
     private val viewModel by viewModels<UserViewModel>()
-    private val binding by lazy(LazyThreadSafetyMode.NONE) {
-        ActivityUserBinding.inflate(
-            layoutInflater
-        )
-    }
+    private val binding by lazy { ActivityUserBinding.inflate(layoutInflater) }
 
     private val openUserDetailClickFlow: Flow<View>
-        get() = emptyFlow<View>()
+        get() = emptyFlow()
 
     private val openUserDetailIntent = openUserDetailClickFlow
         .map { v -> UserViewIntent.OpenUserDetailIntent(v.tag as Long) }
@@ -42,18 +40,22 @@ class UserActivity : AppCompatActivity {
     private val userAdapter = UserAdapter(openUserDetailClickFlow)
 
     @ExperimentalCoroutinesApi
-    private val queryChangedIntent: Flow<UserViewIntent.QueryChangedIntent>
-        get() = binding.search.textChanges()
+    private val queryChangedIntent: Flow<UserViewIntent.QueryChangedIntent> by lazy {
+        binding.search.textChanges()
             .map { query -> UserViewIntent.QueryChangedIntent(query?.toString() ?: "") }
+    }
 
     @ExperimentalCoroutinesApi
-    private val intents = merge(openUserDetailIntent, queryChangedIntent)
+    private val intents by lazy {
+        merge(openUserDetailIntent, queryChangedIntent)
+    }
 
     @FlowPreview
     @ExperimentalCoroutinesApi
     @InternalCoroutinesApi
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        setContentView(binding.root)
         val sizeProvider = FixedPreloadSizeProvider<UserEntity>(100.pixel, 100.pixel)
         val modelProvider = userAdapter.createPreLoader(this)
         val preLoader = RecyclerViewPreloader(

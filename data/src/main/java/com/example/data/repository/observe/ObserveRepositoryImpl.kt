@@ -23,14 +23,14 @@ class ObserveRepositoryImpl @Inject internal constructor(
 
     private val remoteDataSource: UserRemoteDataSource = remoteDataSourceImpl
 
-    override fun observeUsers(query: String): LiveData<FlowResult<List<UserEntity>, NetworkFailure>> =
+    override fun observeUsers(query: String): LiveData<FlowResult<List<UserEntity>>> =
         liveData {
             emitSource(
                 localDataSource.observeUsers(query)
                     .map { FlowResult.Success(it) }
             )
-            val result = flowResult { remoteDataSource.searchUser(query) }
-            result.onSuccess { localDataSource.insert(it.items) }
+            val response = remoteDataSource.searchUser(query)
+            localDataSource.insert(response.items)
         }
 
 }
