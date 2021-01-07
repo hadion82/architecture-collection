@@ -35,7 +35,7 @@ class UserAdapter(
             oldItem.name == newItem.name
                     && oldItem.avatarUrl == newItem.avatarUrl
 
-        override fun getChangePayload(oldItem: UserEntity, newItem: UserEntity): Any? =
+        override fun getChangePayload(oldItem: UserEntity, newItem: UserEntity): Any =
             UserViewHolder.Payload(
                 extractItem(oldItem.name, newItem.name),
                 extractItem(oldItem.avatarUrl, newItem.avatarUrl)
@@ -57,17 +57,17 @@ class UserAdapter(
     ).also { holder -> clickFlow.flatMapMerge { holder.itemView.clicks() } }
 
     override fun onBindViewHolder(holder: UserViewHolder, position: Int) =
-        holder.onBindViewHolder(getItem(position))
+        holder.bind(getItem(position))
 
     override fun onBindViewHolder(
         holder: UserViewHolder,
         position: Int,
         payloads: MutableList<Any>
     ) {
-        if (payloads.isNullOrEmpty())
+        if (payloads.isEmpty())
             super.onBindViewHolder(holder, position, payloads)
         else
-            holder.onBindViewHolder(payloads[0] as UserViewHolder.Payload)
+            holder.bind(payloads[0] as UserViewHolder.Payload)
     }
 
     inner class AvatarPreloadModelProvider(private val context: Context) :

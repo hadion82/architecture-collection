@@ -32,8 +32,8 @@ class UserViewModel @ViewModelInject constructor(
             _intentFlow.filterIsInstance<UserViewIntent.Initialize>().take(1),
             _intentFlow.filterNot { it is UserViewIntent.Initialize }
         )
-            .map(intentProcessor::to)
-            .flatMapMerge(transform = actionProcessor::to)
+            .map(intentProcessor::invoke)
+            .flatMapMerge(transform = actionProcessor::invoke)
             .scan(idleState) { state, action -> action.reduce(state) }
             .catch { Timber.d("UserViewModel Throwable : $it") }
             .stateIn(viewModelScope, SharingStarted.Eagerly, idleState)

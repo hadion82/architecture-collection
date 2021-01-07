@@ -6,6 +6,7 @@ import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.coroutineScope
+import androidx.lifecycle.lifecycleScope
 import androidx.paging.PagingData
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.window.DeviceState.*
@@ -14,17 +15,17 @@ import com.bumptech.glide.util.FixedPreloadSizeProvider
 import com.example.architecture.databinding.ActivityUserBinding
 import com.example.core.extensions.launchWhenStartedUntilStopped
 import com.example.core.extensions.pixel
-import com.example.core.extensions.textChanges
+import com.example.core.extensions.queryTextSubmit
+import com.example.core.ui.IntentView
 import com.example.data.entity.UserEntity
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.FlowPreview
-import kotlinx.coroutines.InternalCoroutinesApi
+import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.*
+import timber.log.Timber
 import java.lang.Exception
 
 @AndroidEntryPoint
-class UserActivity : AppCompatActivity() {
+class UserActivity : AppCompatActivity(), IntentView<UserViewIntent, UserViewState> {
 
     @FlowPreview
     @ExperimentalCoroutinesApi
@@ -41,12 +42,12 @@ class UserActivity : AppCompatActivity() {
 
     @ExperimentalCoroutinesApi
     private val queryChangedIntent: Flow<UserViewIntent.QueryChangedIntent> by lazy {
-        binding.search.textChanges()
+        binding.search.queryTextSubmit()
             .map { query -> UserViewIntent.QueryChangedIntent(query?.toString() ?: "") }
     }
 
     @ExperimentalCoroutinesApi
-    private val intents by lazy {
+    override val intents by lazy {
         merge(openUserDetailIntent, queryChangedIntent)
     }
 
@@ -82,37 +83,39 @@ class UserActivity : AppCompatActivity() {
             .launchWhenStartedUntilStopped(this)
 
         intents.onEach { viewModel.processIntents(it) }
-            .onStart { UserViewIntent.Initialize }
             .launchIn(lifecycle.coroutineScope)
     }
 
-    private suspend fun render(state: UserViewState) {
+    override suspend fun render(state: UserViewState) {
         binding.renderLoadingState(state)
         state.event?.getEvent()?.let { event ->
             when (event) {
                 is UserViewEvent.OpenDetailInfo -> openUserDetailInfo()
-                is UserViewEvent.LoadPagingData -> binding.renderLoadPagingData(event.data)
-                is UserViewEvent.LoadFailed -> binding.renderLoadingFailedSate(event.exception)
+                is UserViewEvent.LoadPagingData -> renderLoadPagingData(event.data)
+                is UserViewEvent.LoadFailed -> renderLoadingFailedSate(event.exception)
             }
         }
     }
 
     private fun openUserDetailInfo() {
-
+        //TODO start UserDetailActivity
     }
 
-    private suspend fun ActivityUserBinding.renderLoadingState(state: UserViewState) {
+    private fun ActivityUserBinding.renderLoadingState(state: UserViewState) {
         progress.visibility = if (state.isLoading) View.VISIBLE else View.GONE
     }
 
-    private suspend fun ActivityUserBinding.renderLoadPagingData(pagingFlow: Flow<PagingData<UserEntity>>) {
-        progress.visibility = View.GONE
-        pagingFlow.onEach { userAdapter.submitData(it) }
-            .launchIn(lifecycle.coroutineScope)
+    private var pagingJob: Job? = null
+    private suspend fun renderLoadPagingData(pagingFlow: Flow<PagingData<UserEntity>>) {
+        pagingJob?.cancel()
+        pagingJob = lifecycleScope.launch {
+            pagingFlow.collectLatest {
+                userAdapter.submitData(it)
+            }
+        }
     }
 
-    private suspend fun ActivityUserBinding.renderLoadingFailedSate(exception: Exception) {
-        progress.visibility = View.GONE
+    private suspend fun renderLoadingFailedSate(exception: Exception) {
         userAdapter.submitData(PagingData.empty())
         Toast.makeText(
             this@UserActivity, exception.message, Toast.LENGTH_LONG

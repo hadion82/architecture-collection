@@ -47,11 +47,14 @@ fun EditText.textChanges(): Flow<CharSequence?> =
 
 @ExperimentalCoroutinesApi
 @CheckResult
-fun SearchView.textChanges(): Flow<CharSequence?> =
-    callbackFlow<CharSequence?> {
+fun SearchView.queryTextSubmit(): Flow<CharSequence?> =
+    callbackFlow {
         val listener = object : SearchView.OnQueryTextListener {
-            override fun onQueryTextSubmit(query: String?): Boolean = true
-            override fun onQueryTextChange(newText: String?): Boolean = safeOffer(query)
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                query?.let { safeOffer(it) }
+                return true
+            }
+            override fun onQueryTextChange(newText: String?): Boolean = true
         }
         isSubmitButtonEnabled = true
         setOnQueryTextListener(listener)

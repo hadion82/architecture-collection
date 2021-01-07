@@ -33,7 +33,7 @@ class UserRepositoryImpl @Inject internal constructor(
             config = PagingConfig(
                 pageSize = 30,
                 enablePlaceholders = false,
-                prefetchDistance = 10
+                prefetchDistance = 20
             ),
 
             remoteMediator = UserRemoteMediator(

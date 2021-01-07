@@ -14,12 +14,17 @@ class UserActionProcessor @Inject constructor(
     private val userLoadFailedMapper: UserLoadFailedMapper
 ) : PresentationProcessor<UserViewAction, Flow<UserViewResult>> {
 
-    override suspend fun to(value: UserViewAction): Flow<UserViewResult> =
-        when (value) {
+    override suspend fun invoke(value: UserViewAction): Flow<UserViewResult> {
+        return when (value) {
+            is UserViewAction.InitializeAction -> initializeAction()
             is UserViewAction.LoadUserAction -> loadingAction()
             is UserViewAction.QueryUsersAction -> loadUsersAction(value.query)
             is UserViewAction.OpenUserDetailAction -> openDetailInfoAction(value.id)
         }
+    }
+
+
+    private fun initializeAction() = flowOf(UserViewResult.Initialize)
 
     private fun loadingAction() = flowOf(UserViewResult.Loading)
 
