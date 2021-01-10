@@ -1,6 +1,8 @@
 package com.example.architecture.collection.di
 
-import com.example.data.repository.*
+import com.example.data.repository.DefaultUserRepository
+import com.example.data.repository.UserRepository
+import com.example.data.repository.UserRepositoryImpl
 import com.example.data.repository.memory.MemoryRepository
 import com.example.data.repository.memory.MemoryRepositoryImpl
 import com.example.data.repository.observe.ObserveRepository

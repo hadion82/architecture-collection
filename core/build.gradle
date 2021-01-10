@@ -31,6 +31,16 @@ android {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
+
+    packagingOptions {
+        exclude 'META-INF/DEPENDENCIES'
+        exclude 'META-INF/NOTICE'
+        exclude 'META-INF/LICENSE'
+        exclude 'META-INF/LICENSE.txt'
+        exclude 'META-INF/NOTICE.txt'
+        exclude 'META-INF/AL2.0'
+        exclude 'META-INF/LGPL2.1'
+    }
 }
 
 dependencies {
@@ -44,11 +54,13 @@ dependencies {
     implementation "androidx.appcompat:appcompat:1.2.0"
 
     testImplementation "junit:junit:4.13"
-    testImplementation "org.mockito:mockito-core:2.28.2"
+    testImplementation "org.mockito:mockito-core:3.3.1"
 
     androidTestImplementation "androidx.test.ext:junit:1.1.2"
     androidTestImplementation "androidx.test.espresso:espresso-core:3.3.0"
-    androidTestImplementation "com.squareup.okhttp3:mockwebserver:3.14.4"
+    androidTestImplementation "com.squareup.okhttp3:mockwebserver:4.7.2"
+
+    androidTestImplementation "org.jetbrains.kotlinx:kotlinx-coroutines-test:1.4.1"
 
     //ui
     def activity_ktx_version = "1.1.0"

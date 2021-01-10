@@ -1,12 +1,10 @@
 package com.example.architecture.collection.ui.user
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
-import com.example.data.entity.UserEntity
 import com.example.architecture.databinding.ListItemUserBinding
+import com.example.data.entity.UserEntity
 
 class UserViewHolder internal constructor(
     private val binding: ListItemUserBinding

@@ -21,8 +21,6 @@ import com.example.data.entity.UserEntity
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.*
-import timber.log.Timber
-import java.lang.Exception
 
 @AndroidEntryPoint
 class UserActivity : AppCompatActivity(), IntentView<UserViewIntent, UserViewState> {

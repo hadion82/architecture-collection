@@ -1,7 +1,6 @@
 package com.example.architecture.collection.ui.user
 
 import com.example.core.presentation.PresentationProcessor
-import timber.log.Timber
 import javax.inject.Inject
 
 class UserIntentProcessor @Inject constructor(): PresentationProcessor<UserViewIntent, UserViewAction> {
