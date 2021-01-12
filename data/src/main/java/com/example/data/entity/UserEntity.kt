@@ -12,6 +12,8 @@ data class UserEntity(
         var _id: Int,
         @ColumnInfo(name = "id")
         val id: Long,
+        @ColumnInfo(name = "query")
+        var query: String?,
         @ColumnInfo(name = "user_name")
         @SerializedName(value = "login")
         val name: String?,

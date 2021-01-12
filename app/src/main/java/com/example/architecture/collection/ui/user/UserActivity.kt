@@ -21,6 +21,7 @@ import com.example.data.entity.UserEntity
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.*
+import timber.log.Timber
 
 @AndroidEntryPoint
 class UserActivity : AppCompatActivity(), IntentView<UserViewIntent, UserViewState> {
@@ -61,15 +62,12 @@ class UserActivity : AppCompatActivity(), IntentView<UserViewIntent, UserViewSta
             this,
             modelProvider,
             sizeProvider,
-            10
+            20
         )
-        binding.run {
-            userList.itemAnimator = DefaultItemAnimator().apply {
-                addDuration = 300
-                removeDuration = 300
-            }
-            userList.adapter = userAdapter
-            userList.addOnScrollListener(preLoader)
+        binding.userList.run {
+            itemAnimator = null
+            adapter = userAdapter
+            addOnScrollListener(preLoader)
         }
         bindViewModel()
     }
@@ -108,6 +106,7 @@ class UserActivity : AppCompatActivity(), IntentView<UserViewIntent, UserViewSta
         pagingJob?.cancel()
         pagingJob = lifecycleScope.launch {
             pagingFlow.collectLatest {
+                Timber.d("paging data -> $it")
                 userAdapter.submitData(it)
             }
         }

@@ -18,6 +18,7 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flatMapMerge
+import timber.log.Timber
 import java.util.*
 
 class UserAdapter(
@@ -37,12 +38,12 @@ class UserAdapter(
 
         override fun getChangePayload(oldItem: UserEntity, newItem: UserEntity): Any =
             UserViewHolder.Payload(
-                extractItem(oldItem.name, newItem.name),
-                extractItem(oldItem.avatarUrl, newItem.avatarUrl)
+                oldItem.name extract newItem.name,
+                oldItem.avatarUrl extract newItem.avatarUrl
             )
 
-        private fun <R> extractItem(oldValue: R?, newValue: R?): R? =
-            if (oldValue != newValue) newValue else null
+        private infix fun <R : Any> R?.extract(newValue: R?) =
+            if (newValue != null && this != newValue) newValue else null
     }
 
     @FlowPreview
@@ -56,8 +57,9 @@ class UserAdapter(
         )
     ).also { holder -> clickFlow.flatMapMerge { holder.itemView.clicks() } }
 
-    override fun onBindViewHolder(holder: UserViewHolder, position: Int) =
+    override fun onBindViewHolder(holder: UserViewHolder, position: Int) {
         holder.bind(getItem(position))
+    }
 
     override fun onBindViewHolder(
         holder: UserViewHolder,
@@ -67,7 +69,7 @@ class UserAdapter(
         if (payloads.isEmpty())
             super.onBindViewHolder(holder, position, payloads)
         else
-            holder.bind(payloads[0] as UserViewHolder.Payload)
+            payloads.forEach { holder.bind(it as UserViewHolder.Payload) }
     }
 
     inner class AvatarPreloadModelProvider(private val context: Context) :

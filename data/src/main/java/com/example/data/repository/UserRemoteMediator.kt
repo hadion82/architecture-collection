@@ -18,8 +18,9 @@ internal class UserRemoteMediator @Inject constructor(
     private val queryDataSource: QueryLocalDataSource,
     private val userDataSource: UserLocalDataSource,
     private val remoteDataSource: UserRemoteDataSource,
-    private val query: String
-): RemoteMediator<Int, UserEntity>() {
+    private val query: String,
+    private val refresh: Boolean
+) : RemoteMediator<Int, UserEntity>() {
 
     private var page: Int = queryDataSource.getPage(query) ?: START_PAGE
 
@@ -31,15 +32,28 @@ internal class UserRemoteMediator @Inject constructor(
             val queryPage = when (loadType) {
                 LoadType.PREPEND ->
                     return MediatorResult.Success(endOfPaginationReached = true)
-                LoadType.APPEND -> ++page
-                LoadType.REFRESH -> page
+                LoadType.APPEND ->
+                    ++page
+                LoadType.REFRESH ->
+                    if (refresh) START_PAGE else page
             }
             val response = remoteDataSource.searchUser(query, queryPage)
             response.run {
                 if (isSuccessful) {
-                    body()?.let {
-                        userDataSource.insert(it.items)
-                        queryDataSource.insert(QueryEntity(query, page))
+                    body()?.let { response ->
+                        val isRefresh = loadType == LoadType.REFRESH && refresh
+                        if (isRefresh) {
+                            userDataSource.deleteByQuery(query)
+                        }
+                        userDataSource.insert(response.items.map { user ->
+                            user.apply { this.query = this@UserRemoteMediator.query }
+                        })
+                        queryDataSource.insert(
+                            QueryEntity(
+                                query,
+                                if (isRefresh) START_PAGE + 1 else page
+                            )
+                        )
                     }
                     headers()[HEADER_PAGE_KEY]?.let {
                         if (!it.contains(HEADER_PAGE_LAST))

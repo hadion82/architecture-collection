@@ -8,6 +8,8 @@ internal interface UserLocalDataSource {
 
     suspend fun insert(values: List<UserEntity>)
 
+    suspend fun deleteByQuery(query: String)
+
     fun observeUsers(query: String): LiveData<List<UserEntity>>
 
     fun loadUsers(query: String): PagingSource <Int, UserEntity>

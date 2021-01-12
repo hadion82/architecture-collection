@@ -17,7 +17,7 @@ class LoadUserByName @Inject constructor(
 ): CoroutineUseCase<LoadUserByName.Params, Flow<PagingData<UserEntity>>>(ioDispatcher) {
 
     @InternalCoroutinesApi
-    override suspend fun execute(params: Params) = repository.loadUsers(params.query)
+    override suspend fun execute(params: Params) = repository.loadUsers(params.query, params.refresh)
 
-    class Params(val query: String)
+    class Params(val query: String, val refresh: Boolean = false)
 }

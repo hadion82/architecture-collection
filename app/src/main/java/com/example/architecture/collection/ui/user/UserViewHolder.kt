@@ -5,19 +5,18 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.example.architecture.databinding.ListItemUserBinding
 import com.example.data.entity.UserEntity
+import timber.log.Timber
 
 class UserViewHolder internal constructor(
     private val binding: ListItemUserBinding
 ) : RecyclerView.ViewHolder(binding.root) {
 
     fun bind(item: UserEntity?) {
-        with(binding) {
-            root.tag = item
-            userName.text = item?.name
-            Glide.with(root).load(item?.avatarUrl)
-                .diskCacheStrategy(DiskCacheStrategy.ALL)
-                .into(avatar)
-        }
+        binding.root.tag = item
+        binding.userName.text = item?.name
+        Glide.with(binding.root).load(item?.avatarUrl)
+            .diskCacheStrategy(DiskCacheStrategy.ALL)
+            .into(binding.avatar)
     }
 
     fun bind(payload: Payload) {
