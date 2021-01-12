@@ -13,6 +13,8 @@ internal class UserLocalDataSourceImpl @Inject constructor(
 
     override suspend fun insert(values: List<UserEntity>) = dao.insert(values)
 
+    override suspend fun deleteByQuery(query: String) = dao.deleteByQuery(query)
+
     override fun observeUsers(query: String) = dao.observeUser(query)
 
     override fun loadUsers(query: String) = dao.loadUsers(query)

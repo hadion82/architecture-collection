@@ -19,7 +19,7 @@ class MemoryRepositoryImpl @Inject internal constructor(
 
     private val remote: UserRemoteDataSource = remoteDataSourceImpl
 
-    override suspend fun loadUsers(query: String): Flow<PagingData<UserEntity>> =
+    override suspend fun loadUsers(query: String, refresh: Boolean): Flow<PagingData<UserEntity>> =
         Pager(
             config = PagingConfig(
                 pageSize = 30,

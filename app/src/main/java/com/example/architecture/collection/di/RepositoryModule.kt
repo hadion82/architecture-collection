@@ -7,8 +7,8 @@ import com.example.data.repository.memory.MemoryRepository
 import com.example.data.repository.memory.MemoryRepositoryImpl
 import com.example.data.repository.observe.ObserveRepository
 import com.example.data.repository.observe.ObserveRepositoryImpl
-import com.example.data.repository.single.SingleRequestRepository
-import com.example.data.repository.single.SingleRequestRepositoryImpl
+import com.example.data.repository.db.LocalRequestRepository
+import com.example.data.repository.db.LocalRequestRepositoryImpl
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
@@ -26,11 +26,11 @@ abstract class RepositoryModule {
         userRepository: UserRepositoryImpl
     ): UserRepository
 
-    @SingleRequestRepository
+    @LocalRequestRepository
     @Singleton
     @Binds
     abstract fun provideSingleRequestRepository(
-        singleRequestRepository: SingleRequestRepositoryImpl
+        singleRequestRepository: LocalRequestRepositoryImpl
     ): UserRepository
 
     @MemoryRepository
