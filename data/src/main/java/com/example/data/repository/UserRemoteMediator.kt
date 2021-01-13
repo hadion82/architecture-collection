@@ -33,14 +33,21 @@ internal class UserRemoteMediator @Inject constructor(
                 LoadType.PREPEND ->
                     return MediatorResult.Success(endOfPaginationReached = true)
                 LoadType.APPEND ->
-                    ++page
+                    if (page != END_PAGE) ++page else
+                        return MediatorResult.Success(endOfPaginationReached = true)
                 LoadType.REFRESH ->
-                    if (refresh) START_PAGE else page
+                    if (refresh) START_PAGE else
+                        return MediatorResult.Success(endOfPaginationReached = page == END_PAGE)
             }
+
             val response = remoteDataSource.searchUser(query, queryPage)
+
             response.run {
                 if (isSuccessful) {
+                    val isLastPage = headers()[HEADER_PAGE_KEY]?.contains(HEADER_PAGE_LAST) ?: false
+
                     body()?.let { response ->
+
                         val isRefresh = loadType == LoadType.REFRESH && refresh
                         if (isRefresh) {
                             userDataSource.deleteByQuery(query)
@@ -48,17 +55,19 @@ internal class UserRemoteMediator @Inject constructor(
                         userDataSource.insert(response.items.map { user ->
                             user.apply { this.query = this@UserRemoteMediator.query }
                         })
+
                         queryDataSource.insert(
                             QueryEntity(
-                                query,
-                                if (isRefresh) START_PAGE + 1 else page
+                                query, when {
+                                    isLastPage -> END_PAGE
+                                    isRefresh -> START_PAGE + 1
+                                    else -> page
+                                }
                             )
                         )
                     }
-                    headers()[HEADER_PAGE_KEY]?.let {
-                        if (!it.contains(HEADER_PAGE_LAST))
-                            return MediatorResult.Success(endOfPaginationReached = true)
-                    }
+                    if (isLastPage)
+                        return MediatorResult.Success(endOfPaginationReached = true)
                 }
             }
             return MediatorResult.Success(
@@ -73,6 +82,7 @@ internal class UserRemoteMediator @Inject constructor(
 
     companion object {
         const val START_PAGE = 1
+        const val END_PAGE = -1
 
         const val HEADER_PAGE_KEY = "link"
         const val HEADER_PAGE_LAST = "last"

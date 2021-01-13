@@ -35,7 +35,10 @@ class UserActivity : AppCompatActivity(), IntentView<UserViewIntent, UserViewSta
         get() = emptyFlow()
 
     private val openUserDetailIntent = openUserDetailClickFlow
-        .map { v -> UserViewIntent.OpenUserDetailIntent(v.tag as Long) }
+        .map { v ->
+            Timber.d("click id : ${v.tag as Long}")
+            UserViewIntent.OpenUserDetailIntent(v.tag as Long)
+        }
 
     private val userAdapter = UserAdapter(openUserDetailClickFlow)
 
@@ -64,9 +67,11 @@ class UserActivity : AppCompatActivity(), IntentView<UserViewIntent, UserViewSta
             sizeProvider,
             20
         )
+
         binding.userList.run {
             itemAnimator = null
             adapter = userAdapter
+            setHasFixedSize(true)
             addOnScrollListener(preLoader)
         }
         bindViewModel()

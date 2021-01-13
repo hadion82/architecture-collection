@@ -13,6 +13,7 @@ import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
 import kotlinx.coroutines.flow.onStart
+import timber.log.Timber
 
 @ExperimentalCoroutinesApi
 fun <E> SendChannel<E>.safeOffer(value: E): Boolean = !isClosedForSend && try {
@@ -24,7 +25,10 @@ fun <E> SendChannel<E>.safeOffer(value: E): Boolean = !isClosedForSend && try {
 @ExperimentalCoroutinesApi
 fun View.clicks(): Flow<View> {
     return callbackFlow {
-        setOnClickListener { safeOffer(it) }
+        setOnClickListener {
+            Timber.d("click??")
+            safeOffer(it)
+        }
         awaitClose { setOnClickListener(null) }
     }
 }

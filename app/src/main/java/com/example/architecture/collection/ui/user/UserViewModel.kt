@@ -8,38 +8,13 @@ import com.example.domain.core.viewmodel.ComponentViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.*
-import timber.log.Timber
 
 @ExperimentalCoroutinesApi
 @FlowPreview
 class UserViewModel @ViewModelInject constructor(
-    private val intentProcessor: UserIntentProcessor,
-    private val actionProcessor: UserActionProcessor,
+    userViewModelDelegate: UserViewModelDelegate,
     @Assisted private val savedStateHandle: SavedStateHandle
-) : ComponentViewModel() {
+) : ComponentViewModel(), UserViewModelDelegate by userViewModelDelegate {
 
-    private val _intentFlow = MutableSharedFlow<UserViewIntent>(extraBufferCapacity = 32)
-
-    val viewState: StateFlow<UserViewState>
-
-    private val idleState = UserViewState.idle()
-
-    suspend fun processIntents(intent: UserViewIntent) =
-        _intentFlow.emit(intent)
-
-    init {
-        viewState = merge(
-            _intentFlow.filterIsInstance<UserViewIntent.Initialize>().take(1),
-            _intentFlow.filterNot { it is UserViewIntent.Initialize }
-        )
-            .map(intentProcessor::invoke)
-            .flatMapMerge(transform = actionProcessor::invoke)
-            .scan(idleState) { state, action -> action.reduce(state) }
-            .catch { Timber.d("UserViewModel Throwable : $it") }
-            .stateIn(viewModelScope, SharingStarted.Eagerly, idleState)
-    }
-
-    companion object {
-        const val QUERY = "query"
-    }
+    val viewState: StateFlow<UserViewState> = flowStateOf(viewModelScope)
 }
