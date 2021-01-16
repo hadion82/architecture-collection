@@ -12,15 +12,15 @@ import javax.inject.Inject
 
 sealed class UserViewIntent: ViewIntent {
     object Initialize : UserViewIntent()
-    data class QueryChangedIntent(val query: String) : UserViewIntent()
-    data class OpenUserDetailIntent(val id: Long) : UserViewIntent()
+    data class QueryChangedIntent(val query: String, val isRefresh: Boolean = false) : UserViewIntent()
+    data class OpenUserDetailIntent(val user: UserEntity) : UserViewIntent()
 }
 
 sealed class UserViewAction {
     object InitializeAction : UserViewAction()
     object LoadUserAction : UserViewAction()
-    data class QueryUsersAction(val query: String) : UserViewAction()
-    data class OpenUserDetailAction(val id: Long) : UserViewAction()
+    data class QueryUsersAction(val query: String, val isRefresh: Boolean) : UserViewAction()
+    data class OpenUserDetailAction(val user: UserEntity) : UserViewAction()
 }
 
 sealed class UserViewResult : Reducer<UserViewState> {
@@ -36,11 +36,11 @@ sealed class UserViewResult : Reducer<UserViewState> {
             viewState.copy(isLoading = true)
     }
 
-    data class Open(val id: Long) : UserViewResult() {
+    data class Open(val user: UserEntity) : UserViewResult() {
         override fun reduce(viewState: UserViewState): UserViewState =
             viewState.copy(
                 isLoading = false,
-                event = ViewEvent(UserViewEvent.OpenDetailInfo(id))
+                event = ViewEvent(UserViewEvent.OpenDetailInfo(user))
             )
     }
 
@@ -65,7 +65,7 @@ sealed class UserViewResult : Reducer<UserViewState> {
 }
 
 sealed class UserViewEvent {
-    data class OpenDetailInfo(val id: Long) : UserViewEvent()
+    data class OpenDetailInfo(val user: UserEntity) : UserViewEvent()
     data class LoadPagingData(
         val data: Flow<PagingData<UserEntity>>
     ) : UserViewEvent()

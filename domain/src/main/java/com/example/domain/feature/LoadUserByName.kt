@@ -4,7 +4,7 @@ import androidx.paging.PagingData
 import com.example.core.di.IoDispatcher
 import com.example.core.interactor.CoroutineUseCase
 import com.example.data.entity.UserEntity
-import com.example.data.repository.DefaultUserRepository
+import com.example.data.repository.UserDefaultRepository
 import com.example.data.repository.UserRepository
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.InternalCoroutinesApi
@@ -13,7 +13,7 @@ import javax.inject.Inject
 
 class LoadUserByName @Inject constructor(
     @IoDispatcher private val ioDispatcher: CoroutineDispatcher,
-    @DefaultUserRepository private val repository: UserRepository,
+    @UserDefaultRepository private val repository: UserRepository,
 ): CoroutineUseCase<LoadUserByName.Params, Flow<PagingData<UserEntity>>>(ioDispatcher) {
 
     @InternalCoroutinesApi

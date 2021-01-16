@@ -15,7 +15,7 @@ interface UserViewModelDelegate {
 
     suspend fun processIntents(intent: UserViewIntent)
 
-    fun flowStateOf(viewModelScope: CoroutineScope): StateFlow<UserViewState>
+    fun stateFlowOf(viewModelScope: CoroutineScope): StateFlow<UserViewState>
 
 }
 
@@ -34,7 +34,7 @@ internal class UserViewModelDelegateImpl @Inject constructor(
 
     @FlowPreview
     @ExperimentalCoroutinesApi
-    override fun flowStateOf(viewModelScope: CoroutineScope) = merge(
+    override fun stateFlowOf(viewModelScope: CoroutineScope) = merge(
         intentFlow.filterIsInstance<UserViewIntent.Initialize>().take(1),
         intentFlow.filterNot { it is UserViewIntent.Initialize }
     )

@@ -4,9 +4,6 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.liveData
 import androidx.lifecycle.map
 import com.example.core.functional.FlowResult
-import com.example.core.functional.flowResult
-import com.example.core.functional.onSuccess
-import com.example.data.core.NetworkFailure
 import com.example.data.datasource.local.UserLocalDataSource
 import com.example.data.datasource.local.UserLocalDataSourceImpl
 import com.example.data.datasource.remote.UserRemoteDataSource
@@ -14,10 +11,10 @@ import com.example.data.datasource.remote.UserRemoteDataSourceImpl
 import com.example.data.entity.UserEntity
 import javax.inject.Inject
 
-class ObserveRepositoryImpl @Inject internal constructor(
+class UserObserveRepositoryImpl @Inject internal constructor(
     localDataSourceImpl: UserLocalDataSourceImpl,
     remoteDataSourceImpl: UserRemoteDataSourceImpl
-) : ObserveRepository {
+) : UserObserveRepository {
 
     private val localDataSource: UserLocalDataSource = localDataSourceImpl
 

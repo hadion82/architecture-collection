@@ -5,7 +5,7 @@ import com.example.core.functional.FlowResult
 import com.example.data.core.NetworkFailure
 import com.example.data.entity.UserEntity
 
-interface ObserveRepository {
+interface UserObserveRepository {
 
     fun observeUsers(query: String): LiveData<FlowResult<List<UserEntity>>>
 }

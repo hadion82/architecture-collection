@@ -23,6 +23,8 @@
             </intent-filter>
         </activity>
 
+        <activity android:name=".collection.ui.userdetail.UserDetailActivity"/>
+
         <meta-data
             android:name="android.supports_size_changes" android:value="true" />
 

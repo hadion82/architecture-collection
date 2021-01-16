@@ -2,7 +2,6 @@ package com.example.architecture.collection.ui.user
 
 import android.content.Context
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
@@ -12,17 +11,13 @@ import com.bumptech.glide.RequestBuilder
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.example.architecture.R
 import com.example.architecture.databinding.ListItemUserBinding
-import com.example.core.extensions.clicks
 import com.example.data.entity.UserEntity
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flatMapMerge
-import timber.log.Timber
 import java.util.*
 
 class UserAdapter(
-    private val clickFlow: Flow<View>
+    private val callback: (UserEntity) -> Unit
 ) :
     PagingDataAdapter<UserEntity, UserViewHolder>(
         UserDiffCallback()
@@ -55,10 +50,10 @@ class UserAdapter(
             LayoutInflater.from(parent.context),
             parent, false
         )
-    ).also { holder -> clickFlow.flatMapMerge { holder.itemView.clicks() } }
+    )
 
     override fun onBindViewHolder(holder: UserViewHolder, position: Int) {
-        holder.bind(getItem(position))
+        holder.bind(getItem(position), callback)
     }
 
     override fun onBindViewHolder(
@@ -69,7 +64,7 @@ class UserAdapter(
         if (payloads.isEmpty())
             super.onBindViewHolder(holder, position, payloads)
         else
-            payloads.forEach { holder.bind(it as UserViewHolder.Payload) }
+            payloads.forEach { holder.bind(it as UserViewHolder.Payload, getItem(position), callback) }
     }
 
     inner class AvatarPreloadModelProvider(private val context: Context) :

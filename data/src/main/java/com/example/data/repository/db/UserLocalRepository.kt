@@ -1,8 +1,8 @@
-package com.example.data.repository.memory
+package com.example.data.repository.db
 
 import javax.inject.Qualifier
 
 @Qualifier
 @Retention(AnnotationRetention.BINARY)
-annotation class MemoryRepository {
+annotation class UserLocalRepository {
 }

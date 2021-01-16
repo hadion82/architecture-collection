@@ -8,8 +8,8 @@ class UserIntentProcessor @Inject constructor(): PresentationProcessor<UserViewI
     override suspend fun invoke(value: UserViewIntent): UserViewAction {
         return when (value) {
             is UserViewIntent.Initialize -> UserViewAction.InitializeAction
-            is UserViewIntent.QueryChangedIntent -> UserViewAction.QueryUsersAction(value.query)
-            is UserViewIntent.OpenUserDetailIntent -> UserViewAction.OpenUserDetailAction(value.id)
+            is UserViewIntent.QueryChangedIntent -> UserViewAction.QueryUsersAction(value.query, value.isRefresh)
+            is UserViewIntent.OpenUserDetailIntent -> UserViewAction.OpenUserDetailAction(value.user)
         }
     }
 }

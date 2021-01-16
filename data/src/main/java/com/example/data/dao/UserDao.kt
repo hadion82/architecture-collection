@@ -21,5 +21,5 @@ internal interface UserDao: BaseDao<UserEntity> {
     fun loadUsers(query: String): PagingSource<Int, UserEntity>
 
     @Query("DELETE FROM users WHERE `query` = :query")
-    fun deleteByQuery(query: String)
+    suspend fun deleteByQuery(query: String)
 }

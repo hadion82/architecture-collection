@@ -11,4 +11,7 @@ internal interface QueryDao: BaseDao<QueryEntity> {
 
     @Query("SELECT page FROM user_query WHERE `query` = :query")
     fun getPage(query: String): Int?
+
+    @Query("DELETE FROM user_query WHERE `query` = :query")
+    suspend fun deleteByQuery(query: String)
 }

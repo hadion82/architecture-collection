@@ -1,7 +1,7 @@
 package com.example.architecture.usecase
 
 import com.example.core.functional.onSuccess
-import com.example.data.repository.DefaultUserRepository
+import com.example.data.repository.UserDefaultRepository
 import com.example.data.repository.UserRepository
 import com.example.domain.feature.LoadUserByName
 import com.sample.test.rule.MainCoroutineRule
@@ -36,7 +36,7 @@ class LoadUsersTest {
     @get:Rule
     val collectorRule = ErrorCollector()
 
-    @DefaultUserRepository
+    @UserDefaultRepository
     @Inject
     lateinit var userRepository: UserRepository
 

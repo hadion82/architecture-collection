@@ -13,5 +13,7 @@ internal class QueryLocalDataSourceImpl @Inject constructor(
 
     override suspend fun insert(vararg values: QueryEntity) = dao.insert(*values)
 
+    override suspend fun deleteByQuery(query: String) = dao.deleteByQuery(query)
+
     override fun getPage(query: String): Int? = dao.getPage(query)
 }

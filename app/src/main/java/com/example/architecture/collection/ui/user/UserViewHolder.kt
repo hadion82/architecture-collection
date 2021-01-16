@@ -11,15 +11,18 @@ class UserViewHolder internal constructor(
     private val binding: ListItemUserBinding
 ) : RecyclerView.ViewHolder(binding.root) {
 
-    fun bind(item: UserEntity?) {
-        binding.root.tag = item
-        binding.userName.text = item?.name
-        Glide.with(binding.root).load(item?.avatarUrl)
-            .diskCacheStrategy(DiskCacheStrategy.ALL)
-            .into(binding.avatar)
-    }
+    fun bind(item: UserEntity?, callback: (UserEntity) -> Unit) =
+        with(binding) {
+            userName.text = item?.name
+            Glide.with(root).load(item?.avatarUrl)
+                .diskCacheStrategy(DiskCacheStrategy.ALL)
+                .into(avatar)
+            root.setOnClickListener {
+                item?.let { user -> callback(user) }
+            }
+        }
 
-    fun bind(payload: Payload) {
+    fun bind(payload: Payload, item: UserEntity?, callback: (UserEntity) -> Unit) =
         with(binding) {
             payload.also {
                 it.name?.let { name -> userName.text = name }
@@ -29,8 +32,10 @@ class UserViewHolder internal constructor(
                         .into(avatar)
                 }
             }
+            root.setOnClickListener {
+                item?.let { user -> callback(user) }
+            }
         }
-    }
 
     data class Payload(val name: String?, val url: String?)
 }

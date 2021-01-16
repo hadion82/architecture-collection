@@ -6,5 +6,7 @@ internal interface QueryLocalDataSource {
 
     suspend fun insert(vararg values: QueryEntity)
 
+    suspend fun deleteByQuery(query: String)
+
     fun getPage(query: String): Int?
 }

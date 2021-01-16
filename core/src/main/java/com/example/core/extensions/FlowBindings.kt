@@ -26,7 +26,6 @@ fun <E> SendChannel<E>.safeOffer(value: E): Boolean = !isClosedForSend && try {
 fun View.clicks(): Flow<View> {
     return callbackFlow {
         setOnClickListener {
-            Timber.d("click??")
             safeOffer(it)
         }
         awaitClose { setOnClickListener(null) }

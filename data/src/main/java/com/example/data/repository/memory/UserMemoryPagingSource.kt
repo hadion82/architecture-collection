@@ -7,7 +7,7 @@ import retrofit2.HttpException
 import java.io.IOException
 import kotlin.math.min
 
-internal class MemoryPagingSource(
+internal class UserMemoryPagingSource(
     private val remote: UserRemoteDataSource,
     private val query: String
 ): PagingSource<Int, UserEntity>() {
