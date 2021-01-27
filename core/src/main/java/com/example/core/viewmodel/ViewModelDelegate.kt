@@ -14,5 +14,5 @@ interface ViewModelDelegate<ViewIntent, ViewState> {
 
     fun stateFlowOf(viewModelScope: CoroutineScope): StateFlow<ViewState>
 
-    fun MutableSharedFlow<ViewIntent>.implement(): Flow<ViewIntent>
+    fun MutableSharedFlow<ViewIntent>.assemble(): Flow<ViewIntent>
 }

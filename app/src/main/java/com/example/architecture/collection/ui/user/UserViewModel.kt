@@ -22,7 +22,7 @@ class UserViewModel @ViewModelInject constructor(
 
     val viewState: StateFlow<UserViewState> = stateFlowOf(viewModelScope)
 
-    override fun MutableSharedFlow<UserViewIntent>.implement(): Flow<UserViewIntent> {
+    override fun MutableSharedFlow<UserViewIntent>.assemble(): Flow<UserViewIntent> {
         val initialIntent = filterIsInstance<UserViewIntent.Initialize>().take(1)
         val queryIntent = filterIsInstance<UserViewIntent.QueryChangedIntent>()
             .map { intent ->

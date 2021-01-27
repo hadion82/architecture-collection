@@ -27,12 +27,12 @@ internal class UserViewModelDelegateImpl @Inject constructor(
     @FlowPreview
     @ExperimentalCoroutinesApi
     override fun stateFlowOf(viewModelScope: CoroutineScope) =
-        intentFlow.implement()
+        intentFlow.assemble()
             .map(intentProcessor::invoke)
             .flatMapMerge(transform = actionProcessor::invoke)
             .scan(idleState) { state, action -> action.reduce(state) }
             .catch { Timber.d("UserViewModelDelegate Throwable : $it") }
             .stateIn(viewModelScope, SharingStarted.Eagerly, idleState)
 
-    override fun MutableSharedFlow<UserViewIntent>.implement(): Flow<UserViewIntent> = this
+    override fun MutableSharedFlow<UserViewIntent>.assemble(): Flow<UserViewIntent> = this
 }
