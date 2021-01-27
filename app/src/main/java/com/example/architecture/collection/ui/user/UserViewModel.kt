@@ -22,15 +22,19 @@ class UserViewModel @ViewModelInject constructor(
 
     val viewState: StateFlow<UserViewState> = stateFlowOf(viewModelScope)
 
-    fun queryChangedIntent(query: String): UserViewIntent.QueryChangedIntent {
-        val currentTimeMillis = System.currentTimeMillis()
-        val isRefresh: Boolean = currentTimeMillis -
-                (savedStateHandle.get(query) ?: currentTimeMillis) > ONE_MIN
-        savedStateHandle[query] = currentTimeMillis
-        return UserViewIntent.QueryChangedIntent(
-            query, isRefresh
+    override fun MutableSharedFlow<UserViewIntent>.implement(): Flow<UserViewIntent> {
+        val initialIntent = filterIsInstance<UserViewIntent.Initialize>().take(1)
+        val queryIntent = filterIsInstance<UserViewIntent.QueryChangedIntent>()
+            .map { intent ->
+                val currentTimeMillis = System.currentTimeMillis()
+                val isRefresh: Boolean = currentTimeMillis -
+                        (savedStateHandle.get(intent.query) ?: currentTimeMillis) > ONE_MIN
+                savedStateHandle[intent.query] = currentTimeMillis
+                intent.apply { this.isRefresh = isRefresh }
+            }
+        val detailIntent = filterIsInstance<UserViewIntent.OpenUserDetailIntent>()
+        return merge(
+            initialIntent, queryIntent, detailIntent
         )
-//        or
-//        return UserViewIntent.QueryChangedIntent(query)
     }
 }

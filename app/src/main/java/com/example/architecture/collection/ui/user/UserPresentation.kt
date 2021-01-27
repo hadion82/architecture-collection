@@ -12,7 +12,7 @@ import javax.inject.Inject
 
 sealed class UserViewIntent: ViewIntent {
     object Initialize : UserViewIntent()
-    data class QueryChangedIntent(val query: String, val isRefresh: Boolean = false) : UserViewIntent()
+    data class QueryChangedIntent(val query: String, var isRefresh: Boolean = false) : UserViewIntent()
     data class OpenUserDetailIntent(val user: UserEntity) : UserViewIntent()
 }
 

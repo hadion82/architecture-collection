@@ -1,5 +1,6 @@
 package com.example.architecture.collection.ui.user
 
+import com.example.core.viewmodel.ViewModelDelegate
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
@@ -7,17 +8,8 @@ import kotlinx.coroutines.flow.*
 import timber.log.Timber
 import javax.inject.Inject
 
-interface UserViewModelDelegate {
-
-    val intentFlow: MutableSharedFlow<UserViewIntent>
-
-    val idleState: UserViewState
-
-    suspend fun processIntents(intent: UserViewIntent)
-
-    fun stateFlowOf(viewModelScope: CoroutineScope): StateFlow<UserViewState>
-
-}
+interface UserViewModelDelegate :
+    ViewModelDelegate<UserViewIntent, UserViewState>
 
 internal class UserViewModelDelegateImpl @Inject constructor(
     private val intentProcessor: UserIntentProcessor,
@@ -34,13 +26,13 @@ internal class UserViewModelDelegateImpl @Inject constructor(
 
     @FlowPreview
     @ExperimentalCoroutinesApi
-    override fun stateFlowOf(viewModelScope: CoroutineScope) = merge(
-        intentFlow.filterIsInstance<UserViewIntent.Initialize>().take(1),
-        intentFlow.filterNot { it is UserViewIntent.Initialize }
-    )
-        .map(intentProcessor::invoke)
-        .flatMapMerge(transform = actionProcessor::invoke)
-        .scan(idleState) { state, action -> action.reduce(state) }
-        .catch { Timber.d("UserViewModelDelegate Throwable : $it") }
-        .stateIn(viewModelScope, SharingStarted.Eagerly, idleState)
+    override fun stateFlowOf(viewModelScope: CoroutineScope) =
+        intentFlow.implement()
+            .map(intentProcessor::invoke)
+            .flatMapMerge(transform = actionProcessor::invoke)
+            .scan(idleState) { state, action -> action.reduce(state) }
+            .catch { Timber.d("UserViewModelDelegate Throwable : $it") }
+            .stateIn(viewModelScope, SharingStarted.Eagerly, idleState)
+
+    override fun MutableSharedFlow<UserViewIntent>.implement(): Flow<UserViewIntent> = this
 }
