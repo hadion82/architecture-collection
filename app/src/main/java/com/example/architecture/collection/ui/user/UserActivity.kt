@@ -40,7 +40,7 @@ class UserActivity : AppCompatActivity(), IntentView<UserViewIntent, UserViewSta
     @ExperimentalCoroutinesApi
     private val queryChangedIntent: Flow<UserViewIntent.QueryChangedIntent> by lazy {
         binding.search.queryTextSubmit()
-            .map { query -> viewModel.queryChangedIntent(query?.toString() ?: "") }
+            .map { query -> UserViewIntent.QueryChangedIntent(query?.toString() ?: "") }
     }
 
     @FlowPreview
