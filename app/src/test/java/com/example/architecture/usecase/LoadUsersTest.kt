@@ -1,5 +1,6 @@
 package com.example.architecture.usecase
 
+import com.example.architecture.testdata.TestData
 import com.example.core.functional.onSuccess
 import com.example.data.repository.UserDefaultRepository
 import com.example.data.repository.UserRepository
@@ -49,7 +50,7 @@ class LoadUsersTest {
     @Test
     fun loadUsersByNameTest() = coroutineRule.runBlockingTest {
         val result = LoadUserByName(coroutineRule.testDispatcher, userRepository)(
-            LoadUserByName.Params("hq")
+            LoadUserByName.Params(TestData.testQuery)
         )
         collectorRule.checkThat(result, notNullValue())
         result.onSuccess { flow ->

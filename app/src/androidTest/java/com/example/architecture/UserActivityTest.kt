@@ -24,15 +24,6 @@ class UserActivityTest {
     @ExperimentalCoroutinesApi
     @Test
     fun testUserActivity() {
-        val latch = CountDownLatch(1)
         onView(withId(R.id.search)).check(matches(isDisplayed()))
-        onView(withId(R.id.search)).perform(typeSearchViewText("hhh"))
-
-        latch.await(5, TimeUnit.SECONDS)
-        onView(
-            recyclerViewWithId(R.id.user_list)
-                .viewHolderViewAtPosition(0, R.id.user_name)
-        )
-            .check(matches(withText("hhh")))
     }
 }
