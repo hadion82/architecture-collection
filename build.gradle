@@ -18,10 +18,10 @@ buildscript {
 
     ext {
         build_versions = [:]
-        build_versions.compile = 29
+        build_versions.compile = 30
         build_versions.min = 26
-        build_versions.target = 29
-        build_versions.tools = '29.0.3'
+        build_versions.target = 30
+        build_versions.tools = '30.0.3'
 
         versions = [:]
         versions.recyclerview = '1.1.0'

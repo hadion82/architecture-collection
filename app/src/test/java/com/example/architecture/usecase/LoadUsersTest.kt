@@ -1,7 +1,12 @@
 package com.example.architecture.usecase
 
-import com.example.architecture.testdata.TestData
+import androidx.paging.PagingData
+import com.example.core.functional.FlowResult
+import com.example.core.functional.onFailure
+import com.sample.test.testdata.SharedTestData
 import com.example.core.functional.onSuccess
+import com.example.core.functional.subscribe
+import com.example.data.entity.UserEntity
 import com.example.data.repository.UserDefaultRepository
 import com.example.data.repository.UserRepository
 import com.example.domain.feature.LoadUserByName
@@ -11,6 +16,7 @@ import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
 import dagger.hilt.android.testing.HiltTestApplication
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first
 import org.hamcrest.CoreMatchers.notNullValue
 import org.junit.Before
@@ -48,14 +54,16 @@ class LoadUsersTest {
 
     @ExperimentalCoroutinesApi
     @Test
-    fun loadUsersByNameTest() = coroutineRule.runBlockingTest {
-        val result = LoadUserByName(coroutineRule.testDispatcher, userRepository)(
-            LoadUserByName.Params(TestData.testQuery)
-        )
+    fun loadUsersByName_with_network() = coroutineRule.runBlockingTest {
+        val result: FlowResult<Flow<PagingData<UserEntity>>> =
+            LoadUserByName(coroutineRule.testDispatcher, userRepository)(
+                LoadUserByName.Params(SharedTestData.testQuery)
+            )
         collectorRule.checkThat(result, notNullValue())
-        result.onSuccess { flow ->
-            collectorRule.checkThat(flow, notNullValue())
+        result.subscribe({ flow ->
             collectorRule.checkThat(flow.first(), notNullValue())
-        }
+        }, { exception ->
+            collectorRule.checkThat(exception, notNullValue())
+        })
     }
 }

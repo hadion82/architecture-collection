@@ -16,16 +16,7 @@ sealed class FlowResult<out T> {
     }
 }
 
-fun <T, R> FlowResult<T>.subscribe(onSuccess: (T) -> R, onFailure: (Exception) -> R): R =
-    when (this) {
-        is FlowResult.Success -> onSuccess(value)
-        is FlowResult.Failure -> onFailure(exception)
-    }
-
-fun <T, R> FlowResult<T>.subscribe(
-    onSuccess: (T) -> R,
-    onFailure: (Exception) -> R,
-    onLoading: (Unit) -> R): R =
+inline fun <T, R> FlowResult<T>.subscribe(onSuccess: (T) -> R, onFailure: (Exception) -> R): R =
     when (this) {
         is FlowResult.Success -> onSuccess(value)
         is FlowResult.Failure -> onFailure(exception)

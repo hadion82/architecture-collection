@@ -3,13 +3,14 @@ package com.example.architecture.usecase
 import androidx.lifecycle.SavedStateHandle
 import androidx.paging.PagingData
 import com.example.architecture.collection.ui.user.*
-import com.example.architecture.testdata.TestData
+import com.example.architecture.data.TestData
 import com.example.data.repository.UserRepository
 import com.example.domain.feature.LoadUserByName
 import com.nhaarman.mockitokotlin2.doReturn
 import com.nhaarman.mockitokotlin2.mock
 import com.sample.test.rule.MainCoroutineRule
 import com.sample.test.rule.runBlockingTest
+import com.sample.test.testdata.SharedTestData
 import com.sample.test.utils.CoroutineTestUtil
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
@@ -38,7 +39,7 @@ class UserMoveModelTest {
     @Test
     fun loadUser_success() = coroutineRule.runBlockingTest {
         val userRepository = mock<UserRepository> {
-            onBlocking { loadUsers(TestData.testQuery, false) }
+            onBlocking { loadUsers(SharedTestData.testQuery, false) }
                 .doReturn(
                     flow {
                         emit(
@@ -50,14 +51,14 @@ class UserMoveModelTest {
                 )
         }
         val userNameUseCase = LoadUserByName(coroutineRule.testDispatcher, userRepository)
-        val userViewModelDelegate = FakeUserViewModelDelegate(
+        val userViewModelDelegate = UserViewModelDelegateImpl(
             UserIntentProcessor(), UserActionProcessor(
                 userNameUseCase, UserLoadedMapper(), UserLoadFailedMapper()
             )
         )
 
         val userViewModel = UserViewModel(userViewModelDelegate, SavedStateHandle())
-        userViewModel.processIntents(UserViewIntent.QueryChangedIntent(TestData.testQuery))
+        userViewModel.processIntents(UserViewIntent.QueryChangedIntent(SharedTestData.testQuery))
         runBlockingTest {
             val initState = CoroutineTestUtil.getValue(userViewModel.viewState, this)
             assert(initState?.isLoading == false)
@@ -72,17 +73,17 @@ class UserMoveModelTest {
     @Test
     fun loadUser_failed() = coroutineRule.runBlockingTest {
         val userRepository = mock<UserRepository> {
-            onBlocking { loadUsers(TestData.testQuery, false) }
+            onBlocking { loadUsers(SharedTestData.testQuery, false) }
                 .thenThrow(SocketTimeoutException())
         }
         val userNameUseCase = LoadUserByName(coroutineRule.testDispatcher, userRepository)
-        val userViewModelDelegate = FakeUserViewModelDelegate(
+        val userViewModelDelegate = UserViewModelDelegateImpl(
             UserIntentProcessor(), UserActionProcessor(
                 userNameUseCase, UserLoadedMapper(), UserLoadFailedMapper()
             )
         )
         val userViewModel = UserViewModel(userViewModelDelegate, SavedStateHandle())
-        userViewModel.processIntents(UserViewIntent.QueryChangedIntent(TestData.testQuery))
+        userViewModel.processIntents(UserViewIntent.QueryChangedIntent(SharedTestData.testQuery))
         runBlockingTest {
             val initState = CoroutineTestUtil.getValue(userViewModel.viewState, this)
             assert(initState?.isLoading == false)
