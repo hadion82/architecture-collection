@@ -107,11 +107,11 @@ dependencies {
 //    kapt "androidx.room:room-compiler:$room_compile_version"
 
     //dagger hilt
-    def hilt_version = "2.29.1-alpha"
+    def hilt_version = "2.31.2-alpha"
     implementation "com.google.dagger:hilt-android:$hilt_version"
     kapt "com.google.dagger:hilt-android-compiler:$hilt_version"
 
-    def hilt_android_version = "1.0.0-alpha03"
+    def hilt_android_version = "1.0.0-alpha02"
     implementation "androidx.hilt:hilt-lifecycle-viewmodel:$hilt_android_version"
     kapt "androidx.hilt:hilt-compiler:$hilt_android_version"
     annotationProcessor "androidx.hilt:hilt-compiler:$hilt_android_version"

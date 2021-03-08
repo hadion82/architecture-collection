@@ -22,7 +22,7 @@ import org.junit.Rule
 import org.junit.Test
 import java.net.SocketTimeoutException
 
-class UserMoveModelTest {
+class UserViewModelTest {
 
     @ExperimentalCoroutinesApi
     @get:Rule
@@ -90,6 +90,28 @@ class UserMoveModelTest {
             val loadState = CoroutineTestUtil.getValue(userViewModel.viewState, this)
             assert(loadState?.isLoading == false)
             assert(loadState?.event?.getEvent() is UserViewEvent.LoadFailed)
+        }
+    }
+
+    @FlowPreview
+    @ExperimentalCoroutinesApi
+    @Test
+    fun userDetailTest() = coroutineRule.runBlockingTest {
+        val userRepository = mock<UserRepository>()
+        val userNameUseCase = LoadUserByName(coroutineRule.testDispatcher, userRepository)
+        val userViewModelDelegate = UserViewModelDelegateImpl(
+            UserIntentProcessor(), UserActionProcessor(
+                userNameUseCase, UserLoadedMapper(), UserLoadFailedMapper()
+            )
+        )
+        val userViewModel = UserViewModel(userViewModelDelegate, SavedStateHandle())
+        userViewModel.processIntents(UserViewIntent.OpenUserDetailIntent(TestData.testUser))
+        runBlockingTest {
+            val initState = CoroutineTestUtil.getValue(userViewModel.viewState, this)
+            assert(initState?.isLoading == false)
+            val loadState = CoroutineTestUtil.getValue(userViewModel.viewState, this)
+            assert(loadState?.isLoading == false)
+            assert(loadState?.event?.getEvent() is UserViewEvent.OpenDetailInfo)
         }
     }
 }

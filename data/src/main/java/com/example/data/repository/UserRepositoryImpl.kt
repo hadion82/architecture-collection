@@ -25,6 +25,7 @@ class UserRepositoryImpl @Inject internal constructor(
 
     private val remoteDataSource: UserRemoteDataSource = remoteDataSourceImpl
 
+    @OptIn(androidx.paging.ExperimentalPagingApi::class)
     override suspend fun loadUsers(query: String, isRefresh: Boolean): Flow<PagingData<UserEntity>> =
         Pager(
             config = PagingConfig(

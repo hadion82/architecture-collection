@@ -1,6 +1,7 @@
 package com.example.data.repository.memory
 
 import androidx.paging.PagingSource
+import androidx.paging.PagingState
 import com.example.data.datasource.remote.UserRemoteDataSource
 import com.example.data.entity.UserEntity
 import retrofit2.HttpException
@@ -39,6 +40,10 @@ internal class UserMemoryPagingSource(
         LoadResult.Error(e)
     } catch (e: HttpException) {
         LoadResult.Error(e)
+    }
+
+    override fun getRefreshKey(state: PagingState<Int, UserEntity>): Int? {
+        TODO("Not yet implemented")
     }
 
     companion object {
