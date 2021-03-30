@@ -5,15 +5,18 @@ import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.*
+import javax.inject.Inject
 
 @ExperimentalCoroutinesApi
 @FlowPreview
-class UserViewModel @ViewModelInject constructor(
+@HiltViewModel
+class UserViewModel @Inject constructor(
     userViewModelDelegate: UserViewModelDelegate,
-    @Assisted private val savedStateHandle: SavedStateHandle
+    private val savedStateHandle: SavedStateHandle
 ) : ViewModel(), UserViewModelDelegate by userViewModelDelegate {
 
     companion object {
