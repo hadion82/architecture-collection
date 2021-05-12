@@ -6,21 +6,22 @@ import android.webkit.CookieManager
 import android.webkit.WebChromeClient
 import android.webkit.WebSettings
 import androidx.appcompat.app.AppCompatActivity
-import com.example.architecture.R
+import com.example.architecture.databinding.ActivityUserDetailBinding
 import com.example.data.entity.UserEntity
-import kotlinx.android.synthetic.main.activity_user_detail.*
 
-class UserDetailActivity: AppCompatActivity(R.layout.activity_user_detail) {
+class UserDetailActivity: AppCompatActivity() {
+
+    private val binding by lazy { ActivityUserDetailBinding.inflate(layoutInflater) }
 
     @SuppressLint("SetJavaScriptEnabled")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
+        setContentView(binding.root)
         val htmlUrl = intent.extras?.get(UserEntity.KEY_HTML_URL) as? String
 
         if(htmlUrl.isNullOrBlank()) return
 
-        web_view.apply {
+        binding.webView.apply {
             settings.javaScriptEnabled = true
             isVerticalScrollBarEnabled = true
             settings.mixedContentMode = WebSettings.MIXED_CONTENT_ALWAYS_ALLOW

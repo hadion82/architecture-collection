@@ -10,7 +10,6 @@ import com.example.data.datasource.remote.UserRemoteDataSource
 import com.example.data.entity.QueryEntity
 import com.example.data.entity.UserEntity
 import retrofit2.HttpException
-import timber.log.Timber
 import java.io.IOException
 import javax.inject.Inject
 
@@ -58,7 +57,7 @@ internal class UserRemoteMediator @Inject constructor(
 
                         queryDataSource.insert(
                             QueryEntity(
-                                query = query, page = page
+                                name_query = query, page = page
                             )
                         )
 

@@ -13,13 +13,13 @@ internal interface UserDao: BaseDao<UserEntity> {
     @Query("SELECT COUNT(id) FROM users")
     suspend fun getCount(): Int
 
-    @Query("SELECT * FROM users WHERE `query` = :query")
+    @Query("SELECT * FROM users WHERE `user_query` = :query")
     fun observeUser(query: String): LiveData<List<UserEntity>>
 
 //    @Query("SELECT * FROM users WHERE user_name LIKE :query ORDER BY id DESC")
-    @Query("SELECT * FROM users WHERE `query` = :query")
+    @Query("SELECT * FROM users WHERE `user_query` = :query")
     fun loadUsers(query: String): PagingSource<Int, UserEntity>
 
-    @Query("DELETE FROM users WHERE `query` = :query")
+    @Query("DELETE FROM users WHERE `user_query` = :query")
     suspend fun deleteByQuery(query: String)
 }

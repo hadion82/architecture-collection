@@ -6,5 +6,6 @@ import com.example.core.prefs.LongProperty
 
 class Common(context: Context) : DefaultPreferences(context) {
 
-    var searchTime: Long by LongProperty(prefs)
+    var searchTime: Long by LongProperty(prefs) //search_time
+
 }

@@ -8,8 +8,8 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import androidx.paging.PagingData
-import androidx.window.DeviceState.*
 import com.bumptech.glide.integration.recyclerview.RecyclerViewPreloader
+
 import com.bumptech.glide.util.FixedPreloadSizeProvider
 import com.example.architecture.collection.ui.userdetail.UserDetailActivity
 import com.example.architecture.databinding.ActivityUserBinding
@@ -22,7 +22,6 @@ import com.example.data.entity.UserEntity
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.*
-import timber.log.Timber
 
 @AndroidEntryPoint
 class UserActivity : AppCompatActivity(), IntentView<UserViewIntent, UserViewState> {

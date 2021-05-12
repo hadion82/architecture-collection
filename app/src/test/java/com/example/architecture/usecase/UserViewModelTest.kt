@@ -16,6 +16,7 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.InternalCoroutinesApi
 import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.test.TestCoroutineDispatcher
 import kotlinx.coroutines.test.runBlockingTest
 import org.junit.Before
 import org.junit.Rule
@@ -50,14 +51,7 @@ class UserViewModelTest {
                     }
                 )
         }
-        val userNameUseCase = LoadUserByName(coroutineRule.testDispatcher, userRepository)
-        val userViewModelDelegate = UserViewModelDelegateImpl(
-            UserIntentProcessor(), UserActionProcessor(
-                userNameUseCase, UserLoadedMapper(), UserLoadFailedMapper()
-            )
-        )
-
-        val userViewModel = UserViewModel(userViewModelDelegate, SavedStateHandle())
+        val userViewModel = createViewModel(coroutineRule.testDispatcher, userRepository, SavedStateHandle())
         userViewModel.processIntents(UserViewIntent.QueryChangedIntent(SharedTestData.testQuery))
         runBlockingTest {
             val initState = CoroutineTestUtil.getValue(userViewModel.viewState, this)
@@ -76,13 +70,7 @@ class UserViewModelTest {
             onBlocking { loadUsers(SharedTestData.testQuery, false) }
                 .thenThrow(SocketTimeoutException())
         }
-        val userNameUseCase = LoadUserByName(coroutineRule.testDispatcher, userRepository)
-        val userViewModelDelegate = UserViewModelDelegateImpl(
-            UserIntentProcessor(), UserActionProcessor(
-                userNameUseCase, UserLoadedMapper(), UserLoadFailedMapper()
-            )
-        )
-        val userViewModel = UserViewModel(userViewModelDelegate, SavedStateHandle())
+        val userViewModel = createViewModel(coroutineRule.testDispatcher, userRepository, SavedStateHandle())
         userViewModel.processIntents(UserViewIntent.QueryChangedIntent(SharedTestData.testQuery))
         runBlockingTest {
             val initState = CoroutineTestUtil.getValue(userViewModel.viewState, this)
@@ -97,14 +85,7 @@ class UserViewModelTest {
     @ExperimentalCoroutinesApi
     @Test
     fun userDetailTest() = coroutineRule.runBlockingTest {
-        val userRepository = mock<UserRepository>()
-        val userNameUseCase = LoadUserByName(coroutineRule.testDispatcher, userRepository)
-        val userViewModelDelegate = UserViewModelDelegateImpl(
-            UserIntentProcessor(), UserActionProcessor(
-                userNameUseCase, UserLoadedMapper(), UserLoadFailedMapper()
-            )
-        )
-        val userViewModel = UserViewModel(userViewModelDelegate, SavedStateHandle())
+        val userViewModel = createViewModel(coroutineRule.testDispatcher, mock(), SavedStateHandle())
         userViewModel.processIntents(UserViewIntent.OpenUserDetailIntent(TestData.testUser))
         runBlockingTest {
             val initState = CoroutineTestUtil.getValue(userViewModel.viewState, this)
@@ -113,5 +94,21 @@ class UserViewModelTest {
             assert(loadState?.isLoading == false)
             assert(loadState?.event?.getEvent() is UserViewEvent.OpenDetailInfo)
         }
+    }
+
+    @FlowPreview
+    @ExperimentalCoroutinesApi
+    private fun createViewModel(
+        dispatcher: TestCoroutineDispatcher,
+        userRepository: UserRepository,
+        savedStateHandle: SavedStateHandle
+    ): UserViewModel {
+        val userNameUseCase = LoadUserByName(dispatcher, userRepository)
+        val userViewModelDelegate = UserViewModelDelegateImpl(
+            UserIntentProcessor(), UserActionProcessor(
+                userNameUseCase, UserLoadedMapper(), UserLoadFailedMapper()
+            )
+        )
+        return UserViewModel(userViewModelDelegate, savedStateHandle)
     }
 }

@@ -25,7 +25,7 @@ class UserAdapter(
 
     class UserDiffCallback : DiffUtil.ItemCallback<UserEntity>() {
         override fun areItemsTheSame(oldItem: UserEntity, newItem: UserEntity) =
-            oldItem.id == newItem.id
+            oldItem.userId == newItem.userId
 
         override fun areContentsTheSame(oldItem: UserEntity, newItem: UserEntity) =
             oldItem.name == newItem.name

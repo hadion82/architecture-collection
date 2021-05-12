@@ -7,7 +7,7 @@ import androidx.room.PrimaryKey
 @Entity(tableName = "user_query")
 data class QueryEntity(
     @PrimaryKey
-    val query: String,
+    val name_query: String,
     @ColumnInfo(name = "page")
     val page: Int
 )

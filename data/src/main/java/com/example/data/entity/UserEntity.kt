@@ -3,23 +3,24 @@ package com.example.data.entity
 import androidx.room.*
 import com.google.gson.annotations.SerializedName
 
-@Entity(
-        tableName = "users"
-        /*foreignKeys = [
-                ForeignKey(
-                        entity = QueryEntity::class,
-                        parentColumns = ["query"],
-                        childColumns = ["query"],
-                        onDelete = ForeignKey.CASCADE
-                )]
-        indices = [Index("query", "id", unique = true)] */
-)
+//@Entity(
+//        tableName = "users"
+//        /*foreignKeys = [
+//                ForeignKey(
+//                        entity = QueryEntity::class,
+//                        parentColumns = ["query"],
+//                        childColumns = ["query"],
+//                        onDelete = ForeignKey.CASCADE
+//                )]
+//        indices = [Index("query", "id", unique = true)] */
+//)
+@Entity(tableName = "users")
 data class UserEntity(
         @PrimaryKey(autoGenerate = true)
-        var _id: Int,
-        @ColumnInfo(name = "id")
-        val id: Long,
-        @ColumnInfo(name = "query")
+        var id: Int,
+        @ColumnInfo(name = "user_id")
+        val userId: Long,
+        @ColumnInfo(name = "user_query")
         var query: String?,
         @ColumnInfo(name = "user_name")
         @SerializedName(value = "login")

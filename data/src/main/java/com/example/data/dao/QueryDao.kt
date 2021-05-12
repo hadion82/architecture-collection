@@ -9,9 +9,9 @@ import com.example.data.entity.UserEntity
 @Dao
 internal interface QueryDao: BaseDao<QueryEntity> {
 
-    @Query("SELECT page FROM user_query WHERE `query` = :query")
+    @Query("SELECT page FROM user_query WHERE `name_query` = :query")
     fun getPage(query: String): Int?
 
-    @Query("DELETE FROM user_query WHERE `query` = :query")
+    @Query("DELETE FROM user_query WHERE `name_query` = :query")
     suspend fun deleteByQuery(query: String)
 }
