@@ -5,36 +5,36 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.launchIn
 
-fun <T> Flow<T>.launchWhenStartedUntilStopped(owner: LifecycleOwner) {
+fun <T> Flow<T>.launchWhileStartedIn(owner: LifecycleOwner) {
     if (owner.lifecycle.currentState == Lifecycle.State.DESTROYED) {
         return
     }
-    LifecycleController(this, owner, Lifecycle.State.STARTED, Lifecycle.Event.ON_STOP)
+    WhileStaredCollector(owner, this)
 }
 
-class LifecycleController<T>(
-    private val flow: Flow<T>,
+class WhileStaredCollector<T>(
     private val owner: LifecycleOwner,
-    private val launchState: Lifecycle.State,
-    private val cancelEvent: Lifecycle.Event
-) {
+    private val flow: Flow<T>,
+): DefaultLifecycleObserver {
+
     private var job: Job? = null
 
-    private val observer = LifecycleEventObserver { source, event ->
-        when {
-            source.lifecycle.currentState == launchState ->
-                job = flow.launchIn(owner.lifecycleScope)
-            event == cancelEvent -> job?.cancel()
-            source.lifecycle.currentState == Lifecycle.State.DESTROYED -> handleDestroy(job)
-        }
+    override fun onStart(owner: LifecycleOwner) {
+        flow.launchIn(owner.lifecycleScope)
+        super.onStart(owner)
+    }
+
+    override fun onStop(owner: LifecycleOwner) {
+        job?.cancel()
+        super.onStop(owner)
+    }
+
+    override fun onDestroy(owner: LifecycleOwner) {
+        owner.lifecycle.removeObserver(this)
+        super.onDestroy(owner)
     }
 
     init {
-        owner.lifecycle.addObserver(observer)
-    }
-
-    private fun handleDestroy(job: Job?) {
-        job?.cancel()
-        owner.lifecycle.removeObserver(observer)
+        owner.lifecycle.addObserver(this)
     }
 }

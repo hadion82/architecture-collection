@@ -32,7 +32,7 @@ internal class UserViewModelDelegateImpl @Inject constructor(
             .flatMapMerge(transform = actionProcessor::invoke)
             .scan(idleState) { state, action -> action.reduce(state) }
             .catch { Timber.d("UserViewModelDelegate Throwable : $it") }
-            .stateIn(viewModelScope, SharingStarted.Eagerly, idleState)
+            .stateIn(viewModelScope, SharingStarted.WhileSubscribed(), idleState)
 
     override fun MutableSharedFlow<UserViewIntent>.assemble(): Flow<UserViewIntent> = this
 }

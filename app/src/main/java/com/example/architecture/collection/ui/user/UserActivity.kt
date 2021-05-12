@@ -14,7 +14,7 @@ import com.bumptech.glide.util.FixedPreloadSizeProvider
 import com.example.architecture.collection.ui.userdetail.UserDetailActivity
 import com.example.architecture.databinding.ActivityUserBinding
 import com.example.core.extensions.launch
-import com.example.core.extensions.launchWhenStartedUntilStopped
+import com.example.core.extensions.launchWhileStartedIn
 import com.example.core.extensions.pixel
 import com.example.core.extensions.queryTextSubmit
 import com.example.core.ui.IntentView
@@ -78,7 +78,7 @@ class UserActivity : AppCompatActivity(), IntentView<UserViewIntent, UserViewSta
     @ExperimentalCoroutinesApi
     private fun bindViewModel() {
         viewModel.viewState.onEach { render(it) }
-            .launchWhenStartedUntilStopped(this)
+            .launchWhileStartedIn(this)
 
         intents.onEach { viewModel.processIntents(it) }
             .launchIn(lifecycleScope)
