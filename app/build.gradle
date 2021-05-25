@@ -69,7 +69,7 @@ dependencies {
     //noinspection GradleDependency
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
     implementation 'androidx.appcompat:appcompat:1.3.0'
-    implementation 'androidx.core:core-ktx:1.3.2'
+    implementation 'androidx.core:core-ktx:1.5.0'
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
@@ -90,7 +90,7 @@ dependencies {
     kaptAndroidTest "com.google.dagger:hilt-android-compiler:$hilt_test_version"
     androidTestAnnotationProcessor "com.google.dagger:hilt-android-compiler:$hilt_test_version"
 
-    def coroutines_test_version = "1.4.1"
+    def coroutines_test_version = "1.4.3"
     testImplementation "org.jetbrains.kotlinx:kotlinx-coroutines-test:$coroutines_test_version"
     androidTestImplementation "org.jetbrains.kotlinx:kotlinx-coroutines-test:$coroutines_test_version"
 
@@ -188,8 +188,8 @@ dependencies {
     def window_version = "1.0.0-alpha06"
     implementation "androidx.window:window:$window_version"
 
-    def window_version_extensions = "1.0.0-alpha01"
-    implementation "androidx.window:window-extensions:$window_version_extensions"
+    def window_extensions_version = "1.0.0-alpha01"
+    implementation "androidx.window:window-extensions:$window_extensions_version"
 
     def tracing_version = '1.0.0'
     implementation "androidx.tracing:tracing-ktx:$tracing_version"

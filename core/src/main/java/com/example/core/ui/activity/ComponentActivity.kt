@@ -1,41 +1,54 @@
 package com.example.core.ui.activity
 
 import android.os.Bundle
-import android.util.Log
 import androidx.databinding.ViewDataBinding
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
-import androidx.window.DeviceState
-import androidx.window.WindowBackend
-import androidx.window.WindowManager
-import com.example.core.ui.window.WindowDeviceState
-import timber.log.Timber
+import androidx.window.FoldingFeature
+import androidx.window.FoldingFeature.Companion.STATE_FLAT
+import androidx.window.FoldingFeature.Companion.STATE_HALF_OPENED
+import androidx.window.WindowLayoutInfo
+import com.example.core.ui.window.WindowLayoutState
 
 abstract class ComponentActivity<VDB : ViewDataBinding> :
     BindingActivity<VDB>() {
 
-    private var windowState: WindowDeviceState? = null
+    private var windowState: WindowLayoutState? = null
 
     fun <T> LiveData<T>.collect(collect: (T) -> Unit) =
             this.observe(this@ComponentActivity, Observer { collect(it) })
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        windowState = WindowDeviceState(this, null)
-        windowState?.registerDeviceStateChange(
+        windowState = WindowLayoutState(this)
+        windowState?.registerLayoutChange(
             lifecycleScope,
-            this::onDeviceStateChange
+            this::onLayoutStateChange
         )
     }
 
     override fun onDestroy() {
-        windowState?.unregisterDeviceStateChange()
+        windowState?.unregisterLayoutChange()
         super.onDestroy()
     }
 
-    open fun onDeviceStateChange(deviceState: DeviceState) {
+    private fun onLayoutStateChange(layoutInfo: WindowLayoutInfo) {
+        layoutInfo.displayFeatures.forEach { feature ->
+            if(feature is FoldingFeature) {
+                when(feature.state) {
+                    STATE_HALF_OPENED -> onStateHalfOpened()
+                    STATE_FLAT -> onStateFlat()
+                }
+            }
+        }
+    }
+
+    open fun onStateHalfOpened() {
+
+    }
+
+    open fun onStateFlat() {
 
     }
 }

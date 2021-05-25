@@ -69,6 +69,7 @@ class UserActivity : AppCompatActivity(), IntentView<UserViewIntent, UserViewSta
             itemAnimator = null
             adapter = userAdapter
             setHasFixedSize(true)
+            setItemViewCacheSize(20)
             addOnScrollListener(preLoader)
         }
         bindViewModel()
