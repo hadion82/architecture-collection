@@ -1,7 +1,9 @@
-apply plugin: 'com.android.application'
-apply plugin: 'kotlin-android'
-apply plugin: 'kotlin-kapt'
-apply plugin: 'dagger.hilt.android.plugin'
+plugins {
+    id 'com.android.application'
+    id 'kotlin-android'
+    id 'kotlin-kapt'
+    id 'dagger.hilt.android.plugin'
+}
 
 android {
     compileSdkVersion build_versions.compile
@@ -138,7 +140,7 @@ dependencies {
             libs.robolectric,
             libs.mockito
     )
-    kaptTest(libs.hilt_test_kapt)
+    kaptTest(libs.hilt_kapt)
 
     //android test
     androidTestImplementation(
@@ -147,7 +149,7 @@ dependencies {
             libs.hilt_test,
             libs.coroutines_test
     )
-    kaptAndroidTest(libs.hilt_test_kapt)
+    kaptAndroidTest(libs.hilt_kapt)
     androidTestUtil(libs.android_test_util)
 
     //project

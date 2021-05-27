@@ -1,6 +1,8 @@
-apply plugin: 'com.android.library'
-apply plugin: 'kotlin-android'
-apply plugin: 'kotlin-kapt'
+plugins {
+    id 'com.android.library'
+    id 'kotlin-android'
+    id 'kotlin-kapt'
+}
 
 android {
     compileSdkVersion build_versions.compile
@@ -107,7 +109,7 @@ dependencies {
             libs.robolectric,
             libs.mockito
     )
-    kaptTest(libs.hilt_test_kapt)
+    kaptTest(libs.hilt_kapt)
 
     //android test
     androidTestImplementation(
@@ -115,7 +117,7 @@ dependencies {
             libs.hilt_test
     )
     androidTestUtil(libs.android_test_util)
-    kaptAndroidTest(libs.hilt_test_kapt)
+    kaptAndroidTest(libs.hilt_kapt)
 
     //project
     implementation(

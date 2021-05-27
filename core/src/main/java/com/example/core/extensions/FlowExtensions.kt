@@ -13,14 +13,14 @@ fun <T> Flow<T>.launchWhileStartedIn(owner: LifecycleOwner) {
 }
 
 class WhileStaredCollector<T>(
-    private val owner: LifecycleOwner,
+    owner: LifecycleOwner,
     private val flow: Flow<T>,
 ): DefaultLifecycleObserver {
 
     private var job: Job? = null
 
     override fun onStart(owner: LifecycleOwner) {
-        flow.launchIn(owner.lifecycleScope)
+        job = flow.launchIn(owner.lifecycleScope)
         super.onStart(owner)
     }
 
