@@ -1,14 +1,14 @@
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
 
 buildscript {
-    ext.kotlin_version = '1.5.0'
+    ext.kotlin_version = '1.5.10'
     repositories {
         google()
         mavenCentral()
         
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:4.2.0'
+        classpath 'com.android.tools.build:gradle:4.2.1'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
 
         // NOTE: Do not place your application dependencies here; they belong
@@ -24,31 +24,86 @@ buildscript {
         build_versions.tools = '30.0.3'
 
         versions = [:]
-        versions.recyclerview = '1.1.0'
-        versions.lifecycle = '2.2.0'
-        versions.room = '2.2.5'
-        versions.dagger = '2.26'
-        versions.fragment_ktx = '1.2.4'
-        versions.reflect = '1.3.71'
-
         libs = [:]
+
+        versions.appcompat = "1.3.0"
+        libs.appcompat = "androidx.appcompat:appcompat:$versions.appcompat"
+
+        versions.core_ktx = "1.5.0"
+        libs.core_ktx = "androidx.core:core-ktx:$versions.core_ktx"
+
+        versions.junit = "4.13.2"
+        libs.junit = "junit:junit:$versions.junit "
+
+        versions.test_ext = "1.1.2"
+        libs.test_ext = "androidx.test.ext:junit:$versions.test_ext"
+
+        versions.espresso = "3.3.0"
+        libs.espresso = "androidx.test.espresso:espresso-core:$versions.espresso"
+
+        versions.activity_ktx = "1.2.3"
+        libs.activity_ktx = "androidx.activity:activity-ktx:$versions.activity_ktx"
+
+        versions.fragment_ktx = "1.3.4"
+        libs.fragment = "androidx.fragment:fragment-ktx:$versions.fragment_ktx"
+
+        versions.constraint_layout = "2.0.4"
+        libs.constraintlayout = "androidx.constraintlayout:constraintlayout:$versions.constraint_layout"
+
+        versions.material = "1.3.0"
+        libs.material = "com.google.android.material:material:$versions.material"
+
+        versions.slidingpanelayout = "1.2.0-alpha02"
+        libs.slidingpanelayout = "androidx.slidingpanelayout:slidingpanelayout:$versions.slidingpanelayout"
+
+        versions.recyclerview = "1.2.0"
         libs.recyclerview = "androidx.recyclerview:recyclerview:$versions.recyclerview"
+
+        versions.paging = "3.0.0"
+        libs.paging = [
+                "androidx.paging:paging-runtime-ktx:$versions.paging",
+                "androidx.paging:paging-rxjava2-ktx:$versions.paging",
+                "androidx.paging:paging-guava:$versions.paging"
+        ]
+
+        versions.viewpager2 = "1.0.0"
+        libs.viewpager2 = "androidx.viewpager2:viewpager2:$versions.viewpager2"
+
+        versions.navigation = "2.3.5"
+        libs.navigation = [
+                "androidx.navigation:navigation-fragment-ktx:$versions.navigation",
+                "androidx.navigation:navigation-ui-ktx:$versions.navigation"
+        ]
+
+        versions.lifecycle = "2.3.1"
+        versions.lifecycle_extensions = "2.2.0"
         libs.lifecycle = [
-                "androidx.lifecycle:lifecycle-extensions:$versions.lifecycle",
                 "androidx.lifecycle:lifecycle-livedata:$versions.lifecycle",
                 "androidx.lifecycle:lifecycle-viewmodel:$versions.lifecycle",
                 "androidx.lifecycle:lifecycle-viewmodel-ktx:$versions.lifecycle",
-                "androidx.lifecycle:lifecycle-livedata-ktx:$versions.lifecycle"
+                "androidx.lifecycle:lifecycle-livedata-ktx:$versions.lifecycle",
+                "androidx.lifecycle:lifecycle-extensions:$versions.lifecycle_extensions",
+                "androidx.lifecycle:lifecycle-common-java8:$versions.lifecycle"
         ]
 
+
+        libs.lifecycle_kapt = "androidx.lifecycle:lifecycle-compiler:$versions.lifecycle"
+
+        versions.room = "2.4.0-alpha02"
         libs.room = [
                 "androidx.room:room-runtime:$versions.room",
                 "androidx.room:room-ktx:$versions.room",
-                "androidx.room:room-rxjava2:$versions.room"
+                "androidx.room:room-rxjava2:$versions.room",
+                "androidx.room:room-guava:$versions.room"
         ]
 
+        versions.room_compile = "2.2.6"
         libs.room_kapt = "androidx.room:room-compiler:$versions.room"
 
+        versions.room_testing = "2.4.0-alpha02"
+        libs.room_testing = "androidx.room:room-testing:$versions.room_testing"
+
+        versions.dagger = "2.35.1"
         libs.dagger = [
                 "com.google.dagger:dagger-android:$versions.dagger",
                 "com.google.dagger:dagger-android-support:$versions.dagger"
@@ -59,9 +114,135 @@ buildscript {
                 "com.google.dagger:dagger-android-processor:$versions.dagger"
         ]
 
-        libs.fragment = "androidx.fragment:fragment-ktx:$versions.fragment_ktx"
+        versions.hilt_android = "2.31.2-alpha"
+        libs.hilt = "com.google.dagger:hilt-android:$versions.hilt_android"
 
+        versions.hilt = "1.0.0-alpha02"
+        libs.hilt_kapt = [
+                "com.google.dagger:hilt-android-compiler:$versions.hilt_android",
+                "androidx.hilt:hilt-compiler:$versions.hilt"
+        ]
+
+
+        versions.okhttp = "4.9.0"
+        libs.okhttp = [
+                "com.squareup.okhttp3:okhttp:$versions.okhttp",
+                "com.squareup.okhttp3:logging-interceptor:$versions.okhttp"
+        ]
+
+        versions.retrofit = "2.9.0"
+        libs.retrofit = [
+                "com.squareup.retrofit2:converter-gson:$versions.retrofit",
+                "com.squareup.retrofit2:retrofit:$versions.retrofit",
+                "com.squareup.retrofit2:adapter-rxjava2:$versions.retrofit"
+        ]
+
+        versions.glide = "4.12.0"
+        libs.glide = "com.github.bumptech.glide:glide:$versions.glide"
+        libs.glide_api = "com.github.bumptech.glide:recyclerview-integration:$versions.glide"
+
+        versions.coroutine = "1.4.2"
+        libs.coroutine = [
+                "org.jetbrains.kotlinx:kotlinx-coroutines-core:$versions.coroutine",
+                "org.jetbrains.kotlinx:kotlinx-coroutines-android:$versions.coroutine"
+        ]
+
+        versions.rxjava = "2.2.19"
+        versions.rxjava_android = "2.1.1"
+        libs.rxjava = [
+                "io.reactivex.rxjava2:rxjava:$versions.rxjava",
+                "io.reactivex.rxjava2:rxandroid:$versions.rxjava_android"
+        ]
+
+        versions.gson = "2.8.6"
+        libs.gson = "com.google.code.gson:gson:$versions.gson"
+
+        versions.commons_io = "2.6"
+        libs.commons_io = "commons-io:commons-io:$versions.commons_io"
+
+        versions.dexter = "6.0.0"
+        libs.dexter = "com.karumi:dexter:$versions.dexter"
+
+        versions.permissions = "1.0.3"
+        libs.permissions = "ru.superjob:kotlin-permissions:$versions.permissions"
+
+        versions.startup = "1.0.0"
+        libs.startup = "androidx.startup:startup-runtime:$versions.startup"
+
+        versions.window = "1.0.0-alpha06"
+        versions.window_extensions = "1.0.0-alpha01"
+        libs.window = [
+                "androidx.window:window:$versions.window",
+                "androidx.window:window-extensions:$versions.window_extensions"
+        ]
+
+        versions.datastore = "1.0.0-beta01"
+        libs.datastore = [
+                "androidx.datastore:datastore:$versions.datastore",
+                "androidx.datastore:datastore-preferences:$versions.datastore",
+                "androidx.datastore:datastore-rxjava2:$versions.datastore",
+                "androidx.datastore:datastore-rxjava3:$versions.datastore",
+                "androidx.datastore:datastore-core:$versions.datastore"
+        ]
+
+        versions.rxbinding = "2.2.0"
+        versions.rxbinding_ktx = "2.1.1"
+        libs.rxbinding = [
+                "com.jakewharton.rxbinding2:rxbinding:$versions.rxbinding",
+                "com.jakewharton.rxbinding2:rxbinding-kotlin:$versions.rxbinding_ktx"
+        ]
+
+        versions.reflect = "1.5.10"
         libs.reflect = "org.jetbrains.kotlin:kotlin-reflect:$versions.reflect"
+
+        versions.awaitility = "4.0.3"
+        libs.awaitility = "org.awaitility:awaitility:$versions.awaitility"
+
+        versions.stetho = "1.5.1"
+        libs.stetho = "com.facebook.stetho:stetho:$versions.stetho"
+
+        versions.timber = "4.7.1"
+        libs.timber = "com.jakewharton.timber:timber:$versions.timber"
+
+        versions.chuck = "1.1.0"
+        libs.chuck_debug = "com.readystatesoftware.chuck:library:$versions.chuck"
+        libs.chuck_release = "com.readystatesoftware.chuck:library-no-op:$versions.chuck"
+
+        versions.tracing = '1.0.0'
+        libs.tracing =  "androidx.tracing:tracing-ktx:$versions.tracing"
+
+
+        versions.android_test = "1.3.0"
+        libs.android_test = [
+                "androidx.test:runner:$versions.android_test",
+                "androidx.test:rules:$versions.android_test"
+        ]
+        libs.android_test_util = "androidx.test:orchestrator:$versions.android_test"
+
+        versions.core_testing = "2.1.0"
+        libs.core_testing = "androidx.arch.core:core-testing:$versions.core_testing"
+
+        versions.hilt_test = "2.28-alpha"
+        libs.hilt_test = "com.google.dagger:hilt-android-testing:$versions.hilt_test"
+
+        versions.hilt_test_compiler = "2.28-alpha"
+        libs.hilt_test_kapt = "com.google.dagger:hilt-android-compiler:$versions.hilt_test_compiler"
+
+        versions.okhttp_mockwebserver = "4.7.2"
+        libs.okhttp_mockwebserver = "com.squareup.okhttp3:mockwebserver:$versions.okhttp_mockwebserver"
+
+        versions.coroutines_test = "1.4.3"
+        libs.coroutines_test = "org.jetbrains.kotlinx:kotlinx-coroutines-test:$versions.coroutines_test"
+
+        versions.robolectric = "4.3.1"
+        libs.robolectric = "org.robolectric:robolectric:$versions.robolectric"
+
+        versions.mockito_inline = "3.3.1"
+        versions.mockito_kotlin2 = "2.2.0"
+        libs.mockito = [
+                "org.robolectric:robolectric:$versions.mockito_inline",
+                "com.nhaarman.mockitokotlin2:mockito-kotlin:$versions.mockito_kotlin2"
+        ]
     }
 }
 

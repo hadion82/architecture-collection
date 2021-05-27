@@ -10,9 +10,6 @@ import com.example.data.entity.UserEntity
 @Dao
 internal interface UserDao: BaseDao<UserEntity> {
 
-    @Query("SELECT COUNT(id) FROM users")
-    suspend fun getCount(): Int
-
     @Query("SELECT * FROM users WHERE `user_query` = :query")
     fun observeUser(query: String): LiveData<List<UserEntity>>
 
