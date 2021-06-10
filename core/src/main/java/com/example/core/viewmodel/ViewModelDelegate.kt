@@ -5,7 +5,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.StateFlow
 
-interface ViewModelDelegate<ViewIntent, ViewState> {
+interface ViewModelDelegate<ViewIntent, out ViewState> {
     val intentFlow: MutableSharedFlow<ViewIntent>
 
     val idleState: ViewState

@@ -4,7 +4,7 @@ import com.example.core.functional.FlowResult
 import kotlinx.coroutines.*
 import kotlin.Exception
 
-abstract class CoroutineUseCase<in P, T>(
+abstract class CoroutineUseCase<in P, out T>(
     private val coroutineDispatcher: CoroutineDispatcher
 ) where T : Any {
 

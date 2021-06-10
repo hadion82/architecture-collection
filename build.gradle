@@ -33,7 +33,7 @@ buildscript {
         libs.core_ktx = "androidx.core:core-ktx:$versions.core_ktx"
 
         versions.junit = "4.13.2"
-        libs.junit = "junit:junit:$versions.junit "
+        libs.junit = "junit:junit:$versions.junit"
 
         versions.test_ext = "1.1.2"
         libs.test_ext = "androidx.test.ext:junit:$versions.test_ext"

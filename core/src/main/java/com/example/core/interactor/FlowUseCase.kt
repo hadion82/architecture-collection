@@ -7,7 +7,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.flowOn
 
-abstract class FlowUseCase<in P, T>(
+abstract class FlowUseCase<in P, out T>(
     private val coroutineDispatcher: CoroutineDispatcher
 ) where T: Any {
 

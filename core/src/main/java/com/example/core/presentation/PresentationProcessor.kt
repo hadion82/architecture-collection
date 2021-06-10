@@ -1,5 +1,5 @@
 package com.example.core.presentation
 
-interface PresentationProcessor<T, R> {
+interface PresentationProcessor<in T, out R> {
     suspend fun invoke(value: T): R
 }

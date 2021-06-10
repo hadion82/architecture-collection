@@ -4,7 +4,7 @@ import androidx.room.*
 
 
 @Dao
-interface BaseDao<T> {
+interface BaseDao<in T> {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insert(vararg values: T)
 

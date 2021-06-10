@@ -49,10 +49,11 @@ dependencies {
     //base
     implementation(
             libs.appcompat,
-            libs.core_ktx
+            libs.core_ktx,
+            libs.recyclerview
     )
 
-    testImplementation(
+    implementation(
             libs.junit,
             libs.test_ext,
             libs.espresso
