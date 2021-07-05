@@ -1,7 +1,7 @@
 include ':test'
 include ':domain'
 include ':data'
-include ':core'
+include ':shared'
 rootProject.name='android-architecture-collection'
 include ':app'
 include ':versions'

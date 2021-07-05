@@ -156,7 +156,7 @@ dependencies {
     implementation(
             project(':domain'),
             project(':data'),
-            project(':core')
+            project(':shared')
     )
 
     testImplementation(project(':test'))

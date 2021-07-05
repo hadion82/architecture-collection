@@ -100,5 +100,5 @@ dependencies {
     //test
     testImplementation(libs.mockito)
 
-    implementation project(':core')
+    implementation project(':shared')
 }

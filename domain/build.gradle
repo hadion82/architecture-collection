@@ -121,13 +121,13 @@ dependencies {
 
     //project
     implementation(
-            project(':core'),
+            project(':shared'),
             project(':data')
     )
 
     //test project
     testImplementation(
             project(':test'),
-            project(":core")
+            project(':shared')
     )
 }
