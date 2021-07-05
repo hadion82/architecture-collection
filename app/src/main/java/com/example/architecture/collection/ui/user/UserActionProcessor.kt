@@ -5,8 +5,8 @@ import com.example.core.presentation.PresentationProcessor
 import com.example.data.entity.UserEntity
 import com.example.domain.feature.LoadUserByName
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOf
-import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
 class UserActionProcessor @Inject constructor(
@@ -29,9 +29,11 @@ class UserActionProcessor @Inject constructor(
 
     private fun loadingAction() = flowOf(UserViewResult.Loading)
 
-    private suspend fun loadUsersAction(query: String, isRefresh: Boolean) =
-        flowOf(loadUserByName(LoadUserByName.Params(query, isRefresh)))
-            .map { it.subscribe(UserLoadedMapper, userLoadFailedMapper) }
+    private suspend fun loadUsersAction(query: String, isRefresh: Boolean) = flow {
+        emit(UserViewResult.Loading)
+        emit(loadUserByName(LoadUserByName.Params(query, isRefresh))
+            .subscribe(UserLoadedMapper, userLoadFailedMapper))
+    }
 
     private fun openDetailInfoAction(user: UserEntity) = flowOf(UserViewResult.Open(user))
 }
