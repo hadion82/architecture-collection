@@ -1,11 +1,10 @@
-package com.example.architecture.collection.ui.user
+package com.example.architecture.collection.feature.user
 
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.example.architecture.databinding.ListItemUserBinding
 import com.example.data.entity.UserEntity
-import timber.log.Timber
 
 class UserViewHolder internal constructor(
     private val binding: ListItemUserBinding

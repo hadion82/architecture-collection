@@ -1,4 +1,4 @@
-package com.example.architecture.collection.ui.user
+package com.example.architecture.collection.feature.user
 
 import android.content.Intent
 import android.os.Bundle
@@ -11,7 +11,7 @@ import androidx.paging.PagingData
 import com.bumptech.glide.integration.recyclerview.RecyclerViewPreloader
 
 import com.bumptech.glide.util.FixedPreloadSizeProvider
-import com.example.architecture.collection.ui.userdetail.UserDetailActivity
+import com.example.architecture.collection.feature.userdetail.UserDetailActivity
 import com.example.architecture.databinding.ActivityUserBinding
 import com.example.core.extensions.launch
 import com.example.core.extensions.launchWhileStartedIn

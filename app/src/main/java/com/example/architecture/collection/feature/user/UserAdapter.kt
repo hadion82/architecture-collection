@@ -1,4 +1,4 @@
-package com.example.architecture.collection.ui.user
+package com.example.architecture.collection.feature.user
 
 import android.content.Context
 import android.view.LayoutInflater

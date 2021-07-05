@@ -1,4 +1,4 @@
-package com.example.architecture.collection.ui.user
+package com.example.architecture.collection.feature.user
 
 import com.example.core.functional.subscribe
 import com.example.core.presentation.PresentationProcessor

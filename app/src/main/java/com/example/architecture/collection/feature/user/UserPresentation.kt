@@ -1,4 +1,4 @@
-package com.example.architecture.collection.ui.user
+package com.example.architecture.collection.feature.user
 
 import androidx.paging.PagingData
 import com.example.core.alias.Mapper
@@ -12,6 +12,7 @@ import javax.inject.Inject
 
 sealed class UserViewIntent: ViewIntent {
     object Initialize : UserViewIntent()
+    data class Refresh(val query: String = ""): UserViewIntent()
     data class QueryChangedIntent(val query: String, var isRefresh: Boolean = false) : UserViewIntent()
     data class OpenUserDetailIntent(val user: UserEntity) : UserViewIntent()
 }

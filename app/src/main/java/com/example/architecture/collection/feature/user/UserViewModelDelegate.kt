@@ -1,4 +1,4 @@
-package com.example.architecture.collection.ui.user
+package com.example.architecture.collection.feature.user
 
 import com.example.core.viewmodel.ViewModelDelegate
 import kotlinx.coroutines.CoroutineScope
@@ -11,7 +11,7 @@ import javax.inject.Inject
 interface UserViewModelDelegate :
     ViewModelDelegate<UserViewIntent, UserViewState>
 
-internal class UserViewModelDelegateImpl @Inject constructor(
+class UserViewModelDelegateImpl @Inject constructor(
     private val intentProcessor: UserIntentProcessor,
     private val actionProcessor: UserActionProcessor
 ) : UserViewModelDelegate {

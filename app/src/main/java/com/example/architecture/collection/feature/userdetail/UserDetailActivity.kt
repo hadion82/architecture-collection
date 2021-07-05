@@ -1,4 +1,4 @@
-package com.example.architecture.collection.ui.userdetail
+package com.example.architecture.collection.feature.userdetail
 
 import android.annotation.SuppressLint
 import android.os.Bundle

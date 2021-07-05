@@ -1,4 +1,4 @@
-package com.example.architecture.collection.ui.user
+package com.example.architecture.collection.feature.user
 
 import dagger.Module
 import dagger.Provides
@@ -12,7 +12,7 @@ class UserViewModelDelegateModule {
 
     @Singleton
     @Provides
-    fun provideUserViewModelDelegate(
+    fun provideUserViewModelDelegateImpl(
         intentProcessor: UserIntentProcessor,
         actionProcessor: UserActionProcessor
     ): UserViewModelDelegate = UserViewModelDelegateImpl(

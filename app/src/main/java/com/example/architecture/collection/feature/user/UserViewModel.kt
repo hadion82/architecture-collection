@@ -1,4 +1,4 @@
-package com.example.architecture.collection.ui.user
+package com.example.architecture.collection.feature.user
 
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
@@ -18,7 +18,7 @@ class UserViewModel @Inject constructor(
 ) : ViewModel(), UserViewModelDelegate by userViewModelDelegate {
 
     companion object {
-        const val ONE_MIN = 60 * 1000
+        const val LAST_QUERY = "LAST_QUERY"
     }
 
     val viewState: StateFlow<UserViewState> = stateFlowOf(viewModelScope)
@@ -27,15 +27,16 @@ class UserViewModel @Inject constructor(
         val initialIntent = filterIsInstance<UserViewIntent.Initialize>().take(1)
         val queryIntent = filterIsInstance<UserViewIntent.QueryChangedIntent>()
             .map { intent ->
-                val currentTimeMillis = System.currentTimeMillis()
-                val isRefresh: Boolean = currentTimeMillis -
-                        (savedStateHandle.get(intent.query) ?: currentTimeMillis) > ONE_MIN
-                savedStateHandle[intent.query] = currentTimeMillis
-                intent.apply { this.isRefresh = isRefresh }
+                savedStateHandle[LAST_QUERY] = intent.query
+                intent
             }
         val detailIntent = filterIsInstance<UserViewIntent.OpenUserDetailIntent>()
+        val refreshIntent = filterIsInstance<UserViewIntent.Refresh>()
+            .map { intent ->
+                intent.copy(query = savedStateHandle[LAST_QUERY] ?: "")
+            }
         return merge(
-            initialIntent, queryIntent, detailIntent
+            initialIntent, refreshIntent, queryIntent, detailIntent
         )
     }
 }

@@ -2,7 +2,7 @@ package com.example.architecture.usecase
 
 import androidx.lifecycle.SavedStateHandle
 import androidx.paging.PagingData
-import com.example.architecture.collection.ui.user.*
+import com.example.architecture.collection.feature.user.*
 import com.example.architecture.data.TestData
 import com.example.data.repository.UserRepository
 import com.example.domain.feature.LoadUserByName

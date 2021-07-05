@@ -13,7 +13,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:name=".collection.AndroidApplication">
-        <activity android:name=".collection.ui.user.UserActivity"
+        <activity android:name=".collection.feature.user.UserActivity"
             tools:ignore="Instantiatable"
             android:configChanges="orientation|screenSize|screenLayout|keyboardHidden">
             <intent-filter>
@@ -23,7 +23,13 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".collection.ui.userdetail.UserDetailActivity"/>
+        <activity android:name=".collection.feature.userdetail.UserDetailActivity"/>
+
+        <receiver android:name=".collection.broadcast.UserUpdateBroadcastReceiver">
+            <intent-filter>
+                <action android:name="com.architecture.action.USER_REFRESH"/>
+            </intent-filter>
+        </receiver>
 
         <meta-data
             android:name="android.supports_size_changes" android:value="true" />
