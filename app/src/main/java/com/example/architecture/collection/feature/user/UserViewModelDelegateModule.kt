@@ -18,4 +18,8 @@ class UserViewModelDelegateModule {
     ): UserViewModelDelegate = UserViewModelDelegateImpl(
         intentProcessor, actionProcessor
     )
+
+    @Singleton
+    @Provides
+    fun provideUserViewBinding(): UserViewStateBinding = UserViewStateBindingImpl()
 }

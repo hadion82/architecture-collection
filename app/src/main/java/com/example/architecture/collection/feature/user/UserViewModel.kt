@@ -14,14 +14,16 @@ import javax.inject.Inject
 @HiltViewModel
 class UserViewModel @Inject constructor(
     userViewModelDelegate: UserViewModelDelegate,
-    private val savedStateHandle: SavedStateHandle
+    private val savedStateHandle: SavedStateHandle,
+    private val userViewStateBinding: UserViewStateBinding
 ) : ViewModel(), UserViewModelDelegate by userViewModelDelegate {
 
     companion object {
         const val LAST_QUERY = "LAST_QUERY"
     }
 
-    val viewState: StateFlow<UserViewState> = stateFlowOf(viewModelScope)
+    val viewState: Flow<UserViewState> = stateFlowOf(viewModelScope)
+        .onEach { userViewStateBinding.bind(it) }
 
     override fun MutableSharedFlow<UserViewIntent>.assemble(): Flow<UserViewIntent> {
         val initialIntent = filterIsInstance<UserViewIntent.Initialize>().take(1)

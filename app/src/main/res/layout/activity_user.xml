@@ -2,6 +2,15 @@
 
 <layout>
 
+    <data>
+
+        <variable
+            name="binding"
+            type="com.example.architecture.collection.feature.user.UserViewStateBindingImpl" />
+
+        <import type="android.view.View" />
+    </data>
+
     <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
@@ -14,8 +23,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:defaultQueryHint="Enter the query"
-            app:layout_constraintTop_toTopOf="parent"
-            />
+            app:layout_constraintTop_toTopOf="parent" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/user_list"
@@ -23,8 +31,8 @@
             android:layout_height="0dp"
             android:layout_margin="10dp"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            app:layout_constraintTop_toBottomOf="@+id/search"
-            app:layout_constraintBottom_toBottomOf="parent"/>
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/search" />
 
         <ProgressBar
             android:id="@+id/progress"
@@ -32,10 +40,11 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:visibility="gone"
-            app:layout_constraintTop_toTopOf="@id/user_list"
             app:layout_constraintBottom_toBottomOf="@id/user_list"
+            app:layout_constraintEnd_toEndOf="@id/user_list"
             app:layout_constraintStart_toStartOf="@id/user_list"
-            app:layout_constraintEnd_toEndOf="@id/user_list"/>
+            app:layout_constraintTop_toTopOf="@id/user_list" />
+<!--        android:visibility="@{binding.isLoadingFlow ? View.VISIBLE : View.GONE}"-->
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
