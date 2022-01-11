@@ -34,7 +34,7 @@ class LoadUsersNetworkTest {
     @get:Rule
     val hiltRule = HiltAndroidRule(this)
 
-    @ExperimentalCoroutinesApi
+    @OptIn(ExperimentalCoroutinesApi::class)
     @get:Rule
     val coroutineRule = MainCoroutineRule()
 
@@ -50,7 +50,7 @@ class LoadUsersNetworkTest {
         hiltRule.inject()
     }
 
-    @ExperimentalCoroutinesApi
+    @OptIn(ExperimentalCoroutinesApi::class)
     @Test
     fun loadUsersByName_with_network() = coroutineRule.runBlockingTest {
         val result: FlowResult<Flow<PagingData<UserEntity>>> =

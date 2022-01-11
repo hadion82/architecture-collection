@@ -9,13 +9,12 @@ import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.*
 import javax.inject.Inject
 
-@ExperimentalCoroutinesApi
+@OptIn(ExperimentalCoroutinesApi::class)
 @FlowPreview
 @HiltViewModel
 class UserViewModel @Inject constructor(
     userViewModelDelegate: UserViewModelDelegate,
-    private val savedStateHandle: SavedStateHandle,
-    private val userViewStateBinding: UserViewStateBinding
+    private val savedStateHandle: SavedStateHandle
 ) : ViewModel(), UserViewModelDelegate by userViewModelDelegate {
 
     companion object {
@@ -23,7 +22,6 @@ class UserViewModel @Inject constructor(
     }
 
     val viewState: Flow<UserViewState> = stateFlowOf(viewModelScope)
-        .onEach { userViewStateBinding.bind(it) }
 
     override fun MutableSharedFlow<UserViewIntent>.assemble(): Flow<UserViewIntent> {
         val initialIntent = filterIsInstance<UserViewIntent.Initialize>().take(1)

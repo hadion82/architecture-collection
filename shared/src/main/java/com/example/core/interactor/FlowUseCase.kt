@@ -11,10 +11,10 @@ abstract class FlowUseCase<in P, out T>(
     private val coroutineDispatcher: CoroutineDispatcher
 ) where T: Any {
 
-    @InternalCoroutinesApi
+    @OptIn(InternalCoroutinesApi::class)
     abstract fun execute(params: P): Flow<FlowResult<T>>
 
-    @InternalCoroutinesApi
+    @OptIn(InternalCoroutinesApi::class)
     operator fun invoke(params: P) = execute(params)
         .catch { FlowResult.Failure(Exception(it)) }
         .flowOn(coroutineDispatcher)

@@ -17,7 +17,7 @@ class UserActivityTest {
     @get:Rule
     val activityRule = ActivityScenarioRule(UserActivity::class.java)
 
-    @ExperimentalCoroutinesApi
+    @OptIn(ExperimentalCoroutinesApi::class)
     @Test
     fun testUserActivity() {
         onView(withId(R.id.search)).check(matches(isDisplayed()))

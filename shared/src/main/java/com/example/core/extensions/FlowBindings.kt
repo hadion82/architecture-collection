@@ -15,14 +15,14 @@ import kotlinx.coroutines.flow.callbackFlow
 import kotlinx.coroutines.flow.onStart
 import timber.log.Timber
 
-@ExperimentalCoroutinesApi
+@OptIn(ExperimentalCoroutinesApi::class)
 fun <E> SendChannel<E>.safeOffer(value: E): Boolean = !isClosedForSend && try {
     offer(value)
 } catch (e: CancellationException) {
     false
 }
 
-@ExperimentalCoroutinesApi
+@OptIn(ExperimentalCoroutinesApi::class)
 fun View.clicks(): Flow<View> {
     return callbackFlow {
         setOnClickListener {
@@ -32,7 +32,7 @@ fun View.clicks(): Flow<View> {
     }
 }
 
-@ExperimentalCoroutinesApi
+@OptIn(ExperimentalCoroutinesApi::class)
 @CheckResult
 fun EditText.textChanges(): Flow<CharSequence?> =
     callbackFlow<CharSequence?> {
@@ -48,7 +48,7 @@ fun EditText.textChanges(): Flow<CharSequence?> =
     }.onStart { emit(text) }
 
 
-@ExperimentalCoroutinesApi
+@OptIn(ExperimentalCoroutinesApi::class)
 @CheckResult
 fun SearchView.queryTextSubmit(): Flow<CharSequence?> =
     callbackFlow {

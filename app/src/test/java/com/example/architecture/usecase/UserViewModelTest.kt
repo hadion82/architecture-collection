@@ -25,7 +25,7 @@ import java.net.SocketTimeoutException
 
 class UserViewModelTest {
 
-    @ExperimentalCoroutinesApi
+    @OptIn(ExperimentalCoroutinesApi::class)
     @get:Rule
     val coroutineRule = MainCoroutineRule()
 
@@ -34,9 +34,7 @@ class UserViewModelTest {
 
     }
 
-    @InternalCoroutinesApi
-    @FlowPreview
-    @ExperimentalCoroutinesApi
+    @OptIn(FlowPreview::class, ExperimentalCoroutinesApi::class, InternalCoroutinesApi::class)
     @Test
     fun loadUser_success() = coroutineRule.runBlockingTest {
         val userRepository = mock<UserRepository> {
@@ -62,8 +60,7 @@ class UserViewModelTest {
         }
     }
 
-    @FlowPreview
-    @ExperimentalCoroutinesApi
+    @OptIn(FlowPreview::class, ExperimentalCoroutinesApi::class)
     @Test
     fun loadUser_failed() = coroutineRule.runBlockingTest {
         val userRepository = mock<UserRepository> {
@@ -81,8 +78,7 @@ class UserViewModelTest {
         }
     }
 
-    @FlowPreview
-    @ExperimentalCoroutinesApi
+    @OptIn(FlowPreview::class, ExperimentalCoroutinesApi::class)
     @Test
     fun userDetailTest() = coroutineRule.runBlockingTest {
         val userViewModel = createViewModel(coroutineRule.testDispatcher, mock(), SavedStateHandle())
@@ -96,8 +92,7 @@ class UserViewModelTest {
         }
     }
 
-    @FlowPreview
-    @ExperimentalCoroutinesApi
+    @OptIn(FlowPreview::class, ExperimentalCoroutinesApi::class)
     private fun createViewModel(
         dispatcher: TestCoroutineDispatcher,
         userRepository: UserRepository,

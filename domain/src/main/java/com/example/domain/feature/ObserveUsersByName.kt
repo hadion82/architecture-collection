@@ -10,7 +10,7 @@ class ObserveUsersByName @Inject constructor(
     private val repository: UserObserveRepository
 ): LiveUseCase<ObserveUsersByName.Params, List<UserEntity>>() {
 
-    @ExperimentalCoroutinesApi
+    @OptIn(ExperimentalCoroutinesApi::class)
     override fun execute(params: Params) = repository.observeUsers(params.query)
 
     class Params(val query: String)

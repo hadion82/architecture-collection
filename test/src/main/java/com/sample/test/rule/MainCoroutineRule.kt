@@ -22,18 +22,18 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.*
 import org.junit.rules.TestWatcher
 import org.junit.runner.Description
-@ExperimentalCoroutinesApi
+@OptIn(ExperimentalCoroutinesApi::class)
 class MainCoroutineRule  constructor(
     val testDispatcher: TestCoroutineDispatcher = TestCoroutineDispatcher()
 ) : TestWatcher() {
 
-    @ExperimentalCoroutinesApi
+    @OptIn(ExperimentalCoroutinesApi::class)
     override fun starting(description: Description?) {
         super.starting(description)
         Dispatchers.setMain(testDispatcher)
     }
 
-    @ExperimentalCoroutinesApi
+    @OptIn(ExperimentalCoroutinesApi::class)
     override fun finished(description: Description?) {
         super.finished(description)
         Dispatchers.resetMain()
@@ -41,7 +41,7 @@ class MainCoroutineRule  constructor(
     }
 }
 
-@ExperimentalCoroutinesApi
+@OptIn(ExperimentalCoroutinesApi::class)
 fun MainCoroutineRule.runBlockingTest(block: suspend () -> Unit) =
     this.testDispatcher.runBlockingTest {
         block()
@@ -50,5 +50,5 @@ fun MainCoroutineRule.runBlockingTest(block: suspend () -> Unit) =
 /**
  * Creates a new [CoroutineScope] with the rule's testDispatcher
  */
-@ExperimentalCoroutinesApi
+@OptIn(ExperimentalCoroutinesApi::class)
 fun MainCoroutineRule.CoroutineScope(): CoroutineScope = CoroutineScope(testDispatcher)

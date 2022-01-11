@@ -6,6 +6,7 @@ import android.view.View
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.paging.PagingData
 import com.bumptech.glide.integration.recyclerview.RecyclerViewPreloader
@@ -22,12 +23,12 @@ import com.example.data.entity.UserEntity
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.*
+import timber.log.Timber
 
 @AndroidEntryPoint
 class UserActivity : AppCompatActivity(), IntentView<UserViewIntent, UserViewState> {
 
-    @FlowPreview
-    @ExperimentalCoroutinesApi
+    @OptIn(FlowPreview::class, ExperimentalCoroutinesApi::class)
     private val viewModel by viewModels<UserViewModel>()
     private val binding by lazy { ActivityUserBinding.inflate(layoutInflater) }
 
@@ -35,22 +36,18 @@ class UserActivity : AppCompatActivity(), IntentView<UserViewIntent, UserViewSta
 
     private lateinit var userAdapter: UserAdapter
 
-    @FlowPreview
-    @ExperimentalCoroutinesApi
+    @OptIn(FlowPreview::class, ExperimentalCoroutinesApi::class)
     private val queryChangedIntent: Flow<UserViewIntent.QueryChangedIntent> by lazy {
         binding.search.queryTextSubmit()
             .map { query -> UserViewIntent.QueryChangedIntent(query?.toString() ?: "") }
     }
 
-    @FlowPreview
-    @ExperimentalCoroutinesApi
+    @OptIn(FlowPreview::class, ExperimentalCoroutinesApi::class)
     override val intents by lazy {
         merge(openUserDetailIntent, queryChangedIntent)
     }
 
-    @FlowPreview
-    @ExperimentalCoroutinesApi
-    @InternalCoroutinesApi
+    @OptIn(FlowPreview::class, ExperimentalCoroutinesApi::class, InternalCoroutinesApi::class)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
@@ -75,13 +72,16 @@ class UserActivity : AppCompatActivity(), IntentView<UserViewIntent, UserViewSta
         bindViewModel()
     }
 
-    @FlowPreview
-    @ExperimentalCoroutinesApi
+    @OptIn(FlowPreview::class, ExperimentalCoroutinesApi::class)
     private fun bindViewModel() {
-        viewModel.viewState.onEach { render(it) }
-            .launchWhileStartedIn(this)
+        viewModel.viewState
+            .flowWithLifecycle(lifecycle)
+            .onEach { render(it) }
+            .launchIn(lifecycleScope)
 
-        intents.onEach { viewModel.processIntents(it) }
+        intents
+            .flowWithLifecycle(lifecycle)
+            .onEach { viewModel.processIntents(it) }
             .launchIn(lifecycleScope)
     }
 
@@ -115,11 +115,9 @@ class UserActivity : AppCompatActivity(), IntentView<UserViewIntent, UserViewSta
     private var pagingJob: Job? = null
     private suspend fun renderLoadPagingData(pagingFlow: Flow<PagingData<UserEntity>>) {
         pagingJob?.cancel()
-        pagingJob = lifecycleScope.launch {
-            pagingFlow.collectLatest {
-                userAdapter.submitData(it)
-            }
-        }
+        pagingJob = pagingFlow
+            .onEach(userAdapter::submitData)
+            .launchIn(lifecycleScope)
     }
 
     private suspend fun renderLoadingFailedSate(exception: Exception) {

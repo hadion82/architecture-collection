@@ -12,8 +12,6 @@ android {
     defaultConfig {
         minSdkVersion build_versions.min
         targetSdkVersion build_versions.target
-        versionCode 1
-        versionName '1.0.0'
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles 'consumer-rules.pro'
@@ -49,9 +47,6 @@ dependencies {
 
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation "org.bouncycastle:bcprov-jdk16:1.46"
-
-    //android
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 
     //base
     implementation(

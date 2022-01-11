@@ -32,14 +32,14 @@ import javax.inject.Inject
 @Config(application = HiltTestApplication::class)
 class LoadUsersUeseCaseTest {
 
-    @ExperimentalCoroutinesApi
+    @OptIn(ExperimentalCoroutinesApi::class)
     @get:Rule
     val coroutineRule = MainCoroutineRule()
 
     @get:Rule
     val collectorRule = ErrorCollector()
 
-    @ExperimentalCoroutinesApi
+    @OptIn(ExperimentalCoroutinesApi::class)
     @Test
     fun loadUsersByName_success() = coroutineRule.runBlockingTest {
         val userRepository = mock<UserRepository> {
@@ -63,7 +63,7 @@ class LoadUsersUeseCaseTest {
         }
     }
 
-    @ExperimentalCoroutinesApi
+    @OptIn(ExperimentalCoroutinesApi::class)
     @Test
     fun loadUsersByName_failure() = coroutineRule.runBlockingTest {
         val userRepository = mock<UserRepository> {

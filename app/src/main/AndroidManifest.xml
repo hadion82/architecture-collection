@@ -15,7 +15,9 @@
         android:name=".collection.AndroidApplication">
         <activity android:name=".collection.feature.user.UserActivity"
             tools:ignore="Instantiatable"
-            android:configChanges="orientation|screenSize|screenLayout|keyboardHidden">
+            android:configChanges="orientation|screenSize|screenLayout|keyboardHidden"
+            android:exported="true"
+            >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -25,7 +27,9 @@
 
         <activity android:name=".collection.feature.userdetail.UserDetailActivity"/>
 
-        <receiver android:name=".collection.broadcast.UserUpdateBroadcastReceiver">
+        <receiver android:name=".collection.broadcast.UserUpdateBroadcastReceiver"
+            android:exported="false"
+            >
             <intent-filter>
                 <action android:name="com.architecture.action.USER_REFRESH"/>
             </intent-filter>

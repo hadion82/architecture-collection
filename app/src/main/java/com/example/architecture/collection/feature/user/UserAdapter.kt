@@ -41,8 +41,7 @@ class UserAdapter(
             if (newValue != null && this != newValue) newValue else null
     }
 
-    @FlowPreview
-    @ExperimentalCoroutinesApi
+    @OptIn(FlowPreview::class, ExperimentalCoroutinesApi::class)
     override fun onCreateViewHolder(
         parent: ViewGroup, viewType: Int
     ) = UserViewHolder(

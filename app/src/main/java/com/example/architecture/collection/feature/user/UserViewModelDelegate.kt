@@ -24,8 +24,7 @@ class UserViewModelDelegateImpl @Inject constructor(
     override suspend fun processIntents(intent: UserViewIntent) =
         intentFlow.emit(intent)
 
-    @FlowPreview
-    @ExperimentalCoroutinesApi
+    @OptIn(FlowPreview::class, ExperimentalCoroutinesApi::class)
     override fun stateFlowOf(viewModelScope: CoroutineScope) =
         intentFlow.assemble()
             .map(intentProcessor::invoke)
